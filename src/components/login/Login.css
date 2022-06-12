@@ -1,0 +1,42 @@
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background-color: #4da6ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-page .login-area {
+  width: 20vw;
+  height: 20vw;
+  background-color: #f2f2f2;
+  border: 1px solid #f2f2f2;
+  border-radius: 10px;
+}
+
+.login-page .login-area .login-title-container {
+  text-align: center;
+  font-weight: 900;
+  font-size: 30px;
+}
+
+.login-page .login-area .email-form-group {
+  padding: 10px 10px 0px 10px;
+}
+
+.login-page .login-area .password-form-group {
+  padding: 10px 10px 20px 10px;
+}
+
+.login-page .login-area .form-button {
+  width: 80%;
+}
+
+.login-page .login-area .forgot-password-container {
+  padding: 10px 10px 0px 10px;
+}
+
+.login-page .login-area .forgot-password-container .forgot-password-button {
+  float: right;
+}

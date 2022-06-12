@@ -1,5 +1,8 @@
 import { takeLatest } from "redux-saga/effects";
+import { getLogin } from "../slices/loginSlice";
+import { handleGetLogin } from "./handlers/loginHandler";
 
 export function* watcherSaga() {
-  yield takeLatest();
+  yield takeLatest(getLogin.type, handleGetLogin);
+  // yield takeLatest();
 }
