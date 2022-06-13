@@ -6,7 +6,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 
 //Components
 import Login from "./components/login/Login";
-import Home from "./components/home/Home";
 import Layout from "./components/layout/Layout";
 import ManageBooking from "./components/manageBooking/ManageBooking";
 import Error from "./components/error/Error";
