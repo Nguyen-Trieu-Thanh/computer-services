@@ -3,14 +3,10 @@ import roleEnum from "../../../enums/roleEnum";
 
 export function requestGetLogin(params) {
   //Fecth API
+  const url = "https://jsonplaceholder.typicode.com/todos/1";
 
-  if (params[0] === "manager@gmail.com" && params[1] === "123") {
-    return roleEnum.MANAGER;
-  }
-
-  if (params[0] === "admin@gmail.com" && params[1] === "123") {
-    return roleEnum.ADMIN;
-  }
-
-  return 0;
+  return axios
+    .get(url)
+    .then((response) => ({ response }))
+    .catch((error) => ({ error }));
 }

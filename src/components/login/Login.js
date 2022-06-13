@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //Redux
 //Actions
-import { setEmail, setPassword, getLogin } from "../../redux/slices/loginSlice";
+import { getLogin, setIsLoginCorrect } from "../../redux/slices/loginSlice";
 
 //React-redux
 import { useDispatch, useSelector } from "react-redux";
@@ -14,16 +15,27 @@ import { Form, Button } from "react-bootstrap";
 import "./Login.css";
 
 const Login = () => {
-  const email = useSelector((state) => state.login.email);
-  const password = useSelector((state) => state.login.password);
-  const role = useSelector((state) => state.login.role);
+  //Local state
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  //Global state
+  const isLoginCorrect = useSelector((state) => state.login.isLoginCorrect);
+
+  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
     dispatch(getLogin({ email, password }));
   };
+
+  useEffect(() => {
+    if (isLoginCorrect) {
+      navigate("/booking");
+      dispatch(setIsLoginCorrect({ isLoginCorrect: false }));
+    }
+  }, [isLoginCorrect]);
 
   return (
     <>
@@ -37,7 +49,7 @@ const Login = () => {
                 type="email"
                 value={email}
                 onChange={(e) => {
-                  dispatch(setEmail({ email: e.target.value }));
+                  setEmail(e.target.value);
                 }}
               />
             </Form.Group>
@@ -50,7 +62,7 @@ const Login = () => {
                 type="password"
                 value={password}
                 onChange={(e) => {
-                  dispatch(setPassword({ password: e.target.value }));
+                  setPassword(e.target.value);
                 }}
               />
             </Form.Group>

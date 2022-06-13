@@ -7,6 +7,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //Components
 import Login from "./components/login/Login";
 import Home from "./components/home/Home";
+import Layout from "./components/layout/Layout";
+import ManageBooking from "./components/manageBooking/ManageBooking";
 import Error from "./components/error/Error";
 
 //Functions
@@ -24,13 +26,15 @@ function App() {
 
           {/* Home page */}
           <Route
-            path="/home"
+            path="/"
             element={
               <ProtectedRoute user={user}>
-                <Home />
+                <Layout />
               </ProtectedRoute>
             }
-          />
+          >
+            <Route path="/booking" element={<ManageBooking />} />
+          </Route>
 
           {/* Error page */}
           <Route path="/error" element={<Error />} />

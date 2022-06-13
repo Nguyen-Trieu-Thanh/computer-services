@@ -4,5 +4,4 @@ import { handleGetLogin } from "./handlers/loginHandler";
 
 export function* watcherSaga() {
   yield takeLatest(getLogin.type, handleGetLogin);
-  // yield takeLatest();
 }

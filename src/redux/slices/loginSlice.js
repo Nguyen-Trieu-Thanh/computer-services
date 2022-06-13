@@ -1,28 +1,23 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
-  email: "",
-  password: "",
-  role: 0,
+  isLoginCorrect: false,
 };
 
 const loginSlice = createSlice({
   name: "login",
   initialState: initState,
   reducers: {
-    setEmail: (state, action) => {
-      return { ...state, email: action.payload.email };
-    },
-    setPassword: (state, action) => {
-      return { ...state, password: action.payload.password };
-    },
     getLogin: () => {},
-    setLogin: (state, action) => {
-      return { ...state, role: action.payload.role };
+    setIsLoginCorrect: (state, action) => {
+      return {
+        ...state,
+        isLoginCorrect: action.payload.isLoginCorrect,
+      };
     },
   },
 });
 
-export const { setEmail, setPassword, getLogin, setLogin } = loginSlice.actions;
+export const { getLogin, setIsLoginCorrect } = loginSlice.actions;
 
 export default loginSlice.reducer;
