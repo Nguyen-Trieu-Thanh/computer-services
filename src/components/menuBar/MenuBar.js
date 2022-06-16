@@ -28,6 +28,9 @@ const MenuBar = () => {
             <Nav.Link as={Link} to="/order">
               Order
             </Nav.Link>
+            <Nav.Link as={Link} to="/staff">
+              Staff
+            </Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>

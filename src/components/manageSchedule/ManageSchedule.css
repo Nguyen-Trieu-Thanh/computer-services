@@ -1,0 +1,44 @@
+.manage-schedule-container {
+  width: 90vw;
+  max-width: none !important;
+}
+
+.manage-schedule-container .modal-content-container {
+}
+
+.manage-schedule-container .modal-content-container .modal-title {
+  width: 100%;
+}
+
+.manage-schedule-container .modal-content-container .filter-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.manage-schedule-container .modal-content-container .modal-body-container {
+}
+
+.manage-schedule-container
+  .modal-content-container
+  .modal-body-container
+  .table {
+  margin: 0px;
+}
+
+.manage-schedule-container
+  .modal-content-container
+  .modal-body-container
+  thead {
+  background-color: #4da6ff;
+}
+
+.manage-schedule-container .modal-content-container .modal-body-container th {
+  text-align: center;
+}
+
+.manage-schedule-container .modal-content-container .modal-body-container td {
+  text-align: center;
+  vertical-align: middle;
+}

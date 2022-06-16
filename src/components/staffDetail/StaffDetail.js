@@ -4,29 +4,28 @@ import React from "react";
 import { Button, Modal } from "react-bootstrap";
 
 //CSS
-import "./OrderDetail.css";
+import "./StaffDetail.css";
 
-const OrderDetail = ({ showOrderDetail, setShowOrderDetail, orderDetail }) => {
+const StaffDetail = ({ showStaffDetail, setShowStaffDetail, staffDetail }) => {
   const handleClose = () => {
-    setShowOrderDetail(false);
+    setShowStaffDetail(false);
   };
+
   return (
     <>
       <Modal
         size="lg"
-        show={showOrderDetail}
+        show={showStaffDetail}
         onHide={handleClose}
         dialogClassName="order-detail"
       >
         <div className="modal-content-container">
           <Modal.Header closeButton={true}>
-            <Modal.Title>Order No. {orderDetail.number}</Modal.Title>
+            <Modal.Title>Staff No. {staffDetail.number}</Modal.Title>
           </Modal.Header>
           <div className="modal-body-container">
-            <Modal.Body>Order ID: {orderDetail.id}</Modal.Body>
-            <Modal.Body>Order Booking ID: {orderDetail.bookingId}</Modal.Body>
-            <Modal.Body>Order Staff ID: {orderDetail.staffId}</Modal.Body>
-            <Modal.Body>Order Name: {orderDetail.name}</Modal.Body>
+            <Modal.Body>Staff ID: {staffDetail.id}</Modal.Body>
+            <Modal.Body>Staff Name: {staffDetail.name}</Modal.Body>
           </div>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
@@ -42,4 +41,4 @@ const OrderDetail = ({ showOrderDetail, setShowOrderDetail, orderDetail }) => {
   );
 };
 
-export default OrderDetail;
+export default StaffDetail;

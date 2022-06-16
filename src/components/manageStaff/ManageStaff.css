@@ -1,0 +1,34 @@
+.manage-staff-container {
+}
+
+.manage-staff-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-staff-container .table-container {
+}
+
+.manage-staff-container .table-container thead {
+  background-color: #4da6ff;
+}
+
+.manage-staff-container .table-container th {
+  text-align: center;
+}
+
+.manage-staff-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-staff-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-staff-container .pagination-container {
+  float: right;
+}
