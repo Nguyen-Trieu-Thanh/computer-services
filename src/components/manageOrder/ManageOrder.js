@@ -4,28 +4,28 @@ import React, { useState } from "react";
 import { Button, Pagination, Table } from "react-bootstrap";
 
 //CSS
-import "./ManageBooking.css";
+import "./ManageOrder.css";
 
 //Data
-import BookingData from "../../datas/BookingData";
+import OrderData from "../../datas/OrderData";
+import OrderDetail from "../orderDetail/OrderDetail";
 
-//Components
-import BookingDetail from "../bookingDetail/BookingDetail";
-
-const ManageBooking = () => {
+const ManageOrder = () => {
   //Local state
   const [active, setActive] = useState(1);
-  const [bookings, setBookings] = useState(BookingData.slice(0, 10));
-  const [showBookingDetail, setShowBookingDetail] = useState(false);
-  const [bookingDetail, setBookingDetail] = useState({
+  const [orders, setOrders] = useState(OrderData.slice(0, 10));
+  const [showOrderDetail, setShowOrderDetail] = useState(false);
+  const [orderDetail, setOrderDetail] = useState({
     number: 0,
     id: "",
+    bookingId: "",
+    staffId: "",
     name: "",
   });
 
   //Pagination
   let items = [];
-  for (let number = 1; number <= Math.ceil(BookingData.length / 10); number++) {
+  for (let number = 1; number <= Math.ceil(OrderData.length / 10); number++) {
     items.push(
       <Pagination.Item
         onClick={() => {
@@ -42,39 +42,45 @@ const ManageBooking = () => {
 
   const handlePaginationClick = (number) => {
     setActive(number);
-    setBookings(BookingData.slice(10 * (number - 1), 10 * number));
+    setOrders(OrderData.slice(10 * (number - 1), 10 * number));
   };
 
   return (
     <>
-      <div className="manage-booking-container">
+      <div className="manage-order-container">
         <div className="button-container">
-          <Button>CREATE BOOKING</Button>
+          <Button>CREATE ORDER</Button>
         </div>
         <div className="table-container">
           <Table bordered hover>
             <thead>
               <tr>
                 <th>No.</th>
+                <th>Booking ID</th>
+                <th>Staff ID</th>
                 <th>Name</th>
               </tr>
             </thead>
             <tbody>
-              {bookings.map((booking, index) => {
+              {orders.map((order, index) => {
                 return (
                   <tr
                     key={index}
                     onClick={() => {
-                      setShowBookingDetail(true);
-                      setBookingDetail({
+                      setShowOrderDetail(true);
+                      setOrderDetail({
                         number: index + 1,
-                        id: booking.id,
-                        name: booking.name,
+                        id: order.id,
+                        bookingId: order.bookingId,
+                        staffId: order.staffId,
+                        name: order.name,
                       });
                     }}
                   >
                     <td>{index + 1}</td>
-                    <td>{booking.name}</td>
+                    <td>{order.bookingId}</td>
+                    <td>{order.staffId}</td>
+                    <td>{order.name}</td>
                   </tr>
                 );
               })}
@@ -85,13 +91,13 @@ const ManageBooking = () => {
           <Pagination className="pagination-container">{items}</Pagination>
         </div>
       </div>
-      <BookingDetail
-        showBookingDetail={showBookingDetail}
-        setShowBookingDetail={setShowBookingDetail}
-        bookingDetail={bookingDetail}
+      <OrderDetail
+        showOrderDetail={showOrderDetail}
+        setShowOrderDetail={setShowOrderDetail}
+        orderDetail={orderDetail}
       />
     </>
   );
 };
 
-export default ManageBooking;
+export default ManageOrder;

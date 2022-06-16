@@ -8,6 +8,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Login from "./components/login/Login";
 import Layout from "./components/layout/Layout";
 import ManageBooking from "./components/manageBooking/ManageBooking";
+import ManageOrder from "./components/manageOrder/ManageOrder";
 import Error from "./components/error/Error";
 
 //Functions
@@ -33,6 +34,7 @@ function App() {
             }
           >
             <Route path="/booking" element={<ManageBooking />} />
+            <Route path="/order" element={<ManageOrder />} />
           </Route>
 
           {/* Error page */}

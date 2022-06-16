@@ -1,0 +1,17 @@
+.manage-order-container {
+}
+
+.manage-order-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-order-container .table-container {
+  height: 75vh;
+}
+
+.manage-order-container .pagination-container {
+  float: right;
+}
