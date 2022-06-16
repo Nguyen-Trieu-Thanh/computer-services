@@ -9,7 +9,24 @@
 }
 
 .manage-booking-container .table-container {
-  height: 75vh;
+}
+
+.manage-booking-container .table-container thead {
+  background-color: #4da6ff;
+}
+
+.manage-booking-container .table-container th {
+  text-align: center;
+}
+
+.manage-booking-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-booking-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .manage-booking-container .pagination-container {

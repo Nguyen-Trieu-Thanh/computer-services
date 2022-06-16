@@ -9,7 +9,24 @@
 }
 
 .manage-order-container .table-container {
-  height: 75vh;
+}
+
+.manage-order-container .table-container thead {
+  background-color: #4da6ff;
+}
+
+.manage-order-container .table-container th {
+  text-align: center;
+}
+
+.manage-order-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-order-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .manage-order-container .pagination-container {

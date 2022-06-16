@@ -10,6 +10,14 @@ import "./ManageOrder.css";
 import OrderData from "../../datas/OrderData";
 import OrderDetail from "../orderDetail/OrderDetail";
 
+//Icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPenToSquare,
+  faPlus,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
+
 const ManageOrder = () => {
   //Local state
   const [active, setActive] = useState(1);
@@ -49,38 +57,54 @@ const ManageOrder = () => {
     <>
       <div className="manage-order-container">
         <div className="button-container">
-          <Button>CREATE ORDER</Button>
+          <Button>
+            ADD <FontAwesomeIcon icon={faPlus} color="" />
+          </Button>
         </div>
         <div className="table-container">
-          <Table bordered hover>
+          <Table bordered hover size="sm">
             <thead>
               <tr>
-                <th>No.</th>
-                <th>Booking ID</th>
-                <th>Staff ID</th>
-                <th>Name</th>
+                <th>NO.</th>
+                <th>BOOKING ID</th>
+                <th>STAFF ID</th>
+                <th>NAME</th>
+                <th style={{ width: "200px" }}>ACTIONS</th>
               </tr>
             </thead>
             <tbody>
               {orders.map((order, index) => {
                 return (
-                  <tr
-                    key={index}
-                    onClick={() => {
-                      setShowOrderDetail(true);
-                      setOrderDetail({
-                        number: index + 1,
-                        id: order.id,
-                        bookingId: order.bookingId,
-                        staffId: order.staffId,
-                        name: order.name,
-                      });
-                    }}
-                  >
+                  <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{order.bookingId}</td>
                     <td>{order.staffId}</td>
                     <td>{order.name}</td>
+                    <td>
+                      <div className="action-button-container">
+                        <Button
+                          variant="primary"
+                          onClick={() => {
+                            setShowOrderDetail(true);
+                            setOrderDetail({
+                              number: index + 1,
+                              id: order.id,
+                              bookingId: order.bookingId,
+                              staffId: order.staffId,
+                              name: order.name,
+                            });
+                          }}
+                        >
+                          <FontAwesomeIcon
+                            icon={faPenToSquare}
+                            color="#ffffff"
+                          />
+                        </Button>
+                        <Button variant="danger">
+                          <FontAwesomeIcon icon={faTrash} color="#ffffff" />
+                        </Button>
+                      </div>
+                    </td>
                   </tr>
                 );
               })}
