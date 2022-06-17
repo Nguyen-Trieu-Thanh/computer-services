@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
 //React-bootstrap
-import { Button, Pagination, Table } from "react-bootstrap";
+import {
+  Button,
+  OverlayTrigger,
+  Pagination,
+  Table,
+  Tooltip,
+} from "react-bootstrap";
 
 //CSS
 import "./ManageBooking.css";
@@ -78,25 +84,51 @@ const ManageBooking = () => {
                     <td>{booking.name}</td>
                     <td>
                       <div className="action-button-container">
-                        <Button
-                          variant="primary"
-                          onClick={() => {
-                            setShowBookingDetail(true);
-                            setBookingDetail({
-                              number: index + 1,
-                              id: booking.id,
-                              name: booking.name,
-                            });
-                          }}
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="booking-edit-button"
+                              id="edit-button-tooltip"
+                            >
+                              EDIT
+                            </Tooltip>
+                          }
                         >
-                          <FontAwesomeIcon
-                            icon={faPenToSquare}
-                            color="#ffffff"
-                          />
-                        </Button>
-                        <Button variant="danger">
-                          <FontAwesomeIcon icon={faTrash} color="#ffffff" />
-                        </Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              setShowBookingDetail(true);
+                              setBookingDetail({
+                                number: index + 1,
+                                id: booking.id,
+                                name: booking.name,
+                              });
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              icon={faPenToSquare}
+                              color="#ffffff"
+                            />
+                          </Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="booking-delete-button"
+                              id="edit-button-tooltip"
+                            >
+                              DELETE
+                            </Tooltip>
+                          }
+                        >
+                          <Button variant="danger">
+                            <FontAwesomeIcon icon={faTrash} color="#ffffff" />
+                          </Button>
+                        </OverlayTrigger>
                       </div>
                     </td>
                   </tr>

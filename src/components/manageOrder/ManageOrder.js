@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 
 //React-bootstrap
-import { Button, Pagination, Table } from "react-bootstrap";
+import {
+  Button,
+  OverlayTrigger,
+  Pagination,
+  Table,
+  Tooltip,
+} from "react-bootstrap";
 
 //CSS
 import "./ManageOrder.css";
@@ -82,27 +88,53 @@ const ManageOrder = () => {
                     <td>{order.name}</td>
                     <td>
                       <div className="action-button-container">
-                        <Button
-                          variant="primary"
-                          onClick={() => {
-                            setShowOrderDetail(true);
-                            setOrderDetail({
-                              number: index + 1,
-                              id: order.id,
-                              bookingId: order.bookingId,
-                              staffId: order.staffId,
-                              name: order.name,
-                            });
-                          }}
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="order-edit-button"
+                              id="edit-button-tooltip"
+                            >
+                              EDIT
+                            </Tooltip>
+                          }
                         >
-                          <FontAwesomeIcon
-                            icon={faPenToSquare}
-                            color="#ffffff"
-                          />
-                        </Button>
-                        <Button variant="danger">
-                          <FontAwesomeIcon icon={faTrash} color="#ffffff" />
-                        </Button>
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              setShowOrderDetail(true);
+                              setOrderDetail({
+                                number: index + 1,
+                                id: order.id,
+                                bookingId: order.bookingId,
+                                staffId: order.staffId,
+                                name: order.name,
+                              });
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              icon={faPenToSquare}
+                              color="#ffffff"
+                            />
+                          </Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="order-delete-button"
+                              id="edit-button-tooltip"
+                            >
+                              DELETE
+                            </Tooltip>
+                          }
+                        >
+                          <Button variant="danger">
+                            <FontAwesomeIcon icon={faTrash} color="#ffffff" />
+                          </Button>
+                        </OverlayTrigger>
                       </div>
                     </td>
                   </tr>

@@ -25,6 +25,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import StaffDetail from "../staffDetail/StaffDetail";
 import ManageSchedule from "../manageSchedule/ManageSchedule";
+import { NavLink } from "react-router-dom";
 
 const ManageStaff = () => {
   //Local state
@@ -57,11 +58,6 @@ const ManageStaff = () => {
     );
   }
 
-  //Tooltip
-  // const renderTooltip = (props, text) => (
-  //   <Tooltip id="button-tooltip" {...props}></Tooltip>
-  // );
-
   const handlePaginationClick = (number) => {
     setActive(number);
     setStaffs(StaffData.slice(10 * (number - 1), 10 * number));
@@ -91,37 +87,76 @@ const ManageStaff = () => {
                     <td>{staff.name}</td>
                     <td>
                       <div className="action-button-container">
-                        <Button
-                          variant="primary"
-                          onClick={() => {
-                            setShowStaffDetail(true);
-                            setStaffDetail({
-                              number: index + 1,
-                              id: staff.id,
-                              name: staff.name,
-                            });
-                          }}
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="staff-edit-button"
+                              id="edit-button-tooltip"
+                            >
+                              EDIT
+                            </Tooltip>
+                          }
                         >
-                          <FontAwesomeIcon
-                            icon={faPenToSquare}
-                            color="#ffffff"
-                          />
-                        </Button>
-                        <Button
-                          variant="success"
-                          onClick={() => {
-                            setShowStaffSchedule(true);
-                            setStaffScheduleId(staff.scheduleId);
-                          }}
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              setShowStaffDetail(true);
+                              setStaffDetail({
+                                number: index + 1,
+                                id: staff.id,
+                                name: staff.name,
+                              });
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              icon={faPenToSquare}
+                              color="#ffffff"
+                            />
+                          </Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="staff-schedule-button"
+                              id="schedule-button-tooltip"
+                            >
+                              SCHEDULE
+                            </Tooltip>
+                          }
                         >
-                          <FontAwesomeIcon
-                            icon={faCalendarCheck}
-                            color="#ffffff"
-                          />
-                        </Button>
-                        <Button variant="danger">
-                          <FontAwesomeIcon icon={faTrash} color="#ffffff" />
-                        </Button>
+                          <Button
+                            variant="success"
+                            onClick={() => {
+                              setShowStaffSchedule(true);
+                              setStaffScheduleId(staff.scheduleId);
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              icon={faCalendarCheck}
+                              color="#ffffff"
+                            />
+                          </Button>
+                        </OverlayTrigger>
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="staff-delete-button"
+                              id="delete-button-tooltip"
+                            >
+                              DELETE
+                            </Tooltip>
+                          }
+                        >
+                          <Button variant="danger">
+                            <FontAwesomeIcon icon={faTrash} color="#ffffff" />
+                          </Button>
+                        </OverlayTrigger>
                       </div>
                     </td>
                   </tr>

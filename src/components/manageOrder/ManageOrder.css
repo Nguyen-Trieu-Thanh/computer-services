@@ -32,3 +32,35 @@
 .manage-order-container .pagination-container {
   float: right;
 }
+
+/*Tooltip CSS*/
+
+.order-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.order-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.order-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.order-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.order-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.order-delete-button .arrow::before {
+  border-bottom-color: red;
+}

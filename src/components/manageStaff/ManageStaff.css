@@ -32,3 +32,50 @@
 .manage-staff-container .pagination-container {
   float: right;
 }
+
+/*Tooltip CSS*/
+
+.staff-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.staff-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.staff-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.staff-schedule-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.staff-schedule-button .tooltip-inner {
+  background-color: green;
+  color: #fff;
+}
+
+.staff-schedule-button .arrow::before {
+  border-bottom-color: green;
+}
+
+.staff-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.staff-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.staff-delete-button .arrow::before {
+  border-bottom-color: red;
+}

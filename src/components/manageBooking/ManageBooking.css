@@ -32,3 +32,35 @@
 .manage-booking-container .pagination-container {
   float: right;
 }
+
+/*Tooltip CSS*/
+
+.booking-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.booking-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.booking-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.booking-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.booking-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.booking-delete-button .arrow::before {
+  border-bottom-color: red;
+}
