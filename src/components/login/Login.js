@@ -32,7 +32,7 @@ const Login = () => {
 
   useEffect(() => {
     if (isLoginCorrect) {
-      navigate("/booking");
+      navigate("/dashboard");
       dispatch(setIsLoginCorrect({ isLoginCorrect: false }));
     }
   }, [isLoginCorrect]);

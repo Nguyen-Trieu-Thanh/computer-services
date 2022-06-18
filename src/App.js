@@ -7,6 +7,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 //Components
 import Login from "./components/login/Login";
 import Layout from "./components/layout/Layout";
+import Dashboard from "./components/dashboard/Dashboard";
 import ManageBooking from "./components/manageBooking/ManageBooking";
 import ManageOrder from "./components/manageOrder/ManageOrder";
 import ManageStaff from "./components/manageStaff/ManageStaff";
@@ -34,6 +35,7 @@ function App() {
               </ProtectedRoute>
             }
           >
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/booking" element={<ManageBooking />} />
             <Route path="/order" element={<ManageOrder />} />
             <Route path="/staff" element={<ManageStaff />} />

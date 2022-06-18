@@ -1,7 +1,7 @@
 .login-page {
   width: 100vw;
   height: 100vh;
-  background-color: #4da6ff;
+  background-color: var(--main-color);
   display: flex;
   align-items: center;
   justify-content: center;

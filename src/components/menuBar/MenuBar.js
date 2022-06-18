@@ -16,7 +16,7 @@ const MenuBar = () => {
   return (
     <>
       <Navbar className="nav-bar" expand="lg">
-        <Navbar.Brand as={Link} to="/booking">
+        <Navbar.Brand as={Link} to="/dashboard">
           Computer services
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />

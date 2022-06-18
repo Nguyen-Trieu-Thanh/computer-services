@@ -1,0 +1,36 @@
+.dashboard-page-title {
+  margin: 10px 0 10px 0;
+  font-size: 2vw;
+  font-weight: bold;
+}
+
+.dashboard-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard-container .dashboard-card {
+  width: 30vw;
+  background-color: #ffffff;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard-container .dashboard-card .profit {
+  color: green;
+}
+
+.dashboard-container .dashboard-card .loss {
+  color: red;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-header span {
+  margin: 0 2px 0 0;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-body {
+  text-align: center;
+}

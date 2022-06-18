@@ -12,7 +12,7 @@
 }
 
 .manage-booking-container .table-container thead {
-  background-color: #4da6ff;
+  background-color: var(--main-color);
 }
 
 .manage-booking-container .table-container th {

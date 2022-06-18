@@ -31,7 +31,7 @@
   .modal-content-container
   .modal-body-container
   thead {
-  background-color: #4da6ff;
+  background-color: var(--main-color);
 }
 
 .manage-schedule-container .modal-content-container .modal-body-container th {
