@@ -24,6 +24,8 @@ import {
   faPenToSquare,
   faPlus,
   faTrash,
+  faCheck,
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 const ManageBooking = () => {
@@ -32,9 +34,10 @@ const ManageBooking = () => {
   const [bookings, setBookings] = useState(BookingData.slice(0, 10));
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({
-    number: 0,
     id: "",
-    name: "",
+    code: 0,
+    customerName: "",
+    phoneNumber: "",
   });
 
   //Pagination
@@ -71,9 +74,11 @@ const ManageBooking = () => {
           <Table bordered hover size="sm">
             <thead>
               <tr>
-                <th>NO.</th>
-                <th>NAME</th>
-                <th style={{ width: "200px" }}>ACTIONS</th>
+                <th>#</th>
+                <th>MÃ LỊCH HẸN</th>
+                <th>KHÁCH HÀNG</th>
+                <th>SỐ ĐIỆN THOẠI</th>
+                <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
               </tr>
             </thead>
             <tbody>
@@ -81,7 +86,9 @@ const ManageBooking = () => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{booking.name}</td>
+                    <td>{booking.code}</td>
+                    <td>{booking.customerName}</td>
+                    <td>{booking.phoneNumber}</td>
                     <td>
                       <div className="action-button-container">
                         <OverlayTrigger
@@ -89,28 +96,26 @@ const ManageBooking = () => {
                           delay={{ show: 200, hide: 100 }}
                           overlay={
                             <Tooltip
-                              className="booking-edit-button"
+                              className="booking-approve-button"
                               id="edit-button-tooltip"
                             >
-                              EDIT
+                              APPROVE
                             </Tooltip>
                           }
                         >
                           <Button
-                            variant="primary"
+                            variant="success"
                             onClick={() => {
                               setShowBookingDetail(true);
                               setBookingDetail({
-                                number: index + 1,
                                 id: booking.id,
-                                name: booking.name,
+                                code: booking.code,
+                                customerName: booking.customerName,
+                                phoneNumber: booking.phoneNumber,
                               });
                             }}
                           >
-                            <FontAwesomeIcon
-                              icon={faPenToSquare}
-                              color="#ffffff"
-                            />
+                            <FontAwesomeIcon icon={faCheck} color="#ffffff" />
                           </Button>
                         </OverlayTrigger>
                         <OverlayTrigger
@@ -126,7 +131,7 @@ const ManageBooking = () => {
                           }
                         >
                           <Button variant="danger">
-                            <FontAwesomeIcon icon={faTrash} color="#ffffff" />
+                            <FontAwesomeIcon icon={faXmark} color="#ffffff" />
                           </Button>
                         </OverlayTrigger>
                       </div>

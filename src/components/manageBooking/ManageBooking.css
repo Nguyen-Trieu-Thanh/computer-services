@@ -1,4 +1,5 @@
 .manage-booking-container {
+  margin: 10px 0 0 0;
 }
 
 .manage-booking-container .button-container {
@@ -35,19 +36,19 @@
 
 /*Tooltip CSS*/
 
-.booking-edit-button {
+.booking-approve-button {
   font-size: 10px;
   letter-spacing: 1px;
   font-weight: bold;
 }
 
-.booking-edit-button .tooltip-inner {
-  background-color: blue;
+.booking-approve-button .tooltip-inner {
+  background-color: green;
   color: #fff;
 }
 
-.booking-edit-button .arrow::before {
-  border-bottom-color: blue;
+.booking-approve-button .arrow::before {
+  border-bottom-color: green;
 }
 
 .booking-delete-button {

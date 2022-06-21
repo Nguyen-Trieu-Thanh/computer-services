@@ -5,6 +5,18 @@
 }
 
 .dashboard-container {
+}
+
+.dashboard-container .dashboard-user-welcome {
+  width: 30vw;
+  margin: 0 0 50px 0;
+}
+
+.dashboard-container .dashboard-user-welcome .card-text {
+  font-size: 30px;
+}
+
+.dashboard-container .dashboard-card-container {
   display: flex;
   justify-content: space-between;
 }
@@ -17,6 +29,7 @@
 .dashboard-container .dashboard-card .dashboard-card-header {
   display: flex;
   justify-content: space-between;
+  background-color: var(--main-color);
 }
 
 .dashboard-container .dashboard-card .profit {
@@ -33,4 +46,138 @@
 
 .dashboard-container .dashboard-card .dashboard-card-body {
   text-align: center;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-footer {
+  text-align: right;
+  background-color: #ffffff;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-footer span {
+  font-size: 15px;
+  margin: 0 2px 0 0;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-footer svg {
+  font-size: 12px;
+}
+
+.dashboard-container .dashboard-recent-container {
+  display: flex;
+  margin: 50px 0 0 0;
+}
+
+/*Dashboard dynamic table*/
+.dashboard-container .dashboard-recent-container .dashboard-dynamic-table {
+  flex: 3;
+  margin: 0 20px 0 0;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .dashboard-dynamic-table
+  .dashboard-dynamic-table-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .dashboard-dynamic-table
+  .dashboard-dynamic-table-title
+  .dropdown
+  .btn:disabled {
+  width: 130px;
+  text-align: left;
+  opacity: 1;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .dashboard-dynamic-table
+  .dashboard-dynamic-table-title
+  span {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/*Recent customer*/
+.dashboard-container .dashboard-recent-container .recent-customer {
+  flex: 1;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-list-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-list-title
+  span {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-img {
+  flex: 1;
+  text-align: center;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info {
+  flex: 5;
+  margin: 0 0 0 20px;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info
+  .customer-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info
+  .customer-address {
+  font-size: 15x;
+  font-weight: bold;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info
+  .customer-phone {
+  font-size: 12px;
+  font-weight: bold;
+  color: #808080;
 }

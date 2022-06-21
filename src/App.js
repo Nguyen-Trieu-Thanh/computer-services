@@ -16,6 +16,9 @@ import Error from "./components/error/Error";
 //Functions
 import ProtectedRoute from "./functions/ProtectedRoute";
 
+//Date in Vietnamese
+import "moment/locale/vi";
+
 const user = true;
 
 function App() {
