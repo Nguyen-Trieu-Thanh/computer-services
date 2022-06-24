@@ -76,7 +76,7 @@ const ManageBooking = () => {
               <tr>
                 <th>#</th>
                 <th>MÃ LỊCH HẸN</th>
-                <th>KHÁCH HÀNG</th>
+                <th>TÊN KHÁCH HÀNG</th>
                 <th>SỐ ĐIỆN THOẠI</th>
                 <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
               </tr>

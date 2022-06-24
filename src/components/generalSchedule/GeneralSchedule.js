@@ -1,24 +1,29 @@
-import moment from "moment";
 import React, { useEffect, useState } from "react";
+import moment from "moment";
 
 //React-bootstrap
 import { Button, Form, Modal, Table } from "react-bootstrap";
 
 //CSS
-import "./ManageSchedule.css";
+import "./GeneralSchedule.css";
 
-const ManageSchedule = ({
-  showStaffSchedule,
-  setShowStaffSchedule,
-  staffScheduleId,
+//Icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+
+const slots = ["1", "2", "3", "4", "5", "6", "7", "8"];
+
+const GeneralSchedule = ({
+  showGeneralSchedule,
+  setShowGeneralSchedule,
+  selectedSlot,
+  setSelectedSlot,
 }) => {
-  const slots = [1, 2, 3, 4, 5, 6, 7, 8];
   //Local state
   const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
   const [endDate, setEndDate] = useState(
     moment().endOf("month").format("YYYY-MM-DD")
   );
-
   const [datesInBetween, setDatesInBetween] = useState([]);
 
   const getDateInBetween = () => {
@@ -35,9 +40,7 @@ const ManageSchedule = ({
   };
 
   const handleClose = () => {
-    setShowStaffSchedule(false);
-    setStartDate(moment().format("YYYY-MM-DD"));
-    setEndDate(moment().endOf("month").format("YYYY-MM-DD"));
+    setShowGeneralSchedule(false);
   };
 
   useEffect(() => {
@@ -47,14 +50,14 @@ const ManageSchedule = ({
   return (
     <>
       <Modal
-        show={showStaffSchedule}
+        show={showGeneralSchedule}
         onHide={handleClose}
-        dialogClassName="manage-schedule-container"
+        dialogClassName="general-schedule-container"
+        centered
       >
         <div className="modal-content-container">
           <Modal.Header>
             <Modal.Title>
-              <div>Schedule Id: {staffScheduleId}</div>
               <div className="filter-container">
                 <Form.Group controlId="formStartDate">
                   <Form.Label>FROM DATE</Form.Label>
@@ -96,7 +99,24 @@ const ManageSchedule = ({
                       <tr key={index}>
                         <td>{date}</td>
                         {slots.map((slot) => {
-                          return <td key={slot}></td>;
+                          return (
+                            <td
+                              key={slot}
+                              onClick={() => {
+                                setSelectedSlot({
+                                  date: date,
+                                  slot: slot,
+                                });
+                              }}
+                            >
+                              {selectedSlot.date === date &&
+                              selectedSlot.slot === slot ? (
+                                <FontAwesomeIcon icon={faCheck} color="" />
+                              ) : (
+                                ""
+                              )}
+                            </td>
+                          );
                         })}
                       </tr>
                     );
@@ -119,4 +139,4 @@ const ManageSchedule = ({
   );
 };
 
-export default ManageSchedule;
+export default GeneralSchedule;

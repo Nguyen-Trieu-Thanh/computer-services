@@ -1,0 +1,44 @@
+.general-schedule-container {
+  width: 90vw;
+  max-width: none !important;
+}
+
+.general-schedule-container .modal-content-container {
+}
+
+.general-schedule-container .modal-content-container .modal-title {
+  width: 100%;
+}
+
+.general-schedule-container .modal-content-container .filter-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.general-schedule-container .modal-content-container .modal-body-container {
+}
+
+.general-schedule-container
+  .modal-content-container
+  .modal-body-container
+  .table {
+  margin: 0px;
+}
+
+.general-schedule-container
+  .modal-content-container
+  .modal-body-container
+  thead {
+  background-color: var(--main-color);
+}
+
+.general-schedule-container .modal-content-container .modal-body-container th {
+  text-align: center;
+}
+
+.general-schedule-container .modal-content-container .modal-body-container td {
+  text-align: center;
+  vertical-align: middle;
+}

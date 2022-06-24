@@ -30,11 +30,11 @@ const ManageOrder = () => {
   const [orders, setOrders] = useState(OrderData.slice(0, 10));
   const [showOrderDetail, setShowOrderDetail] = useState(false);
   const [orderDetail, setOrderDetail] = useState({
-    number: 0,
     id: "",
-    bookingId: "",
-    staffId: "",
-    name: "",
+    code: 0,
+    bookingCode: "",
+    customerName: "",
+    phoneNumber: "",
   });
 
   //Pagination
@@ -71,10 +71,10 @@ const ManageOrder = () => {
           <Table bordered hover size="sm">
             <thead>
               <tr>
-                <th>NO.</th>
-                <th>BOOKING ID</th>
-                <th>STAFF ID</th>
-                <th>NAME</th>
+                <th>#</th>
+                <th>MÃ ORDER</th>
+                <th>TÊN KHÁCH HÀNG</th>
+                <th>SỐ ĐIỆN THOẠI</th>
                 <th style={{ width: "200px" }}>ACTIONS</th>
               </tr>
             </thead>
@@ -83,9 +83,9 @@ const ManageOrder = () => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{order.bookingId}</td>
-                    <td>{order.staffId}</td>
-                    <td>{order.name}</td>
+                    <td>{order.code}</td>
+                    <td>{order.customerName}</td>
+                    <td>{order.phoneNumber}</td>
                     <td>
                       <div className="action-button-container">
                         <OverlayTrigger
@@ -105,11 +105,11 @@ const ManageOrder = () => {
                             onClick={() => {
                               setShowOrderDetail(true);
                               setOrderDetail({
-                                number: index + 1,
                                 id: order.id,
-                                bookingId: order.bookingId,
-                                staffId: order.staffId,
-                                name: order.name,
+                                code: order.code,
+                                bookingCode: order.bookingCode,
+                                customerName: order.customerName,
+                                phoneNumber: order.phoneNumber,
                               });
                             }}
                           >

@@ -90,18 +90,38 @@ const DashboardDynamicTable = ({ tableType }) => {
           <Table bordered size="sm">
             <thead>
               <tr>
-                <th>NO.</th>
+                <th>#</th>
+                {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                  <th>MÃ LỊCH HẸN</th>
+                ) : (
+                  ""
+                )}
+                {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                  <th>TÊN KHÁCH HÀNG</th>
+                ) : (
+                  ""
+                )}
+                {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                  <th>SỐ ĐIỆN THOẠI</th>
+                ) : (
+                  ""
+                )}
+
                 {tableType === dashboardDynamicTableEnum.ORDER ? (
-                  <th>BOOKING ID</th>
+                  <th>MÃ ORDER</th>
                 ) : (
                   ""
                 )}
                 {tableType === dashboardDynamicTableEnum.ORDER ? (
-                  <th>STAFF ID</th>
+                  <th>TÊN KHÁCH HÀNG</th>
                 ) : (
                   ""
                 )}
-                <th>NAME</th>
+                {tableType === dashboardDynamicTableEnum.ORDER ? (
+                  <th>SÓ ĐIỆN THOẠI</th>
+                ) : (
+                  ""
+                )}
               </tr>
             </thead>
             <tbody>
@@ -109,17 +129,37 @@ const DashboardDynamicTable = ({ tableType }) => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
+                    {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                      <td>{data.code}</td>
+                    ) : (
+                      ""
+                    )}
+                    {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                      <td>{data.customerName}</td>
+                    ) : (
+                      ""
+                    )}
+                    {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                      <td>{data.phoneNumber}</td>
+                    ) : (
+                      ""
+                    )}
+
                     {tableType === dashboardDynamicTableEnum.ORDER ? (
-                      <td>{data.bookingId}</td>
+                      <td>{data.code}</td>
                     ) : (
                       ""
                     )}
                     {tableType === dashboardDynamicTableEnum.ORDER ? (
-                      <td>{data.staffId}</td>
+                      <td>{data.customerName}</td>
                     ) : (
                       ""
                     )}
-                    <td>{data.name}</td>
+                    {tableType === dashboardDynamicTableEnum.ORDER ? (
+                      <td>{data.phoneNumber}</td>
+                    ) : (
+                      ""
+                    )}
                   </tr>
                 );
               })}
