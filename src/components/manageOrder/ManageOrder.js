@@ -72,10 +72,10 @@ const ManageOrder = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>MÃ ORDER</th>
+                <th>MÃ ĐƠN HÀNG</th>
                 <th>TÊN KHÁCH HÀNG</th>
                 <th>SỐ ĐIỆN THOẠI</th>
-                <th style={{ width: "200px" }}>ACTIONS</th>
+                <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
               </tr>
             </thead>
             <tbody>

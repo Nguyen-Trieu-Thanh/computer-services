@@ -90,7 +90,7 @@ const Dashboard = () => {
 
           <Card className="dashboard-card">
             <Card.Header className="dashboard-card-header">
-              <div>Order</div>
+              <div>Đơn Hàng</div>
               <div className="loss">
                 <FontAwesomeIcon icon={faMinus} size="xs" />
                 <span>3%</span>
@@ -99,7 +99,7 @@ const Dashboard = () => {
             </Card.Header>
             <Card.Body className="dashboard-card-body">
               <Card.Title>25</Card.Title>
-              <Card.Text>Order Mới</Card.Text>
+              <Card.Text>Đơn Hàng Mới</Card.Text>
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/staff">
@@ -154,7 +154,7 @@ const Dashboard = () => {
                         setTableType(dashboardDynamicTableEnum.ORDER);
                       }}
                     >
-                      Order
+                      Đơn hàng
                     </Dropdown.Item>
                     <Dropdown.Item
                       as="button"

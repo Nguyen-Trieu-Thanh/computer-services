@@ -23,13 +23,13 @@ const MenuBar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto">
             <Nav.Link as={Link} to="/booking">
-              Booking
+              LỊCH HẸN
             </Nav.Link>
             <Nav.Link as={Link} to="/order">
-              Order
+              ĐƠN HÀNG
             </Nav.Link>
             <Nav.Link as={Link} to="/staff">
-              Staff
+              NHÂN VIÊN
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

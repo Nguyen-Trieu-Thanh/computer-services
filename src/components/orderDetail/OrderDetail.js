@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 //React-bootstrap
 import {
@@ -22,9 +23,9 @@ import StaffData from "../../datas/StaffData";
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMinus, faCheck } from "@fortawesome/free-solid-svg-icons";
-import { Step, StepLabel, Stepper } from "@mui/material";
 
 //Stepper
+import { Step, StepLabel, Stepper } from "@mui/material";
 
 const steps = ["Step 1", "Step 2", "Step 3", "Step 4"];
 
@@ -32,6 +33,8 @@ const OrderDetail = ({ showOrderDetail, setShowOrderDetail, orderDetail }) => {
   //Local state
   const [selectedStaff, setSelectedStaff] = useState("Chọn nhân viên");
   const [staffs, setStaffs] = useState(StaffData.slice(0, 10));
+
+  const navigate = useNavigate();
 
   const handleClose = () => {
     setShowOrderDetail(false);
@@ -47,7 +50,7 @@ const OrderDetail = ({ showOrderDetail, setShowOrderDetail, orderDetail }) => {
       >
         <div className="modal-content-container">
           <Modal.Header closeButton={true}>
-            <Modal.Title>ORDER MÃ {orderDetail.code}</Modal.Title>
+            <Modal.Title>ĐƠN HÀNG MÃ {orderDetail.code}</Modal.Title>
           </Modal.Header>
           <div className="modal-body-container">
             <Modal.Body>
@@ -83,7 +86,7 @@ const OrderDetail = ({ showOrderDetail, setShowOrderDetail, orderDetail }) => {
                         </Form.Group>
                       </Col>
                     </Row>
-                    <Row>
+                    {/* <Row>
                       <Col>
                         <Form.Group controlId="formServices">
                           <Row>
@@ -124,7 +127,7 @@ const OrderDetail = ({ showOrderDetail, setShowOrderDetail, orderDetail }) => {
                           </Row>
                         </Form.Group>
                       </Col>
-                    </Row>
+                    </Row> */}
                   </Form>
                 </Col>
               </Row>
@@ -193,6 +196,18 @@ const OrderDetail = ({ showOrderDetail, setShowOrderDetail, orderDetail }) => {
             </Modal.Body>
           </div>
           <Modal.Footer>
+            <Button
+              variant="primary"
+              onClick={() => {
+                navigate("/order-detail-information", {
+                  state: {
+                    orderDetail: orderDetail,
+                  },
+                });
+              }}
+            >
+              Xem chi tiết
+            </Button>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>

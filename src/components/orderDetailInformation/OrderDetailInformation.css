@@ -1,0 +1,38 @@
+.order-detail-information-container {
+  margin: 10px 0 0 0;
+}
+
+.order-detail-information-container .order-detail-information-body-container {
+}
+
+.order-detail-information-container
+  .order-detail-information-body-container
+  .dropdown
+  .btn:disabled {
+  width: 140px;
+  text-align: left;
+  opacity: 1;
+}
+
+.order-detail-information-container
+  .order-detail-information-body-container
+  thead {
+  background-color: var(--main-color);
+}
+
+.order-detail-information-container
+  .order-detail-information-body-container
+  th {
+  text-align: center;
+}
+
+.order-detail-information-container
+  .order-detail-information-body-container
+  td {
+  text-align: center;
+  vertical-align: middle;
+}
+.order-detail-information-container
+  .order-detail-information-body-container
+  .step-progress-container {
+}

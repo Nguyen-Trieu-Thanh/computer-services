@@ -1,6 +1,6 @@
 const dashboardDynamicTableEnum = {
   BOOKING: "Lịch hẹn",
-  ORDER: "Order",
+  ORDER: "Đơn hàng",
   STAFF: "Nhân viên",
 };
 

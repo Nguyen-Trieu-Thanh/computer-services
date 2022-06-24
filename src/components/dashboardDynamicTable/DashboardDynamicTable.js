@@ -108,7 +108,7 @@ const DashboardDynamicTable = ({ tableType }) => {
                 )}
 
                 {tableType === dashboardDynamicTableEnum.ORDER ? (
-                  <th>MÃ ORDER</th>
+                  <th>MÃ ĐƠN HÀNG</th>
                 ) : (
                   ""
                 )}
