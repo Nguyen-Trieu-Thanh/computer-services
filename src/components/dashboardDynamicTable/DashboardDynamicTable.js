@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 
+//Redux
+//Actions
+import { getBookings } from "../../redux/slices/bookingSlice";
+
+//React-redux
+import { useDispatch, useSelector } from "react-redux";
+
 //React-bootstrap
-import { Pagination, Table } from "react-bootstrap";
+import { Pagination, Table, Spinner } from "react-bootstrap";
 
 //CSS
 import "./DashboardDynamicTable.css";
@@ -16,22 +23,27 @@ import dashboardDynamicTableEnum from "../../enums/dashboardDynamicTableEnum";
 import { useEffect } from "react";
 
 const DashboardDynamicTable = ({ tableType }) => {
+  const dispatch = useDispatch();
+  let datas = useSelector((state) => state.booking.data);
+  const loading = useSelector((state) => state.minorState.loading);
+
   //Local state
   const [active, setActive] = useState(1);
-  const [datas, setDatas] = useState(BookingData.slice(0, 10));
+  // const [datas, setDatas] = useState(bookings);
 
   useEffect(() => {
     setActive(1);
     if (tableType === dashboardDynamicTableEnum.BOOKING) {
-      setDatas(BookingData.slice(0, 10));
+      dispatch(getBookings());
+      // setDatas(bookings);
     }
 
     if (tableType === dashboardDynamicTableEnum.ORDER) {
-      setDatas(OrderData.slice(0, 10));
+      // setDatas(OrderData.slice(0, 10));
     }
 
     if (tableType === dashboardDynamicTableEnum.STAFF) {
-      setDatas(StaffData.slice(0, 10));
+      // setDatas(StaffData.slice(0, 10));
     }
   }, [tableType]);
 
@@ -71,17 +83,28 @@ const DashboardDynamicTable = ({ tableType }) => {
   const handlePaginationClick = (number) => {
     setActive(number);
     if (tableType === dashboardDynamicTableEnum.BOOKING) {
-      setDatas(BookingData.slice(10 * (number - 1), 10 * number));
+      // setDatas(BookingData.slice(10 * (number - 1), 10 * number));
     }
 
     if (tableType === dashboardDynamicTableEnum.ORDER) {
-      setDatas(OrderData.slice(10 * (number - 1), 10 * number));
+      // setDatas(OrderData.slice(10 * (number - 1), 10 * number));
     }
 
     if (tableType === dashboardDynamicTableEnum.STAFF) {
-      setDatas(StaffData.slice(10 * (number - 1), 10 * number));
+      // setDatas(StaffData.slice(10 * (number - 1), 10 * number));
     }
   };
+
+  if (loading) {
+    return (
+      <>
+        <div className="loading mt-3">
+          <Spinner animation="border" />
+          <div className="loading-text">Đang tải dữ liệu...</div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -92,17 +115,22 @@ const DashboardDynamicTable = ({ tableType }) => {
               <tr>
                 <th>#</th>
                 {tableType === dashboardDynamicTableEnum.BOOKING ? (
-                  <th>MÃ LỊCH HẸN</th>
-                ) : (
-                  ""
-                )}
-                {tableType === dashboardDynamicTableEnum.BOOKING ? (
                   <th>TÊN KHÁCH HÀNG</th>
                 ) : (
                   ""
                 )}
                 {tableType === dashboardDynamicTableEnum.BOOKING ? (
                   <th>SỐ ĐIỆN THOẠI</th>
+                ) : (
+                  ""
+                )}
+                {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                  <th>LOẠI LỊCH HẸN</th>
+                ) : (
+                  ""
+                )}
+                {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                  <th>TRẠNG THÁI</th>
                 ) : (
                   ""
                 )}
@@ -130,17 +158,22 @@ const DashboardDynamicTable = ({ tableType }) => {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     {tableType === dashboardDynamicTableEnum.BOOKING ? (
-                      <td>{data.code}</td>
+                      <td>{data.cus_name}</td>
                     ) : (
                       ""
                     )}
                     {tableType === dashboardDynamicTableEnum.BOOKING ? (
-                      <td>{data.customerName}</td>
+                      <td>{data.phonenum}</td>
                     ) : (
                       ""
                     )}
                     {tableType === dashboardDynamicTableEnum.BOOKING ? (
-                      <td>{data.phoneNumber}</td>
+                      <td>{data.type}</td>
+                    ) : (
+                      ""
+                    )}
+                    {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                      <td>{data.status}</td>
                     ) : (
                       ""
                     )}

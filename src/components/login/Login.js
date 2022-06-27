@@ -16,7 +16,7 @@ import "./Login.css";
 
 const Login = () => {
   //Local state
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   //Global state
@@ -27,15 +27,16 @@ const Login = () => {
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    dispatch(getLogin({ email, password }));
+    navigate("/dashboard");
+    // dispatch(getLogin({ username, password }));
   };
 
-  useEffect(() => {
-    if (isLoginCorrect) {
-      navigate("/dashboard");
-      dispatch(setIsLoginCorrect({ isLoginCorrect: false }));
-    }
-  }, [isLoginCorrect]);
+  // useEffect(() => {
+  //   if (isLoginCorrect) {
+  //     navigate("/dashboard");
+  //     dispatch(setIsLoginCorrect({ isLoginCorrect: false }));
+  //   }
+  // }, [isLoginCorrect]);
 
   return (
     <>
@@ -46,10 +47,10 @@ const Login = () => {
             <Form.Group className="email-form-group" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>
               <Form.Control
-                type="email"
-                value={email}
+                type="text"
+                value={username}
                 onChange={(e) => {
-                  setEmail(e.target.value);
+                  setUsername(e.target.value);
                 }}
               />
             </Form.Group>

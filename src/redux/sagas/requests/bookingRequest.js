@@ -4,13 +4,10 @@ import roleEnum from "../../../enums/roleEnum";
 //URL
 import { url } from "../../../url";
 
-export function requestGetLogin(params) {
+export function requestGetBookings(params) {
   //Fecth API
   return axios
-    .post(url + "/auth" + "/login", {
-      username: params[0],
-      password: params[1],
-    })
+    .get(url + "/booking" + "/all")
     .then((response) => ({ response }))
     .catch((error) => ({ error }));
 }

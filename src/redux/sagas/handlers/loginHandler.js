@@ -3,15 +3,16 @@ import { setIsLoginCorrect, setLogin } from "../../slices/loginSlice";
 import { requestGetLogin } from "../requests/loginRequest";
 
 export function* handleGetLogin(action) {
-  const email = action.payload.email;
+  const username = action.payload.username;
   const password = action.payload.password;
 
-  const { response, error } = yield call(requestGetLogin, [email, password]);
+  const { response, error } = yield call(requestGetLogin, [username, password]);
 
   //Call API success
-  if (response) {
-    yield put(setIsLoginCorrect({ isLoginCorrect: true }));
-  }
+  console.log(response);
+  // if (response) {
+  //   yield put(setIsLoginCorrect({ isLoginCorrect: true }));
+  // }
 
   //Catch error
   if (error) {

@@ -22,8 +22,8 @@ const MenuBar = () => {
   return (
     <>
       <div className="nav-bar">
-        <Link className="user-avatar" to="/">
-          <FontAwesomeIcon icon={faCircleUser} color="#000000"/>
+        <Link className="user-avatar" to="/dashboard">
+          <FontAwesomeIcon icon={faCircleUser} color="#000000" />
         </Link>
         <Navbar expand="lg">
           <Nav className="nav flex-column">
@@ -38,6 +38,9 @@ const MenuBar = () => {
             </Nav.Link>
             <Nav.Link as={Link} to="/staff">
               NHÂN VIÊN
+            </Nav.Link>
+            <Nav.Link as={Link} to="/">
+              ĐĂNG XUẤT
             </Nav.Link>
           </Nav>
         </Navbar>

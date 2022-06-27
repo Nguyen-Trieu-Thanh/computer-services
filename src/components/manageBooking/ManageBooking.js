@@ -1,4 +1,12 @@
 import React, { useState } from "react";
+import { useEffect } from "react";
+
+//Redux
+//Actions
+import { getBookings } from "../../redux/slices/bookingSlice";
+
+//React-redux
+import { useDispatch, useSelector } from "react-redux";
 
 //React-bootstrap
 import {
@@ -7,6 +15,7 @@ import {
   Pagination,
   Table,
   Tooltip,
+  Spinner,
 } from "react-bootstrap";
 
 //CSS
@@ -29,9 +38,13 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const ManageBooking = () => {
+  const dispatch = useDispatch();
+  const bookings = useSelector((state) => state.booking.data);
+  const loading = useSelector((state) => state.minorState.loading);
+
   //Local state
   const [active, setActive] = useState(1);
-  const [bookings, setBookings] = useState(BookingData.slice(0, 10));
+  // const [bookings, setBookings] = useState(BookingData.slice(0, 10));
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({
     id: "",
@@ -59,8 +72,23 @@ const ManageBooking = () => {
 
   const handlePaginationClick = (number) => {
     setActive(number);
-    setBookings(BookingData.slice(10 * (number - 1), 10 * number));
+    // setBookings(BookingData.slice(10 * (number - 1), 10 * number));
   };
+
+  useEffect(() => {
+    dispatch(getBookings());
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <div className="loading mt-3">
+          <Spinner animation="border" />
+          <div className="loading-text">Đang tải dữ liệu...</div>
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
@@ -75,9 +103,10 @@ const ManageBooking = () => {
             <thead>
               <tr>
                 <th>#</th>
-                <th>MÃ LỊCH HẸN</th>
                 <th>TÊN KHÁCH HÀNG</th>
                 <th>SỐ ĐIỆN THOẠI</th>
+                <th>LOẠI LỊCH HẸN</th>
+                <th>TRẠNG THÁI</th>
                 <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
               </tr>
             </thead>
@@ -86,9 +115,10 @@ const ManageBooking = () => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{booking.code}</td>
-                    <td>{booking.customerName}</td>
-                    <td>{booking.phoneNumber}</td>
+                    <td>{booking.cus_name}</td>
+                    <td>{booking.phonenum}</td>
+                    <td>{booking.type}</td>
+                    <td>{booking.status}</td>
                     <td>
                       <div className="action-button-container">
                         <OverlayTrigger
