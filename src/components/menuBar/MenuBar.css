@@ -1,3 +1,19 @@
 .nav-bar {
   background-color: var(--main-color);
+  width: 10%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 3;
+  min-width: 60px;
+  min-height: 500px;
+  text-align: center;
+}
+
+.nav-bar .user-avatar {
+  font-size: 100px;
+}
+
+.nav-bar .nav {
+  width: 100%;
 }

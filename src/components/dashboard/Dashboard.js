@@ -82,7 +82,7 @@ const Dashboard = () => {
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/order">
-                <span>Xem thêm</span>
+                <span>Xem tất cả</span>
                 <FontAwesomeIcon icon={faArrowRight} />
               </Card.Link>
             </Card.Footer>
@@ -103,7 +103,7 @@ const Dashboard = () => {
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/staff">
-                <span>Xem thêm</span>
+                <span>Xem tất cả</span>
                 <FontAwesomeIcon icon={faArrowRight} />
               </Card.Link>
             </Card.Footer>
@@ -124,7 +124,7 @@ const Dashboard = () => {
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/booking">
-                <span>Xem thêm</span>
+                <span>Xem tất cả</span>
                 <FontAwesomeIcon icon={faArrowRight} />
               </Card.Link>
             </Card.Footer>

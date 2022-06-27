@@ -6,22 +6,30 @@ import {
   Form,
   FormControl,
   Button,
+  Row,
+  Col,
 } from "react-bootstrap";
 import { Link, NavLink } from "react-router-dom";
 
 //CSS
 import "./MenuBar.css";
 
+//Icons
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+
 const MenuBar = () => {
   return (
     <>
-      <Navbar className="nav-bar" expand="lg">
-        <Navbar.Brand as={Link} to="/dashboard">
-          Computer services
-        </Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav">
-          <Nav className="ml-auto">
+      <div className="nav-bar">
+        <Link className="user-avatar" to="/">
+          <FontAwesomeIcon icon={faCircleUser} color="#000000"/>
+        </Link>
+        <Navbar expand="lg">
+          <Nav className="nav flex-column">
+            <Nav.Link as={Link} to="/dashboard">
+              DASHBOARD
+            </Nav.Link>
             <Nav.Link as={Link} to="/booking">
               LỊCH HẸN
             </Nav.Link>
@@ -32,8 +40,8 @@ const MenuBar = () => {
               NHÂN VIÊN
             </Nav.Link>
           </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+        </Navbar>
+      </div>
     </>
   );
 };
