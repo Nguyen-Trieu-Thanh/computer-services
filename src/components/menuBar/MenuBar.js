@@ -22,7 +22,7 @@ const MenuBar = () => {
   return (
     <>
       <div className="nav-bar">
-        <Link className="user-avatar" to="/dashboard">
+        <Link className="user-avatar" to="/userProfile">
           <FontAwesomeIcon icon={faCircleUser} color="#000000" />
         </Link>
         <Navbar expand="lg">
