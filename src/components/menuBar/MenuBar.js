@@ -1,15 +1,13 @@
 import React from "react";
-import {
-  Navbar,
-  Nav,
-  NavDropdown,
-  Form,
-  FormControl,
-  Button,
-  Row,
-  Col,
-} from "react-bootstrap";
-import { Link, NavLink } from "react-router-dom";
+import { Navbar, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
+
+//Redux
+//Actions
+import { getLogin, setIsLoggedIn } from "../../redux/slices/authSlice";
+
+//React-redux
+import { useDispatch, useSelector } from "react-redux";
 
 //CSS
 import "./MenuBar.css";
@@ -19,6 +17,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
 
 const MenuBar = () => {
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    localStorage.clear();
+    dispatch(setIsLoggedIn({ isLoggedIn: false }));
+  };
+
   return (
     <>
       <div className="nav-bar">
@@ -39,7 +44,7 @@ const MenuBar = () => {
             <Nav.Link as={Link} to="/staff">
               NHÂN VIÊN
             </Nav.Link>
-            <Nav.Link as={Link} to="/">
+            <Nav.Link as={Link} to="/" onClick={handleLogout}>
               ĐĂNG XUẤT
             </Nav.Link>
           </Nav>

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
+import moment from "moment";
 
 //Redux
 //Actions
@@ -26,6 +27,8 @@ import BookingData from "../../datas/BookingData";
 
 //Components
 import BookingDetail from "../bookingDetail/BookingDetail";
+import CreateBooking from "../createBooking/CreateBooking";
+import ConfirmCreateBooking from "../confirmCreateBooking/ConfirmCreateBooking";
 
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -39,12 +42,32 @@ import {
 
 const ManageBooking = () => {
   const dispatch = useDispatch();
+
+  //Global state
   const bookings = useSelector((state) => state.booking.data);
   const loading = useSelector((state) => state.minorState.loading);
 
   //Local state
   const [active, setActive] = useState(1);
+  const [booking, setBooking] = useState({
+    cus_name: "",
+    services: [],
+    description: "",
+    type: "Door-to-Door",
+    cus_address: {
+      city: "",
+      district: "",
+      ward: "",
+      street: "",
+    },
+    time: moment().format(),
+    status: "accept",
+    phonenum: "",
+  });
   // const [bookings, setBookings] = useState(BookingData.slice(0, 10));
+  const [showCreateBooking, setShowCreateBooking] = useState(false);
+  const [showConfirmCreateBooking, setShowConfirmCreateBooking] =
+    useState(false);
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({
     id: "",
@@ -94,8 +117,13 @@ const ManageBooking = () => {
     <>
       <div className="manage-booking-container">
         <div className="button-container">
-          <Button>
-            ADD <FontAwesomeIcon icon={faPlus} color="" />
+          <Button
+            variant="primary"
+            onClick={() => {
+              setShowCreateBooking(true);
+            }}
+          >
+            TẠO LỊCH HẸN <FontAwesomeIcon icon={faPlus} color="" />
           </Button>
         </div>
         <div className="table-container">
@@ -176,6 +204,19 @@ const ManageBooking = () => {
           <Pagination className="pagination-container">{items}</Pagination>
         </div>
       </div>
+      <CreateBooking
+        showCreateBooking={showCreateBooking}
+        setShowCreateBooking={setShowCreateBooking}
+        setShowConfirmCreateBooking={setShowConfirmCreateBooking}
+        booking={booking}
+        setBooking={setBooking}
+      />
+      <ConfirmCreateBooking
+        showConfirmCreateBooking={showConfirmCreateBooking}
+        setShowConfirmCreateBooking={setShowConfirmCreateBooking}
+        setShowCreateBooking={setShowCreateBooking}
+        booking={booking}
+      />
       <BookingDetail
         showBookingDetail={showBookingDetail}
         setShowBookingDetail={setShowBookingDetail}

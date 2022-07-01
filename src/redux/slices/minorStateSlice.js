@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initState = {
   loading: true,
+  loginLoading: false,
 };
 
 const minorStateSlice = createSlice({
@@ -11,9 +12,12 @@ const minorStateSlice = createSlice({
     setLoading: (state, action) => {
       return { ...state, loading: action.payload.loading };
     },
+    setLoginLoading: (state, action) => {
+      return { ...state, loginLoading: action.payload.loginLoading };
+    },
   },
 });
 
-export const { setLoading } = minorStateSlice.actions;
+export const { setLoading, setLoginLoading } = minorStateSlice.actions;
 
 export default minorStateSlice.reducer;

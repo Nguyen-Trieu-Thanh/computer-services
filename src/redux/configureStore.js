@@ -3,16 +3,20 @@ import createSagaMiddleware from "redux-saga";
 import { watcherSaga } from "./sagas/rootSaga";
 
 //Reducers
-import loginReducer from "./slices/loginSlice";
 import bookingReducer from "./slices/bookingSlice";
+import accountReducer from "./slices/accountSlice";
 import minorStateReducer from "./slices/minorStateSlice";
+import toastReducer from "./slices/toastSlice";
+import authReducer from "./slices/authSlice";
 
 const sagaMiddleware = createSagaMiddleware();
 
 const reducer = combineReducers({
-  login: loginReducer,
   booking: bookingReducer,
+  account: accountReducer,
   minorState: minorStateReducer,
+  toast: toastReducer,
+  auth: authReducer,
 });
 
 const middleware = [sagaMiddleware];

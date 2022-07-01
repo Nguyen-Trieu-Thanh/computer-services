@@ -13,9 +13,10 @@ const bookingSlice = createSlice({
       const newData = action.payload.data;
       return { ...state, data: newData };
     },
+    createBooking: () => {},
   },
 });
 
-export const { getBookings, setBookings } = bookingSlice.actions;
+export const { getBookings, setBookings, createBooking } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

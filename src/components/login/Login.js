@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 //Redux
 //Actions
-import { getLogin, setIsLoginCorrect } from "../../redux/slices/loginSlice";
+import { getLogin, setIsLoggedIn } from "../../redux/slices/authSlice";
 
 //React-redux
 import { useDispatch, useSelector } from "react-redux";
 
 //React-bootstrap
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Spinner } from "react-bootstrap";
 
 //CSS
 import "./Login.css";
@@ -20,23 +20,32 @@ const Login = () => {
   const [password, setPassword] = useState("");
 
   //Global state
-  const isLoginCorrect = useSelector((state) => state.login.isLoginCorrect);
+  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const loginLoading = useSelector((state) => state.minorState.loginLoading);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const handleLoginSubmit = (e) => {
     e.preventDefault();
-    navigate("/dashboard");
-    // dispatch(getLogin({ username, password }));
+    dispatch(getLogin({ username, password }));
   };
 
-  // useEffect(() => {
-  //   if (isLoginCorrect) {
-  //     navigate("/dashboard");
-  //     dispatch(setIsLoginCorrect({ isLoginCorrect: false }));
-  //   }
-  // }, [isLoginCorrect]);
+  useEffect(() => {
+    if (isLoggedIn && localStorage.getItem("token") !== null) {
+      navigate("/dashboard");
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      dispatch(setIsLoggedIn({ isLoggedIn: false }));
+    }
+
+    if (localStorage.getItem("token") !== null) {
+      localStorage.clear();
+    }
+  }, []);
 
   return (
     <>
@@ -69,7 +78,7 @@ const Login = () => {
             </Form.Group>
             <div className="text-center">
               <Button className="form-button" variant="primary" type="submit">
-                Login
+                {loginLoading ? <Spinner animation="border" /> : "ĐĂNG NHẬP"}
               </Button>
             </div>
             <div className="forgot-password-container">

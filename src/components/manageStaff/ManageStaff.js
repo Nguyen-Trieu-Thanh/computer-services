@@ -1,4 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+
+//Redux
+//Actions
+import { getAccounts } from "../../redux/slices/accountSlice";
+
+//React-redux
+import { useDispatch, useSelector } from "react-redux";
 
 //React-bootstrap
 import {
@@ -6,6 +13,7 @@ import {
   OverlayTrigger,
   Pagination,
   Table,
+  Spinner,
   Tooltip,
 } from "react-bootstrap";
 
@@ -28,9 +36,14 @@ import ManageSchedule from "../manageSchedule/ManageSchedule";
 import { NavLink } from "react-router-dom";
 
 const ManageStaff = () => {
+  const dispatch = useDispatch();
+  //Global state
+  const staffs = useSelector((state) => state.account.data);
+  const loading = useSelector((state) => state.minorState.loading);
+
   //Local state
   const [active, setActive] = useState(1);
-  const [staffs, setStaffs] = useState(StaffData.slice(0, 10));
+  // const [staffs, setStaffs] = useState(StaffData.slice(0, 10));
   const [showStaffDetail, setShowStaffDetail] = useState(false);
   const [staffDetail, setStaffDetail] = useState({
     number: 0,
@@ -60,8 +73,24 @@ const ManageStaff = () => {
 
   const handlePaginationClick = (number) => {
     setActive(number);
-    setStaffs(StaffData.slice(10 * (number - 1), 10 * number));
+    // setStaffs(StaffData.slice(10 * (number - 1), 10 * number));
   };
+
+  useEffect(() => {
+    dispatch(getAccounts());
+  }, []);
+
+  if (loading) {
+    return (
+      <>
+        <div className="loading mt-3">
+          <Spinner animation="border" />
+          <div className="loading-text">Đang tải dữ liệu...</div>
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       <div className="manage-staff-container">
@@ -74,8 +103,9 @@ const ManageStaff = () => {
           <Table bordered hover size="sm">
             <thead>
               <tr>
-                <th>NO.</th>
-                <th>NAME</th>
+                <th>#</th>
+                <th>USERNAME</th>
+                <th>ROLE</th>
                 <th style={{ width: "200px" }}>ACTIONS</th>
               </tr>
             </thead>
@@ -84,7 +114,8 @@ const ManageStaff = () => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{staff.name}</td>
+                    <td>{staff.username}</td>
+                    <td>{staff.role}</td>
                     <td>
                       <div className="action-button-container">
                         <OverlayTrigger

@@ -54,6 +54,7 @@ const Dashboard = () => {
       navigate("/staff");
     }
   };
+
   return (
     <>
       <div className="dashboard-page-title">DASHBOARD</div>

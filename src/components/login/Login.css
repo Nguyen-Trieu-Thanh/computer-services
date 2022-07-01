@@ -30,7 +30,14 @@
 }
 
 .login-page .login-area .form-button {
-  width: 80%;
+  width: 60%;
+}
+
+.login-page .login-area .form-button .spinner-border {
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
 }
 
 .login-page .login-area .forgot-password-container {

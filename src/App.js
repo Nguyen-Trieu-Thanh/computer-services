@@ -21,8 +21,6 @@ import ProtectedRoute from "./functions/ProtectedRoute";
 //Date in Vietnamese
 import "moment/locale/vi";
 
-const user = true;
-
 function App() {
   return (
     <>
@@ -35,7 +33,7 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute user={user}>
+              <ProtectedRoute user={["manager", "admin"]}>
                 <Layout />
               </ProtectedRoute>
             }
@@ -52,6 +50,7 @@ function App() {
           </Route>
 
           {/* Error page */}
+          <Route path="/*" element={<Error />} />
           <Route path="/error" element={<Error />} />
         </Routes>
       </Router>
