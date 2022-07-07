@@ -11,6 +11,7 @@ import "./CreateBooking.css";
 //Redux
 //Actions
 import { createBooking } from "../../redux/slices/bookingSlice";
+import { setShowConfirmCreateBooking } from "../../redux/slices/minorStateSlice";
 
 //React-redux
 import { useDispatch, useSelector } from "react-redux";
@@ -20,7 +21,6 @@ const CreateBooking = ({
   setShowCreateBooking,
   booking,
   setBooking,
-  setShowConfirmCreateBooking,
 }) => {
   const dispatch = useDispatch();
 
@@ -90,9 +90,8 @@ const CreateBooking = ({
 
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
-    // dispatch(createBooking(booking));
     setShowCreateBooking(false);
-    setShowConfirmCreateBooking(true);
+    dispatch(setShowConfirmCreateBooking({ showConfirmCreateBooking: true }));
   };
 
   return (

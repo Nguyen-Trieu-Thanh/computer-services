@@ -39,6 +39,7 @@ import {
   faCheck,
   faXmark,
 } from "@fortawesome/free-solid-svg-icons";
+import { getRefreshAccessToken } from "../../redux/slices/authSlice";
 
 const ManageBooking = () => {
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ const ManageBooking = () => {
   //Global state
   const bookings = useSelector((state) => state.booking.data);
   const loading = useSelector((state) => state.minorState.loading);
+  const createBookingLoading = useSelector(
+    (state) => state.minorState.createBookingLoading
+  );
 
   //Local state
   const [active, setActive] = useState(1);
@@ -66,8 +70,6 @@ const ManageBooking = () => {
   });
   // const [bookings, setBookings] = useState(BookingData.slice(0, 10));
   const [showCreateBooking, setShowCreateBooking] = useState(false);
-  const [showConfirmCreateBooking, setShowConfirmCreateBooking] =
-    useState(false);
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({
     id: "",
@@ -99,8 +101,10 @@ const ManageBooking = () => {
   };
 
   useEffect(() => {
-    dispatch(getBookings());
-  }, []);
+    if (!createBookingLoading) {
+      dispatch(getBookings());
+    }
+  }, [createBookingLoading]);
 
   if (loading) {
     return (
@@ -113,6 +117,10 @@ const ManageBooking = () => {
     );
   }
 
+  const handleRefreshAccessToken = () => {
+    dispatch(getRefreshAccessToken());
+  };
+
   return (
     <>
       <div className="manage-booking-container">
@@ -124,6 +132,9 @@ const ManageBooking = () => {
             }}
           >
             TẠO LỊCH HẸN <FontAwesomeIcon icon={faPlus} color="" />
+          </Button>
+          <Button variant="primary" onClick={handleRefreshAccessToken}>
+            TEST <FontAwesomeIcon icon={faPlus} color="" />
           </Button>
         </div>
         <div className="table-container">
@@ -207,13 +218,10 @@ const ManageBooking = () => {
       <CreateBooking
         showCreateBooking={showCreateBooking}
         setShowCreateBooking={setShowCreateBooking}
-        setShowConfirmCreateBooking={setShowConfirmCreateBooking}
         booking={booking}
         setBooking={setBooking}
       />
       <ConfirmCreateBooking
-        showConfirmCreateBooking={showConfirmCreateBooking}
-        setShowConfirmCreateBooking={setShowConfirmCreateBooking}
         setShowCreateBooking={setShowCreateBooking}
         booking={booking}
       />

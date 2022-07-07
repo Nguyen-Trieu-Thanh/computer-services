@@ -1,12 +1,15 @@
 import { takeLatest } from "redux-saga/effects";
 
 //Slices
-import { getLogin } from "../slices/authSlice";
+import { getLogin, getRefreshAccessToken } from "../slices/authSlice";
 import { createBooking, getBookings } from "../slices/bookingSlice";
 import { getAccounts } from "../slices/accountSlice";
 
 //Handlers
-import { handleGetLogin } from "./handlers/authHandler";
+import {
+  handleGetLogin,
+  handleGetRefreshAccessToken,
+} from "./handlers/authHandler";
 import {
   handleGetBookings,
   handleCreateBooking,
@@ -18,4 +21,5 @@ export function* watcherSaga() {
   yield takeLatest(getBookings.type, handleGetBookings);
   yield takeLatest(getAccounts.type, handleGetAccounts);
   yield takeLatest(createBooking.type, handleCreateBooking);
+  yield takeLatest(getRefreshAccessToken.type, handleGetRefreshAccessToken);
 }

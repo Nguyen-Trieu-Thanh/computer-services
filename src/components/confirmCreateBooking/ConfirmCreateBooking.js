@@ -1,28 +1,40 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Redux
 //Actions
 import { createBooking } from "../../redux/slices/bookingSlice";
+import { setShowConfirmCreateBooking } from "../../redux/slices/minorStateSlice";
 
 //React-redux
 import { useDispatch, useSelector } from "react-redux";
 
 //React-bootstrap
-import { Button, Form, Modal, Row, Col, InputGroup } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  Modal,
+  Row,
+  Col,
+  InputGroup,
+  Spinner,
+} from "react-bootstrap";
 
 //CSS
 import "./ConfirmCreateBooking.css";
 
-const ConfirmCreateBooking = ({
-  showConfirmCreateBooking,
-  setShowConfirmCreateBooking,
-  setShowCreateBooking,
-  booking,
-}) => {
+const ConfirmCreateBooking = ({ setShowCreateBooking, booking }) => {
+  //Global state
+  const createBookingLoading = useSelector(
+    (state) => state.minorState.createBookingLoading
+  );
+  const showConfirmCreateBooking = useSelector(
+    (state) => state.minorState.showConfirmCreateBooking
+  );
+
   const dispatch = useDispatch();
 
   const handleClose = () => {
-    setShowConfirmCreateBooking(false);
+    dispatch(setShowConfirmCreateBooking({ showConfirmCreateBooking: false }));
     setShowCreateBooking(true);
   };
 
@@ -39,13 +51,11 @@ const ConfirmCreateBooking = ({
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
     dispatch(createBooking(booking));
-    setShowConfirmCreateBooking(false);
   };
 
   return (
     <>
       <Modal
-        // show={showConfirmCreateBooking}
         show={showConfirmCreateBooking}
         onHide={handleClose}
         dialogClassName="confirm-create-booking-container"
@@ -153,8 +163,13 @@ const ConfirmCreateBooking = ({
               type="submit"
               variant="primary"
               onClick={handleConfirmBookingSubmit}
+              className="confirm-button"
             >
-              Xác nhận
+              {createBookingLoading ? (
+                <Spinner animation="border" />
+              ) : (
+                "Xác nhận"
+              )}
             </Button>
           </Modal.Footer>
         </div>

@@ -1,7 +1,10 @@
 import { call, put } from "redux-saga/effects";
 import { setUser, setIsLoggedIn } from "../../slices/authSlice";
 import { setLoginLoading } from "../../slices/minorStateSlice";
-import { requestGetLogin } from "../requests/authRequest";
+import {
+  requestGetLogin,
+  requestGetRefreshAccessToken,
+} from "../requests/authRequest";
 
 export function* handleGetLogin(action) {
   yield put(setLoginLoading({ loginLoading: true }));
@@ -13,7 +16,9 @@ export function* handleGetLogin(action) {
   //Call API success
   if (response) {
     const data = response.data;
+    console.log(response);
     localStorage.setItem("token", data.accessToken);
+    // document.cookie = `refreshToken=${data.refreshToken}`;
     yield put(
       setUser({
         name: "",
@@ -30,4 +35,17 @@ export function* handleGetLogin(action) {
   // }
 
   yield put(setLoginLoading({ loginLoading: false }));
+}
+
+export function* handleGetRefreshAccessToken(action) {
+  const { response, error } = yield call(requestGetRefreshAccessToken);
+
+  //Call API success
+  if (response) {
+  }
+
+  //Catch error
+  // if (error) {
+  //   yield put(setIsLoginCorrect({ isLoginCorrect: false }));
+  // }
 }

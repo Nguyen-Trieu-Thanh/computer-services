@@ -62,6 +62,43 @@
   font-size: 12px;
 }
 
+/*Schedule container*/
+.dashboard-container .dashboard-schedule-container {
+  margin: 50px 0 0 0;
+}
+
+.dashboard-container .dashboard-schedule-container .filter-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container {
+  overflow-y: scroll;
+  height: 50vh;
+}
+
+.dashboard-container .dashboard-schedule-container .table {
+  margin: 0px;
+}
+
+.dashboard-container .dashboard-schedule-container thead {
+  background-color: var(--main-color);
+}
+
+.dashboard-container .dashboard-schedule-container th {
+  text-align: center;
+}
+
+.dashboard-container .dashboard-schedule-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+/*Recent container*/
 .dashboard-container .dashboard-recent-container {
   display: flex;
   margin: 50px 0 0 0;

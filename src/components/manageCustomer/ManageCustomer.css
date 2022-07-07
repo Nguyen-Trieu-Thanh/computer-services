@@ -1,0 +1,82 @@
+.manage-customer-container {
+  margin: 10px 0 0 0;
+}
+
+.manage-customer-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-customer-container .table-container {
+}
+
+.manage-customer-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.manage-customer-container .table-container th {
+  text-align: center;
+}
+
+.manage-customer-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-customer-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-customer-container .pagination-container {
+  float: right;
+}
+
+/*Tooltip CSS*/
+
+.customer-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.customer-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.customer-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.customer-schedule-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.customer-schedule-button .tooltip-inner {
+  background-color: green;
+  color: #fff;
+}
+
+.customer-schedule-button .arrow::before {
+  border-bottom-color: green;
+}
+
+.customer-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.customer-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.customer-delete-button .arrow::before {
+  border-bottom-color: red;
+}

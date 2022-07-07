@@ -11,6 +11,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import ManageBooking from "./components/manageBooking/ManageBooking";
 import ManageOrder from "./components/manageOrder/ManageOrder";
 import ManageStaff from "./components/manageStaff/ManageStaff";
+import ManageCustomer from "./components/manageCustomer/ManageCustomer";
 import OrderDetailInformation from "./components/orderDetailInformation/OrderDetailInformation";
 import UserProfile from "./components/userProfile/UserProfile";
 import Error from "./components/error/Error";
@@ -42,6 +43,7 @@ function App() {
             <Route path="/booking" element={<ManageBooking />} />
             <Route path="/order" element={<ManageOrder />} />
             <Route path="/staff" element={<ManageStaff />} />
+            <Route path="/customer" element={<ManageCustomer />} />
             <Route
               path="/order-detail-information"
               element={<OrderDetailInformation />}

@@ -51,7 +51,7 @@ const Login = () => {
     <>
       <div className="login-page">
         <div className="login-area">
-          <div className="login-title-container">Login</div>
+          <div className="login-title-container">ĐĂNG NHẬP</div>
           <Form onSubmit={handleLoginSubmit}>
             <Form.Group className="email-form-group" controlId="formBasicEmail">
               <Form.Label>Email</Form.Label>

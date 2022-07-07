@@ -21,9 +21,11 @@ const authSlice = createSlice({
     setIsLoggedIn: (state, action) => {
       return { ...state, isLoggedIn: action.payload.isLoggedIn };
     },
+    getRefreshAccessToken: () => {},
   },
 });
 
-export const { getLogin, setUser, setIsLoggedIn } = authSlice.actions;
+export const { getLogin, setUser, setIsLoggedIn, getRefreshAccessToken } =
+  authSlice.actions;
 
 export default authSlice.reducer;

@@ -18,7 +18,7 @@ import {
 } from "react-bootstrap";
 
 //CSS
-import "./ManageStaff.css";
+import "./ManageCustomer.css";
 
 //Data
 import StaffData from "../../datas/StaffData";
@@ -35,9 +35,8 @@ import {
 //Components
 import StaffDetail from "../staffDetail/StaffDetail";
 import ManageSchedule from "../manageSchedule/ManageSchedule";
-import { NavLink } from "react-router-dom";
 
-const ManageStaff = () => {
+const ManageCustomer = () => {
   const dispatch = useDispatch();
   //Global state
   const staffs = useSelector((state) => state.account.data);
@@ -50,8 +49,7 @@ const ManageStaff = () => {
   const [staffDetail, setStaffDetail] = useState({
     number: 0,
     id: "",
-    phonenum: "",
-    role: "",
+    name: "",
   });
 
   const [showStaffSchedule, setShowStaffSchedule] = useState(false);
@@ -96,7 +94,7 @@ const ManageStaff = () => {
 
   return (
     <>
-      <div className="manage-staff-container">
+      <div className="manage-customer-container">
         <div className="button-container">
           <Button>
             ADD <FontAwesomeIcon icon={faPlus} color="" />
@@ -126,7 +124,7 @@ const ManageStaff = () => {
                           delay={{ show: 200, hide: 100 }}
                           overlay={
                             <Tooltip
-                              className="staff-edit-button"
+                              className="customer-edit-button"
                               id="edit-button-tooltip"
                             >
                               EDIT
@@ -139,9 +137,8 @@ const ManageStaff = () => {
                               setShowStaffDetail(true);
                               setStaffDetail({
                                 number: index + 1,
-                                id: staff._id,
-                                phonenum: staff.username,
-                                role: staff.role,
+                                id: staff.id,
+                                name: staff.name,
                               });
                             }}
                           >
@@ -156,7 +153,7 @@ const ManageStaff = () => {
                           delay={{ show: 200, hide: 100 }}
                           overlay={
                             <Tooltip
-                              className="staff-schedule-button"
+                              className="customer-schedule-button"
                               id="schedule-button-tooltip"
                             >
                               SCHEDULE
@@ -181,7 +178,7 @@ const ManageStaff = () => {
                           delay={{ show: 200, hide: 100 }}
                           overlay={
                             <Tooltip
-                              className="staff-delete-button"
+                              className="customer-delete-button"
                               id="delete-button-tooltip"
                             >
                               DELETE
@@ -218,4 +215,4 @@ const ManageStaff = () => {
   );
 };
 
-export default ManageStaff;
+export default ManageCustomer;

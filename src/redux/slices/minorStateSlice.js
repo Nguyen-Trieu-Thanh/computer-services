@@ -3,6 +3,8 @@ import { createSlice } from "@reduxjs/toolkit";
 const initState = {
   loading: true,
   loginLoading: false,
+  createBookingLoading: false,
+  showConfirmCreateBooking: false,
 };
 
 const minorStateSlice = createSlice({
@@ -15,9 +17,26 @@ const minorStateSlice = createSlice({
     setLoginLoading: (state, action) => {
       return { ...state, loginLoading: action.payload.loginLoading };
     },
+    setCreateBookingLoading: (state, action) => {
+      return {
+        ...state,
+        createBookingLoading: action.payload.createBookingLoading,
+      };
+    },
+    setShowConfirmCreateBooking: (state, action) => {
+      return {
+        ...state,
+        showConfirmCreateBooking: action.payload.showConfirmCreateBooking,
+      };
+    },
   },
 });
 
-export const { setLoading, setLoginLoading } = minorStateSlice.actions;
+export const {
+  setLoading,
+  setLoginLoading,
+  setCreateBookingLoading,
+  setShowConfirmCreateBooking,
+} = minorStateSlice.actions;
 
 export default minorStateSlice.reducer;

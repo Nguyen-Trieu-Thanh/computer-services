@@ -41,6 +41,9 @@ const MenuBar = () => {
             <Nav.Link as={Link} to="/order">
               ĐƠN HÀNG
             </Nav.Link>
+            <Nav.Link as={Link} to="/customer">
+              KHÁCH HÀNG
+            </Nav.Link>
             <Nav.Link as={Link} to="/staff">
               NHÂN VIÊN
             </Nav.Link>

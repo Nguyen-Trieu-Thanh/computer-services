@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
@@ -12,6 +12,7 @@ import {
   DropdownButton,
   Form,
   ListGroup,
+  Table,
 } from "react-bootstrap";
 
 //CSS
@@ -34,10 +35,17 @@ import DashboardDynamicTable from "../dashboardDynamicTable/DashboardDynamicTabl
 //Enum
 import dashboardDynamicTableEnum from "../../enums/dashboardDynamicTableEnum";
 
+const slots = ["1", "2", "3", "4", "5", "6", "7", "8"];
+
 const Dashboard = () => {
   //Local state
   const [tableType, setTableType] = useState(dashboardDynamicTableEnum.BOOKING);
   const todayDate = moment().format("DD MMMM YYYY");
+  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
+  const [endDate, setEndDate] = useState(
+    moment().endOf("month").format("YYYY-MM-DD")
+  );
+  const [datesInBetween, setDatesInBetween] = useState([]);
 
   const navigate = useNavigate();
 
@@ -54,6 +62,23 @@ const Dashboard = () => {
       navigate("/staff");
     }
   };
+
+  const getDateInBetween = () => {
+    let dates = [];
+    let currentDate = moment(startDate);
+    let stopDate = moment(endDate);
+
+    while (currentDate <= stopDate) {
+      dates.push(currentDate.format("MM/DD/YYYY"));
+      currentDate = moment(currentDate).add(1, "days");
+    }
+
+    setDatesInBetween(dates);
+  };
+
+  useEffect(() => {
+    getDateInBetween();
+  }, [startDate, endDate]);
 
   return (
     <>
@@ -130,6 +155,60 @@ const Dashboard = () => {
               </Card.Link>
             </Card.Footer>
           </Card>
+        </div>
+        <div className="dashboard-schedule-container">
+          <ListGroup>
+            <ListGroup.Item>
+              <div className="filter-container">
+                <Form.Group controlId="formStartDate">
+                  <Form.Label>FROM DATE</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={startDate}
+                    onChange={(e) => {
+                      setStartDate(e.target.value);
+                    }}
+                  />
+                </Form.Group>
+                <Form.Group controlId="formEndDate">
+                  <Form.Label>TO DATE</Form.Label>
+                  <Form.Control
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => {
+                      setEndDate(e.target.value);
+                    }}
+                  />
+                </Form.Group>
+              </div>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <div className="dashboard-schedule-table-container">
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th>Ngày\Slot</th>
+                      {slots.map((slot) => {
+                        return <th key={slot}>Slot {slot}</th>;
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {datesInBetween.map((date, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{date}</td>
+                          {slots.map((slot) => {
+                            return <td key={slot} />;
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </div>
+            </ListGroup.Item>
+          </ListGroup>
         </div>
         <div className="dashboard-recent-container">
           <div className="dashboard-dynamic-table">

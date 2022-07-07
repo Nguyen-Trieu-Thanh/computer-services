@@ -1,12 +1,12 @@
-.staff-detail {
+.staff-detail-container {
   width: 90vw;
   max-width: none !important;
 }
 
-.staff-detail .modal-content-container {
-  height: 90vh;
+.staff-detail-container .modal-content-container {
+  /* height: 90vh; */
 }
 
-.staff-detail .modal-content-container .modal-body-container {
-  height: 80%;
+.staff-detail-container .modal-content-container .modal-body-container {
+  /* height: 80%; */
 }

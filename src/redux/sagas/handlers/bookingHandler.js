@@ -1,5 +1,9 @@
 import { call, put } from "redux-saga/effects";
-import { setLoading } from "../../slices/minorStateSlice";
+import {
+  setCreateBookingLoading,
+  setLoading,
+  setShowConfirmCreateBooking,
+} from "../../slices/minorStateSlice";
 import { setToast } from "../../slices/toastSlice";
 import { setBookings } from "../../slices/bookingSlice";
 import {
@@ -23,31 +27,27 @@ export function* handleGetBookings(action) {
 }
 
 export function* handleCreateBooking(action) {
-  yield put(
-    setToast({
-      show: true,
-      title: "Tạo lịch hẹn",
-      time: "just now",
-      content: "Lịch hẹn được tạo thành công!",
-      color: {
-        header: "#dbf0dc",
-        body: "#41a446",
-      },
-    })
-  );
-  // const { response, error } = yield call(requestCreateBooking, [
-  //   action.payload,
-  // ]);
+  yield put(setCreateBookingLoading({ createBookingLoading: true }));
+
+  const { response, error } = yield call(requestCreateBooking, [
+    action.payload,
+  ]);
   //Call API success
-  // if (response) {
-  //   yield put(
-  //     setToast({
-  //       show: true,
-  //       title: "Tạo lịch hẹn",
-  //       time: "just now",
-  //       content: "success",
-  //     })
-  //   );
-  // }
+  if (response) {
+    yield put(setCreateBookingLoading({ createBookingLoading: false }));
+    yield put(
+      setToast({
+        show: true,
+        title: "Tạo lịch hẹn",
+        time: "just now",
+        content: "Lịch hẹn được tạo thành công!",
+        color: {
+          header: "#dbf0dc",
+          body: "#41a446",
+        },
+      })
+    );
+    yield put(setShowConfirmCreateBooking({ showConfirmCreateBooking: false }));
+  }
   //Catch error
 }
