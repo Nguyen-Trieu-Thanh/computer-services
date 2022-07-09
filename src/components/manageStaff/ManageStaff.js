@@ -22,9 +22,6 @@ import {
 //CSS
 import "./ManageStaff.css";
 
-//Data
-import StaffData from "../../datas/StaffData";
-
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -39,10 +36,11 @@ import StaffDetail from "../staffDetail/StaffDetail";
 import ManageSchedule from "../manageSchedule/ManageSchedule";
 
 const ManageStaff = () => {
-  const { data: staffs, refetch, isFetching } = useGetAccountsQuery();
+  const { data: staffsData, refetch, isFetching } = useGetAccountsQuery();
 
   //Local state
   const [active, setActive] = useState(1);
+  const [staffs, setStaffs] = useState(staffsData.slice(0, 10));
   const [showStaffDetail, setShowStaffDetail] = useState(false);
   const [staffDetail, setStaffDetail] = useState({
     number: 0,
@@ -55,7 +53,7 @@ const ManageStaff = () => {
 
   //Pagination
   let items = [];
-  for (let number = 1; number <= Math.ceil(StaffData.length / 10); number++) {
+  for (let number = 1; number <= Math.ceil(staffsData.length / 10); number++) {
     items.push(
       <Pagination.Item
         onClick={() => {
@@ -72,7 +70,7 @@ const ManageStaff = () => {
 
   const handlePaginationClick = (number) => {
     setActive(number);
-    // setStaffs(StaffData.slice(10 * (number - 1), 10 * number));
+    setStaffs(staffsData.slice(10 * (number - 1), 10 * number));
   };
 
   useEffect(() => {}, []);

@@ -21,9 +21,6 @@ import {
 //CSS
 import "./ManageBooking.css";
 
-//Data
-import BookingData from "../../datas/BookingData";
-
 //Components
 import BookingDetail from "../bookingDetail/BookingDetail";
 import CreateBooking from "../createBooking/CreateBooking";
@@ -37,10 +34,15 @@ import { faPlus, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
 import moment from "moment";
 
 const ManageBooking = () => {
-  const { data: bookings, refetch, isFetching } = useGetBookingsQuery();
+  const {
+    data: bookingsData = [],
+    refetch,
+    isFetching,
+  } = useGetBookingsQuery();
 
   //Local state
   const [active, setActive] = useState(1);
+  const [bookings, setBookings] = useState(bookingsData.slice(0, 10));
   const [booking, setBooking] = useState({
     cus_name: "",
     services: [],
@@ -70,7 +72,11 @@ const ManageBooking = () => {
 
   //Pagination
   let items = [];
-  for (let number = 1; number <= Math.ceil(BookingData.length / 10); number++) {
+  for (
+    let number = 1;
+    number <= Math.ceil(bookingsData.length / 10);
+    number++
+  ) {
     items.push(
       <Pagination.Item
         onClick={() => {
@@ -87,7 +93,7 @@ const ManageBooking = () => {
 
   const handlePaginationClick = (number) => {
     setActive(number);
-    // setBookings(BookingData.slice(10 * (number - 1), 10 * number));
+    setBookings(bookingsData.slice(10 * (number - 1), 10 * number));
   };
 
   useEffect(() => {
