@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 
 //Redux
 //Actions
-import { getAccounts } from "../../redux/slices/accountSlice";
+
+//API Actions
+import { useGetAccountsQuery } from "../../redux/slices/account/accountApiSlice";
 
 //React-redux
-import { useDispatch, useSelector } from "react-redux";
+import {} from "react-redux";
 
 //React-bootstrap
 import {
@@ -35,17 +37,12 @@ import {
 //Components
 import StaffDetail from "../staffDetail/StaffDetail";
 import ManageSchedule from "../manageSchedule/ManageSchedule";
-import { NavLink } from "react-router-dom";
 
 const ManageStaff = () => {
-  const dispatch = useDispatch();
-  //Global state
-  const staffs = useSelector((state) => state.account.data);
-  const loading = useSelector((state) => state.minorState.loading);
+  const { data: staffs, refetch, isFetching } = useGetAccountsQuery();
 
   //Local state
   const [active, setActive] = useState(1);
-  // const [staffs, setStaffs] = useState(StaffData.slice(0, 10));
   const [showStaffDetail, setShowStaffDetail] = useState(false);
   const [staffDetail, setStaffDetail] = useState({
     number: 0,
@@ -53,7 +50,6 @@ const ManageStaff = () => {
     phonenum: "",
     role: "",
   });
-
   const [showStaffSchedule, setShowStaffSchedule] = useState(false);
   const [staffScheduleId, setStaffScheduleId] = useState(0);
 
@@ -79,11 +75,9 @@ const ManageStaff = () => {
     // setStaffs(StaffData.slice(10 * (number - 1), 10 * number));
   };
 
-  useEffect(() => {
-    dispatch(getAccounts());
-  }, []);
+  useEffect(() => {}, []);
 
-  if (loading) {
+  if (isFetching) {
     return (
       <>
         <div className="loading mt-3">

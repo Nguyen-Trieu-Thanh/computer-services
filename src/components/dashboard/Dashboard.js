@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
 
 //React-bootstrap
 import {
@@ -46,6 +47,8 @@ const Dashboard = () => {
     moment().endOf("month").format("YYYY-MM-DD")
   );
   const [datesInBetween, setDatesInBetween] = useState([]);
+
+  //Global state
 
   const navigate = useNavigate();
 

@@ -1,13 +1,12 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import moment from "moment";
+import React, { useState, useEffect } from "react";
 
 //Redux
 //Actions
-import { getBookings } from "../../redux/slices/bookingSlice";
+
+//API Actions
+import { useGetBookingsQuery } from "../../redux/slices/booking/bookingApiSlice";
 
 //React-redux
-import { useDispatch, useSelector } from "react-redux";
 
 //React-bootstrap
 import {
@@ -32,24 +31,13 @@ import ConfirmCreateBooking from "../confirmCreateBooking/ConfirmCreateBooking";
 
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faPenToSquare,
-  faPlus,
-  faTrash,
-  faCheck,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
-import { getRefreshAccessToken } from "../../redux/slices/authSlice";
+import { faPlus, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+
+//momentjs
+import moment from "moment";
 
 const ManageBooking = () => {
-  const dispatch = useDispatch();
-
-  //Global state
-  const bookings = useSelector((state) => state.booking.data);
-  const loading = useSelector((state) => state.minorState.loading);
-  const createBookingLoading = useSelector(
-    (state) => state.minorState.createBookingLoading
-  );
+  const { data: bookings, refetch, isFetching } = useGetBookingsQuery();
 
   //Local state
   const [active, setActive] = useState(1);
@@ -68,8 +56,9 @@ const ManageBooking = () => {
     status: "accept",
     phonenum: "",
   });
-  // const [bookings, setBookings] = useState(BookingData.slice(0, 10));
   const [showCreateBooking, setShowCreateBooking] = useState(false);
+  const [showConfirmCreateBooking, setShowConfirmCreateBooking] =
+    useState(false);
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({
     id: "",
@@ -77,6 +66,7 @@ const ManageBooking = () => {
     customerName: "",
     phoneNumber: "",
   });
+  const [isRefetch, setIsRefetch] = useState(false);
 
   //Pagination
   let items = [];
@@ -101,12 +91,13 @@ const ManageBooking = () => {
   };
 
   useEffect(() => {
-    if (!createBookingLoading) {
-      dispatch(getBookings());
+    if (isRefetch) {
+      refetch();
+      setIsRefetch(false);
     }
-  }, [createBookingLoading]);
+  }, [isRefetch]);
 
-  if (loading) {
+  if (isFetching) {
     return (
       <>
         <div className="loading mt-3">
@@ -116,10 +107,6 @@ const ManageBooking = () => {
       </>
     );
   }
-
-  const handleRefreshAccessToken = () => {
-    dispatch(getRefreshAccessToken());
-  };
 
   return (
     <>
@@ -132,9 +119,6 @@ const ManageBooking = () => {
             }}
           >
             TẠO LỊCH HẸN <FontAwesomeIcon icon={faPlus} color="" />
-          </Button>
-          <Button variant="primary" onClick={handleRefreshAccessToken}>
-            TEST <FontAwesomeIcon icon={faPlus} color="" />
           </Button>
         </div>
         <div className="table-container">
@@ -220,10 +204,14 @@ const ManageBooking = () => {
         setShowCreateBooking={setShowCreateBooking}
         booking={booking}
         setBooking={setBooking}
+        setShowConfirmCreateBooking={setShowConfirmCreateBooking}
       />
       <ConfirmCreateBooking
         setShowCreateBooking={setShowCreateBooking}
         booking={booking}
+        setIsRefetch={setIsRefetch}
+        setShowConfirmCreateBooking={setShowConfirmCreateBooking}
+        showConfirmCreateBooking={showConfirmCreateBooking}
       />
       <BookingDetail
         showBookingDetail={showBookingDetail}

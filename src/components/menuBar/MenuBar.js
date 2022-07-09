@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 //Redux
 //Actions
-import { getLogin, setIsLoggedIn } from "../../redux/slices/authSlice";
+import { getLogin } from "../../redux/slices/auth/authSlice";
 
 //React-redux
 import { useDispatch, useSelector } from "react-redux";
@@ -21,7 +21,6 @@ const MenuBar = () => {
 
   const handleLogout = () => {
     localStorage.clear();
-    dispatch(setIsLoggedIn({ isLoggedIn: false }));
   };
 
   return (

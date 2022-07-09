@@ -1,15 +1,20 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+
+//React-router-dom
 import { useNavigate } from "react-router-dom";
 
 //Redux
 //Actions
-import { getLogin, setIsLoggedIn } from "../../redux/slices/authSlice";
+import { setCredentials } from "../../redux/slices/auth/authSlice";
+
+//API Actions
+import { useLoginMutation } from "../../redux/slices/auth/authApiSlice";
 
 //React-redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //React-bootstrap
-import { Form, Button, Spinner } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 
 //CSS
 import "./Login.css";
@@ -19,33 +24,22 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
-  //Global state
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
-  const loginLoading = useSelector((state) => state.minorState.loginLoading);
+  //API
+  const [login, { isLoading }] = useLoginMutation();
 
+  //Utilities
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleLoginSubmit = (e) => {
+  //Login
+  const handleLoginSubmit = async (e) => {
     e.preventDefault();
-    dispatch(getLogin({ username, password }));
-  };
-
-  useEffect(() => {
-    if (isLoggedIn && localStorage.getItem("token") !== null) {
+    try {
+      const userData = await login({ username, password }).unwrap();
+      dispatch(setCredentials({ ...userData, username }));
       navigate("/dashboard");
-    }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      dispatch(setIsLoggedIn({ isLoggedIn: false }));
-    }
-
-    if (localStorage.getItem("token") !== null) {
-      localStorage.clear();
-    }
-  }, []);
+    } catch (error) {}
+  };
 
   return (
     <>
@@ -78,7 +72,7 @@ const Login = () => {
             </Form.Group>
             <div className="text-center">
               <Button className="form-button" variant="primary" type="submit">
-                {loginLoading ? <Spinner animation="border" /> : "ĐĂNG NHẬP"}
+                {isLoading ? <Spinner animation="border" /> : "ĐĂNG NHẬP"}
               </Button>
             </div>
             <div className="forgot-password-container">

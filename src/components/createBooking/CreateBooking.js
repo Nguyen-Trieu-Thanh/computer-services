@@ -1,26 +1,24 @@
-import React from "react";
-import { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-//React-bootstrap
-import { Button, Form, Modal, Row, Col, InputGroup } from "react-bootstrap";
+//Redux
+//Actions
+import { setShowConfirmCreateBooking } from "../../redux/slices/minorState/minorStateSlice";
+
+//React-redux
+import { useDispatch } from "react-redux";
 
 //CSS
 import "./CreateBooking.css";
 
-//Redux
-//Actions
-import { createBooking } from "../../redux/slices/bookingSlice";
-import { setShowConfirmCreateBooking } from "../../redux/slices/minorStateSlice";
-
-//React-redux
-import { useDispatch, useSelector } from "react-redux";
+//React-bootstrap
+import { Button, Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
 
 const CreateBooking = ({
   showCreateBooking,
   setShowCreateBooking,
   booking,
   setBooking,
+  setShowConfirmCreateBooking,
 }) => {
   const dispatch = useDispatch();
 
@@ -91,7 +89,8 @@ const CreateBooking = ({
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
     setShowCreateBooking(false);
-    dispatch(setShowConfirmCreateBooking({ showConfirmCreateBooking: true }));
+    // dispatch(setShowConfirmCreateBooking({ showConfirmCreateBooking: true }));
+    setShowConfirmCreateBooking(true);
   };
 
   return (

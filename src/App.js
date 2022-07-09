@@ -21,6 +21,7 @@ import ProtectedRoute from "./functions/ProtectedRoute";
 
 //Date in Vietnamese
 import "moment/locale/vi";
+import RequireAuth from "./functions/RequireAuth";
 
 function App() {
   return (
@@ -34,9 +35,12 @@ function App() {
           <Route
             path="/"
             element={
-              <ProtectedRoute user={["manager", "admin"]}>
+              // <ProtectedRoute user={["manager", "admin"]}>
+              //   <Layout />
+              // </ProtectedRoute>
+              <RequireAuth>
                 <Layout />
-              </ProtectedRoute>
+              </RequireAuth>
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />

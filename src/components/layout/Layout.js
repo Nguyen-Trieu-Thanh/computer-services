@@ -3,7 +3,7 @@ import { Outlet } from "react-router-dom";
 
 //Redux
 //Actions
-import { setToast } from "../../redux/slices/toastSlice";
+import { setToast } from "../../redux/slices/toast/toastSlice";
 
 //React-redux
 import { useDispatch, useSelector } from "react-redux";

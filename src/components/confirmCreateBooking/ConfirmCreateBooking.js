@@ -1,40 +1,34 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 //Redux
 //Actions
-import { createBooking } from "../../redux/slices/bookingSlice";
-import { setShowConfirmCreateBooking } from "../../redux/slices/minorStateSlice";
+import { setToast } from "../../redux/slices/toast/toastSlice";
+
+//API Actions
+import { useCreateBookingMutation } from "../../redux/slices/booking/bookingApiSlice";
 
 //React-redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //React-bootstrap
-import {
-  Button,
-  Form,
-  Modal,
-  Row,
-  Col,
-  InputGroup,
-  Spinner,
-} from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
 
 //CSS
 import "./ConfirmCreateBooking.css";
 
-const ConfirmCreateBooking = ({ setShowCreateBooking, booking }) => {
-  //Global state
-  const createBookingLoading = useSelector(
-    (state) => state.minorState.createBookingLoading
-  );
-  const showConfirmCreateBooking = useSelector(
-    (state) => state.minorState.showConfirmCreateBooking
-  );
+const ConfirmCreateBooking = ({
+  setShowCreateBooking,
+  booking,
+  setIsRefetch,
+  setShowConfirmCreateBooking,
+  showConfirmCreateBooking,
+}) => {
+  const [createBooking, { isLoading }] = useCreateBookingMutation();
 
   const dispatch = useDispatch();
 
   const handleClose = () => {
-    dispatch(setShowConfirmCreateBooking({ showConfirmCreateBooking: false }));
+    setShowConfirmCreateBooking(false);
     setShowCreateBooking(true);
   };
 
@@ -48,9 +42,31 @@ const ConfirmCreateBooking = ({ setShowCreateBooking, booking }) => {
     ", Thành phố " +
     booking.cus_address.city;
 
-  const handleConfirmBookingSubmit = (e) => {
+  const handleConfirmBookingSubmit = async (e) => {
     e.preventDefault();
-    dispatch(createBooking(booking));
+
+    try {
+      await createBooking(booking)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
+            await dispatch(
+              setToast({
+                show: true,
+                title: "Tạo lịch hẹn",
+                time: "just now",
+                content: "Lịch hẹn được tạo thành công!",
+                color: {
+                  header: "#dbf0dc",
+                  body: "#41a446",
+                },
+              })
+            );
+            await setIsRefetch(true);
+            setShowConfirmCreateBooking(false);
+          }
+        });
+    } catch (error) {}
   };
 
   return (
@@ -165,11 +181,7 @@ const ConfirmCreateBooking = ({ setShowCreateBooking, booking }) => {
               onClick={handleConfirmBookingSubmit}
               className="confirm-button"
             >
-              {createBookingLoading ? (
-                <Spinner animation="border" />
-              ) : (
-                "Xác nhận"
-              )}
+              {isLoading ? <Spinner animation="border" /> : "Xác nhận"}
             </Button>
           </Modal.Footer>
         </div>
