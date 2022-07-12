@@ -1,26 +1,44 @@
 import React from "react";
-import { Navbar, Nav } from "react-bootstrap";
+import { Button, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 //Redux
 //Actions
-import { getLogin } from "../../redux/slices/auth/authSlice";
+import {
+  setCredentials,
+  setRememberMe,
+} from "../../redux/slices/auth/authSlice";
+
+//API Actions
+import { useLogoutMutation } from "../../redux/slices/auth/authApiSlice";
 
 //React-redux
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 //CSS
 import "./MenuBar.css";
 
 //Icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const MenuBar = () => {
+  //API
+  const [logout, { isLoading }] = useLogoutMutation();
+
+  //Utilities
   const dispatch = useDispatch();
 
-  const handleLogout = () => {
-    localStorage.clear();
+  const handleLogout = async () => {
+    try {
+      await logout()
+        .unwrap()
+        .then(async (res) => {
+          await dispatch(setCredentials({ username: null, accessToken: null }));
+          await dispatch(setRememberMe({ rememberMe: false }));
+          await localStorage.setItem("rememberMe", false);
+        });
+    } catch (error) {}
   };
 
   return (
@@ -46,9 +64,7 @@ const MenuBar = () => {
             <Nav.Link as={Link} to="/staff">
               NHÂN VIÊN
             </Nav.Link>
-            <Nav.Link as={Link} to="/" onClick={handleLogout}>
-              ĐĂNG XUẤT
-            </Nav.Link>
+            <Nav.Link onClick={handleLogout}>ĐĂNG XUẤT</Nav.Link>
           </Nav>
         </Navbar>
       </div>

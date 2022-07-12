@@ -22,6 +22,8 @@ import ProtectedRoute from "./functions/ProtectedRoute";
 //Date in Vietnamese
 import "moment/locale/vi";
 import RequireAuth from "./functions/RequireAuth";
+import PersistLogin from "./functions/PersistLogin";
+import RememberMeLogin from "./functions/RememberMeLogin";
 
 function App() {
   return (
@@ -29,18 +31,24 @@ function App() {
       <Router>
         <Routes>
           {/* Login page */}
-          <Route index element={<Login />} />
+          <Route
+            index
+            element={
+              <RememberMeLogin>
+                <Login />
+              </RememberMeLogin>
+            }
+          />
 
           {/* Home page */}
           <Route
             path="/"
             element={
-              // <ProtectedRoute user={["manager", "admin"]}>
-              //   <Layout />
-              // </ProtectedRoute>
-              <RequireAuth>
-                <Layout />
-              </RequireAuth>
+              <PersistLogin>
+                <RequireAuth>
+                  <Layout />
+                </RequireAuth>
+              </PersistLogin>
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />

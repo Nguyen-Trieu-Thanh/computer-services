@@ -1,8 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //Redux
 //Actions
 import { getBookings } from "../../redux/slices/booking/bookingSlice";
+
+//API Actions
+import { useGetBookingsQuery } from "../../redux/slices/booking/bookingApiSlice";
+import { useGetAccountsQuery } from "../../redux/slices/account/accountApiSlice";
 
 //React-redux
 import { useDispatch, useSelector } from "react-redux";
@@ -20,16 +24,13 @@ import StaffData from "../../datas/StaffData";
 
 //Enum
 import dashboardDynamicTableEnum from "../../enums/dashboardDynamicTableEnum";
-import { useEffect } from "react";
-import { useGetBookingsQuery } from "../../redux/slices/booking/bookingApiSlice";
 
 const DashboardDynamicTable = ({ tableType }) => {
-  const { data, isLoading } = useGetBookingsQuery();
-
-  const dispatch = useDispatch();
-  // let datas = useSelector((state) => state.booking.data);
-  // const loading = isLoading;
-  // const loading = useSelector((state) => state.minorState.loading);
+  const {
+    data: bookingsData = [],
+    refetch,
+    isFetching,
+  } = useGetBookingsQuery();
 
   //Local state
   const [active, setActive] = useState(1);
@@ -38,10 +39,7 @@ const DashboardDynamicTable = ({ tableType }) => {
   useEffect(() => {
     setActive(1);
     if (tableType === dashboardDynamicTableEnum.BOOKING) {
-      // dispatch(getBookings());
-      if (data) {
-        setDatas(data);
-      }
+      setDatas(bookingsData);
     }
 
     if (tableType === dashboardDynamicTableEnum.ORDER) {
@@ -51,7 +49,7 @@ const DashboardDynamicTable = ({ tableType }) => {
     if (tableType === dashboardDynamicTableEnum.STAFF) {
       // setDatas(StaffData.slice(0, 10));
     }
-  }, [tableType, data]);
+  }, [tableType]);
 
   //Pagination
   const datasLength = () => {
@@ -101,7 +99,7 @@ const DashboardDynamicTable = ({ tableType }) => {
     }
   };
 
-  if (isLoading) {
+  if (isFetching) {
     return (
       <>
         <div className="loading mt-3">

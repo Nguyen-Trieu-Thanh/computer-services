@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 //Redux
 //Actions
-import { setShowConfirmCreateBooking } from "../../redux/slices/minorState/minorStateSlice";
 
 //React-redux
 import { useDispatch } from "react-redux";
@@ -89,7 +88,6 @@ const CreateBooking = ({
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
     setShowCreateBooking(false);
-    // dispatch(setShowConfirmCreateBooking({ showConfirmCreateBooking: true }));
     setShowConfirmCreateBooking(true);
   };
 

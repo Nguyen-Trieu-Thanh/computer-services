@@ -7,43 +7,23 @@
   justify-content: center;
 }
 
-.login-page .login-area {
-  width: 20vw;
-  height: 20vw;
-  background-color: #f2f2f2;
-  border: 1px solid #f2f2f2;
-  border-radius: 10px;
-}
-
-.login-page .login-area .login-title-container {
+.login-page .login-title-container {
   text-align: center;
   font-weight: 700;
   font-size: 30px;
 }
 
-.login-page .login-area .email-form-group {
-  padding: 10px 10px 0px 10px;
-}
-
-.login-page .login-area .password-form-group {
-  padding: 0px 10px 0px 10px;
-}
-
-.login-page .login-area .form-button {
+.login-page .form-button {
   width: 60%;
 }
 
-.login-page .login-area .form-button .spinner-border {
+.login-page .form-button .spinner-border {
   width: 20px;
   height: 20px;
   border: 3px solid currentColor;
   border-right-color: transparent;
 }
 
-.login-page .login-area .forgot-password-container {
-  padding: 10px 10px 0px 10px;
-}
-
-.login-page .login-area .forgot-password-container .forgot-password-button {
+.login-page .forgot-password-container .forgot-password-button {
   float: right;
 }

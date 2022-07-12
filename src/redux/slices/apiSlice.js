@@ -1,8 +1,9 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { setCredentials, logOut } from "./auth/authSlice";
+import { setCredentials } from "./auth/authSlice";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://computer-services-api.herokuapp.com",
+  // baseUrl: "http://localhost:5000",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;
@@ -15,27 +16,22 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
   let result = await baseQuery(args, api, extraOptions);
-  if (result?.error?.originalStatus) {
-    console.log(result.error.originalStatus);
-  }
 
   if (result?.error?.status === 403) {
-    // console.log("sending refresh token");
     //send the refresh token to get new access token
     const refreshResult = await baseQuery(
       { url: "/auth/refresh", method: "POST", credentials: "include" },
       api,
       extraOptions
     );
-    // console.log(refreshResult);
     if (refreshResult?.data) {
-      const user = api.getState().auth.user;
+      const username = api.getState().auth.username;
       //store the new token
-      api.dispatch(setCredentials({ ...refreshResult.data, user }));
+      api.dispatch(setCredentials({ ...refreshResult.data, username }));
       //retry the original query with new access token
       result = await baseQuery(args, api, extraOptions);
     } else {
-      api.dispatch(logOut());
+      api.dispatch(setCredentials({ username: null, accessToken: null }));
     }
   }
   return result;
