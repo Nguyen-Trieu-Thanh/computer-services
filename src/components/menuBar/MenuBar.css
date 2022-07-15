@@ -1,19 +1,29 @@
 .nav-bar {
   background-color: var(--main-color);
-  width: 10%;
+  width: 160px;
   height: 100%;
   position: fixed;
   top: 0;
   z-index: 3;
   min-width: 60px;
   min-height: 500px;
-  text-align: center;
 }
 
 .nav-bar .user-avatar {
-  font-size: 100px;
+  margin: 10px 0 0 0;
+  text-align: center;
 }
 
-.nav-bar .nav {
+.nav-bar .user-avatar img {
+  height: 80%;
+  width: 80%;
+}
+
+.nav-bar .nav-item {
   width: 100%;
+  text-align: left;
+}
+
+.nav-bar .nav-item svg {
+  margin-left: 10px;
 }

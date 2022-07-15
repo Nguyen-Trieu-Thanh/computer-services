@@ -22,8 +22,11 @@ const ConfirmCreateBooking = ({
   setIsRefetch,
   setShowConfirmCreateBooking,
   showConfirmCreateBooking,
+  servicesData,
 }) => {
   const [createBooking, { isLoading }] = useCreateBookingMutation();
+
+  console.log();
 
   const dispatch = useDispatch();
 
@@ -148,8 +151,13 @@ const ConfirmCreateBooking = ({
                       readOnly
                       disabled
                       type="text"
-                      name="type"
-                      defaultValue={booking.services.join(", ")}
+                      name="services"
+                      defaultValue={servicesData
+                        .filter((x) => booking.services.includes(x._id))
+                        .map((service) => {
+                          return service.name;
+                        })
+                        .join(", ")}
                     />
                   </Form.Group>
                 </Col>
@@ -163,7 +171,7 @@ const ConfirmCreateBooking = ({
                       readOnly
                       disabled
                       type="text"
-                      name="type"
+                      name="address"
                       defaultValue={address}
                     />
                   </Form.Group>

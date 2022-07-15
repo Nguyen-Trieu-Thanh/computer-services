@@ -32,6 +32,8 @@ import {
 
 //Components
 import DashboardDynamicTable from "../dashboardDynamicTable/DashboardDynamicTable";
+import DashboardManageStaff from "../dashboardManageStaff/DashboardManageStaff";
+import DashboardManageBooking from "../dashboardManageBooking/DashboardManageBooking";
 
 //Enum
 import dashboardDynamicTableEnum from "../../enums/dashboardDynamicTableEnum";
@@ -111,7 +113,7 @@ const Dashboard = () => {
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/order">
-                <span>Xem tất cả</span>
+                <span>Xem thêm</span>
                 <FontAwesomeIcon icon={faArrowRight} />
               </Card.Link>
             </Card.Footer>
@@ -132,7 +134,7 @@ const Dashboard = () => {
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/staff">
-                <span>Xem tất cả</span>
+                <span>Xem thêm</span>
                 <FontAwesomeIcon icon={faArrowRight} />
               </Card.Link>
             </Card.Footer>
@@ -153,7 +155,7 @@ const Dashboard = () => {
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/booking">
-                <span>Xem tất cả</span>
+                <span>Xem thêm</span>
                 <FontAwesomeIcon icon={faArrowRight} />
               </Card.Link>
             </Card.Footer>
@@ -250,11 +252,17 @@ const Dashboard = () => {
                   </Dropdown.Menu>
                 </Dropdown>
                 <Button variant="primary" onClick={handleTableSeeAllClick}>
-                  Xem tất cả <FontAwesomeIcon icon={faArrowRight} />
+                  Xem thêm <FontAwesomeIcon icon={faArrowRight} />
                 </Button>
               </ListGroup.Item>
               <ListGroup.Item>
-                <DashboardDynamicTable tableType={tableType} />
+                {tableType === dashboardDynamicTableEnum.BOOKING ? (
+                  <DashboardManageBooking />
+                ) : null}
+
+                {tableType === dashboardDynamicTableEnum.STAFF ? (
+                  <DashboardManageStaff />
+                ) : null}
               </ListGroup.Item>
             </ListGroup>
           </div>
@@ -262,8 +270,13 @@ const Dashboard = () => {
             <ListGroup>
               <ListGroup.Item className="recent-customer-list-title">
                 <span>Khách hàng mới</span>
-                <Button variant="primary">
-                  Xem tất cả <FontAwesomeIcon icon={faArrowRight} />
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    navigate("/customer");
+                  }}
+                >
+                  Xem thêm <FontAwesomeIcon icon={faArrowRight} />
                 </Button>
               </ListGroup.Item>
               {[0, 1, 2, 3, 4].map((customer, index) => {

@@ -3,6 +3,9 @@ import React, { useEffect, useState } from "react";
 //Redux
 //Actions
 
+//API Actions
+import { useGetServicesQuery } from "../../redux/slices/service/serviceApiSlice";
+
 //React-redux
 import { useDispatch } from "react-redux";
 
@@ -18,6 +21,7 @@ const CreateBooking = ({
   booking,
   setBooking,
   setShowConfirmCreateBooking,
+  servicesData,
 }) => {
   const dispatch = useDispatch();
 
@@ -47,43 +51,60 @@ const CreateBooking = ({
     });
   };
 
-  const handleCreateBookingServiceChange = (e) => {
-    const name = e.target.name;
+  // const handleCreateBookingServiceChange = (e) => {
+  //   const name = e.target.name;
 
-    setServiceCheckboxes({
-      ...serviceCheckboxes,
-      [name]: !serviceCheckboxes[name],
+  //   setServiceCheckboxes({
+  //     ...serviceCheckboxes,
+  //     [name]: !serviceCheckboxes[name],
+  //   });
+  // };
+
+  const handleCreateBookingServiceChange = (e) => {
+    let newServices = [...booking.services];
+    const value = e.target.value;
+
+    if (newServices.includes(value)) {
+      const index = newServices.indexOf(value);
+      newServices.splice(index, 1);
+    } else {
+      newServices.push(value);
+    }
+
+    setBooking({
+      ...booking,
+      services: [...newServices],
     });
   };
 
-  useEffect(() => {
-    let newServices = [...booking.services];
-    if (serviceCheckboxes.clean) {
-      if (!newServices.includes("Vệ sinh máy")) {
-        newServices.push("Vệ sinh máy");
-      }
-    } else {
-      newServices = newServices.filter((x) => x !== "Vệ sinh máy");
-    }
+  // useEffect(() => {
+  //   let newServices = [...booking.services];
+  //   if (serviceCheckboxes.clean) {
+  //     if (!newServices.includes("Vệ sinh máy")) {
+  //       newServices.push("Vệ sinh máy");
+  //     }
+  //   } else {
+  //     newServices = newServices.filter((x) => x !== "Vệ sinh máy");
+  //   }
 
-    if (serviceCheckboxes.replace) {
-      if (!newServices.includes("Thay linh kiện")) {
-        newServices.push("Thay linh kiện");
-      }
-    } else {
-      newServices = newServices.filter((x) => x !== "Thay linh kiện");
-    }
+  //   if (serviceCheckboxes.replace) {
+  //     if (!newServices.includes("Thay linh kiện")) {
+  //       newServices.push("Thay linh kiện");
+  //     }
+  //   } else {
+  //     newServices = newServices.filter((x) => x !== "Thay linh kiện");
+  //   }
 
-    if (serviceCheckboxes.install) {
-      if (!newServices.includes("Cài đặt phần mềm")) {
-        newServices.push("Cài đặt phần mềm");
-      }
-    } else {
-      newServices = newServices.filter((x) => x !== "Cài đặt phần mềm");
-    }
+  //   if (serviceCheckboxes.install) {
+  //     if (!newServices.includes("Cài đặt phần mềm")) {
+  //       newServices.push("Cài đặt phần mềm");
+  //     }
+  //   } else {
+  //     newServices = newServices.filter((x) => x !== "Cài đặt phần mềm");
+  //   }
 
-    setBooking({ ...booking, services: newServices });
-  }, [serviceCheckboxes]);
+  //   setBooking({ ...booking, services: newServices });
+  // }, [serviceCheckboxes]);
 
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
@@ -202,6 +223,26 @@ const CreateBooking = ({
                     </Col>
                   </Row>
                   <Row>
+                    {servicesData.map((service, index) => {
+                      return (
+                        <Form.Group
+                          key={index}
+                          controlId={"formCreateBookingService-" + index}
+                        >
+                          <Col>
+                            <Form.Check
+                              inline
+                              label={service.name}
+                              value={service._id}
+                              checked={booking.services.includes(service._id)}
+                              onChange={handleCreateBookingServiceChange}
+                            />
+                          </Col>
+                        </Form.Group>
+                      );
+                    })}
+                  </Row>
+                  {/* <Row>
                     <Form.Group controlId="formCreateBookingService-1">
                       <Col>
                         <Form.Check
@@ -235,7 +276,7 @@ const CreateBooking = ({
                         />
                       </Col>
                     </Form.Group>
-                  </Row>
+                  </Row> */}
                 </Col>
               </Row>
             </Form>

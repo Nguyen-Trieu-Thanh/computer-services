@@ -58,6 +58,7 @@ const Login = () => {
       await login({ username, password })
         .unwrap()
         .then(async (res) => {
+          await dispatch(setRememberMe({ rememberMe: true }));
           await dispatch(setCredentials({ ...res, username }));
           navigate("/dashboard");
         });
@@ -112,7 +113,7 @@ const Login = () => {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col>
                     <Form.Group controlId="remember-me-form-group">
                       <Form.Check
@@ -124,7 +125,7 @@ const Login = () => {
                       />
                     </Form.Group>
                   </Col>
-                </Row>
+                </Row> */}
 
                 <Row>
                   <Col className="text-center">

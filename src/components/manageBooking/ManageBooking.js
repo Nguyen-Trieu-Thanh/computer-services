@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 
 //API Actions
 import { useGetBookingsQuery } from "../../redux/slices/booking/bookingApiSlice";
+import { useGetServicesQuery } from "../../redux/slices/service/serviceApiSlice";
 
 //React-redux
 
@@ -28,7 +29,12 @@ import ConfirmCreateBooking from "../confirmCreateBooking/ConfirmCreateBooking";
 
 //Icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faCheck, faXmark } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faCheck,
+  faXmark,
+  faPenToSquare,
+} from "@fortawesome/free-solid-svg-icons";
 
 //momentjs
 import moment from "moment";
@@ -40,9 +46,15 @@ const ManageBooking = () => {
     isFetching,
   } = useGetBookingsQuery();
 
+  const {
+    data: servicesData = [],
+    refetch: servicesRefetch,
+    isFetching: isServiceFetching,
+  } = useGetServicesQuery();
+
   //Local state
   const [active, setActive] = useState(1);
-  const [bookings, setBookings] = useState(bookingsData.slice(0, 10));
+  const [bookings, setBookings] = useState([]);
   const [booking, setBooking] = useState({
     cus_name: "",
     services: [],
@@ -63,18 +75,30 @@ const ManageBooking = () => {
     useState(false);
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [bookingDetail, setBookingDetail] = useState({
-    id: "",
-    code: 0,
-    customerName: "",
-    phoneNumber: "",
+    _id: "",
+    cus_name: "",
+    services: [],
+    description: "",
+    type: "Door-to-Door",
+    cus_address: {
+      city: "",
+      district: "",
+      ward: "",
+      street: "",
+    },
+    status: "",
+    phonenum: "",
   });
+  const [showConfirmUpdateBooking, setShowConfirmUpdateBooking] =
+    useState(false);
   const [isRefetch, setIsRefetch] = useState(false);
 
   //Pagination
   let items = [];
   for (
     let number = 1;
-    number <= Math.ceil(bookingsData.length / 10);
+    // number <= Math.ceil(bookingsData.length / 10);
+    number <= Math.ceil([...bookingsData].reverse().length / 10);
     number++
   ) {
     items.push(
@@ -93,7 +117,10 @@ const ManageBooking = () => {
 
   const handlePaginationClick = (number) => {
     setActive(number);
-    setBookings(bookingsData.slice(10 * (number - 1), 10 * number));
+    // setBookings(bookingsData.slice(10 * (number - 1), 10 * number));
+    setBookings(
+      [...bookingsData].reverse().slice(10 * (number - 1), 10 * number)
+    );
   };
 
   useEffect(() => {
@@ -102,6 +129,13 @@ const ManageBooking = () => {
       setIsRefetch(false);
     }
   }, [isRefetch]);
+
+  useEffect(() => {
+    if (!isFetching) {
+      // setBookings(bookingsData.slice(0, 10));
+      setBookings([...bookingsData].reverse().slice(0, 10));
+    }
+  }, [isFetching]);
 
   if (isFetching) {
     return (
@@ -135,6 +169,7 @@ const ManageBooking = () => {
                 <th>TÊN KHÁCH HÀNG</th>
                 <th>SỐ ĐIỆN THOẠI</th>
                 <th>LOẠI LỊCH HẸN</th>
+                <th>NGÀY TẠO (DD/MM/YYYY)</th>
                 <th>TRẠNG THÁI</th>
                 <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
               </tr>
@@ -147,10 +182,11 @@ const ManageBooking = () => {
                     <td>{booking.cus_name}</td>
                     <td>{booking.phonenum}</td>
                     <td>{booking.type}</td>
+                    <td>{moment(booking.createdAt).format("DD/MM/YYYY")}</td>
                     <td>{booking.status}</td>
                     <td>
                       <div className="action-button-container">
-                        <OverlayTrigger
+                        {/* <OverlayTrigger
                           placement="bottom"
                           delay={{ show: 200, hide: 100 }}
                           overlay={
@@ -167,10 +203,14 @@ const ManageBooking = () => {
                             onClick={() => {
                               setShowBookingDetail(true);
                               setBookingDetail({
-                                id: booking.id,
-                                code: booking.code,
-                                customerName: booking.customerName,
-                                phoneNumber: booking.phoneNumber,
+                                _id: booking._id,
+                                cus_name: booking.cus_name,
+                                services: booking.services,
+                                description: booking.description,
+                                type: booking.type,
+                                cus_address: booking.cus_address,
+                                status: booking.status,
+                                phonenum: booking.phonenum,
                               });
                             }}
                           >
@@ -192,6 +232,40 @@ const ManageBooking = () => {
                           <Button variant="danger">
                             <FontAwesomeIcon icon={faXmark} color="#ffffff" />
                           </Button>
+                        </OverlayTrigger> */}
+                        <OverlayTrigger
+                          placement="bottom"
+                          delay={{ show: 200, hide: 100 }}
+                          overlay={
+                            <Tooltip
+                              className="booking-edit-button"
+                              id="edit-button-tooltip"
+                            >
+                              CHI TIẾT
+                            </Tooltip>
+                          }
+                        >
+                          <Button
+                            variant="primary"
+                            onClick={() => {
+                              setShowBookingDetail(true);
+                              setBookingDetail({
+                                _id: booking._id,
+                                cus_name: booking.cus_name,
+                                services: booking.services,
+                                description: booking.description,
+                                type: booking.type,
+                                cus_address: booking.cus_address,
+                                status: booking.status,
+                                phonenum: booking.phonenum,
+                              });
+                            }}
+                          >
+                            <FontAwesomeIcon
+                              icon={faPenToSquare}
+                              color="#ffffff"
+                            />
+                          </Button>
                         </OverlayTrigger>
                       </div>
                     </td>
@@ -211,6 +285,7 @@ const ManageBooking = () => {
         booking={booking}
         setBooking={setBooking}
         setShowConfirmCreateBooking={setShowConfirmCreateBooking}
+        servicesData={servicesData}
       />
       <ConfirmCreateBooking
         setShowCreateBooking={setShowCreateBooking}
@@ -218,11 +293,15 @@ const ManageBooking = () => {
         setIsRefetch={setIsRefetch}
         setShowConfirmCreateBooking={setShowConfirmCreateBooking}
         showConfirmCreateBooking={showConfirmCreateBooking}
+        servicesData={servicesData}
       />
       <BookingDetail
         showBookingDetail={showBookingDetail}
         setShowBookingDetail={setShowBookingDetail}
         bookingDetail={bookingDetail}
+        setBookingDetail={setBookingDetail}
+        setIsRefetch={setIsRefetch}
+        servicesData={servicesData}
       />
     </>
   );

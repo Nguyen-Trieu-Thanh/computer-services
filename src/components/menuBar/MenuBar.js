@@ -1,6 +1,6 @@
-import React from "react";
-import { Button, Nav, Navbar } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Button, Nav, Navbar, Accordion, Image } from "react-bootstrap";
+import { Link, useLocation } from "react-router-dom";
 
 //Redux
 //Actions
@@ -19,15 +19,27 @@ import { useDispatch } from "react-redux";
 import "./MenuBar.css";
 
 //Icons
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faCircleUser,
+  faAngleDown,
+  faAngleLeft,
+  faAngleUp,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+//Images
+import defaultUserAvatar from "../../images/default-user-avatar.jpg";
+
 const MenuBar = () => {
+  //Local state
+  const [isCollapse, setIsCollapse] = useState(false);
+
   //API
   const [logout, { isLoading }] = useLogoutMutation();
 
   //Utilities
   const dispatch = useDispatch();
+  const location = useLocation();
 
   const handleLogout = async () => {
     try {
@@ -44,27 +56,68 @@ const MenuBar = () => {
   return (
     <>
       <div className="nav-bar">
-        <Link className="user-avatar" to="/userProfile">
-          <FontAwesomeIcon icon={faCircleUser} color="#000000" />
-        </Link>
+        <div className="user-avatar">
+          <Link to="/userProfile">
+            <Image src={defaultUserAvatar} roundedCircle fluid />
+          </Link>
+        </div>
         <Navbar expand="lg">
-          <Nav className="nav flex-column">
-            <Nav.Link as={Link} to="/dashboard">
-              DASHBOARD
-            </Nav.Link>
-            <Nav.Link as={Link} to="/booking">
-              LỊCH HẸN
-            </Nav.Link>
-            <Nav.Link as={Link} to="/order">
-              ĐƠN HÀNG
-            </Nav.Link>
-            <Nav.Link as={Link} to="/customer">
-              KHÁCH HÀNG
-            </Nav.Link>
-            <Nav.Link as={Link} to="/staff">
-              NHÂN VIÊN
-            </Nav.Link>
-            <Nav.Link onClick={handleLogout}>ĐĂNG XUẤT</Nav.Link>
+          <Nav className="nav flex-column" defaultActiveKey={location.pathname}>
+            <Nav.Item>
+              <Nav.Link as={Link} to="/dashboard" eventKey="/dashboard">
+                DASHBOARD
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item>
+              <Nav.Link as={Link} to="/booking" eventKey="/booking">
+                LỊCH HẸN
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item>
+              <Nav.Link as={Link} to="/order" eventKey="/order">
+                ĐƠN HÀNG
+              </Nav.Link>
+            </Nav.Item>
+
+            <Accordion>
+              <Accordion.Toggle
+                as={Nav.Item}
+                eventKey="0"
+                onClick={() => {
+                  setIsCollapse(!isCollapse);
+                }}
+              >
+                <Nav.Link>
+                  TÀI KHOẢN
+                  <FontAwesomeIcon
+                    icon={isCollapse ? faAngleUp : faAngleDown}
+                    color="#000000"
+                  />
+                </Nav.Link>
+              </Accordion.Toggle>
+              <Accordion.Collapse eventKey="0">
+                <Nav.Item>
+                  <Nav.Link as={Link} to="/customer" eventKey="/customer">
+                    KHÁCH HÀNG
+                  </Nav.Link>
+                </Nav.Item>
+              </Accordion.Collapse>
+              <Accordion.Collapse eventKey="0">
+                <Nav.Item>
+                  <Nav.Link as={Link} to="/staff" eventKey="/staff">
+                    NHÂN VIÊN
+                  </Nav.Link>
+                </Nav.Item>
+              </Accordion.Collapse>
+            </Accordion>
+
+            <Nav.Item>
+              <Nav.Link onClick={handleLogout} eventKey="/logout">
+                ĐĂNG XUẤT
+              </Nav.Link>
+            </Nav.Item>
           </Nav>
         </Navbar>
       </div>

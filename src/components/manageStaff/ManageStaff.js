@@ -36,11 +36,11 @@ import StaffDetail from "../staffDetail/StaffDetail";
 import ManageSchedule from "../manageSchedule/ManageSchedule";
 
 const ManageStaff = () => {
-  const { data: staffsData, refetch, isFetching } = useGetAccountsQuery();
+  const { data: staffsData = [], refetch, isFetching } = useGetAccountsQuery();
 
   //Local state
   const [active, setActive] = useState(1);
-  const [staffs, setStaffs] = useState(staffsData.slice(0, 10));
+  const [staffs, setStaffs] = useState([]);
   const [showStaffDetail, setShowStaffDetail] = useState(false);
   const [staffDetail, setStaffDetail] = useState({
     number: 0,
@@ -73,7 +73,11 @@ const ManageStaff = () => {
     setStaffs(staffsData.slice(10 * (number - 1), 10 * number));
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (!isFetching) {
+      setStaffs(staffsData.slice(0, 10));
+    }
+  }, [isFetching]);
 
   if (isFetching) {
     return (

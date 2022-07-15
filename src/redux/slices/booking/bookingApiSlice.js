@@ -23,8 +23,20 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    updateBooking: builder.mutation({
+      query: (booking) => ({
+        url: "/booking/" + booking._id,
+        method: "PUT",
+        body: {
+          status: booking.status,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetBookingsQuery, useCreateBookingMutation } =
-  bookingApiSlice;
+export const {
+  useGetBookingsQuery,
+  useCreateBookingMutation,
+  useUpdateBookingMutation,
+} = bookingApiSlice;

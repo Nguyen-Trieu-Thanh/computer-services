@@ -7,6 +7,7 @@ import authReducer from "./slices/auth/authSlice";
 import bookingReducer from "./slices/booking/bookingSlice";
 import minorStateReducer from "./slices/minorState/minorStateSlice";
 import toastReducer from "./slices/toast/toastSlice";
+import serviceReducer from "./slices/service/serviceSlice";
 
 // const sagaMiddleware = createSagaMiddleware();
 
@@ -40,6 +41,7 @@ const store = configureStore({
     minorState: minorStateReducer,
     toast: toastReducer,
     auth: authReducer,
+    service: serviceReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware),
