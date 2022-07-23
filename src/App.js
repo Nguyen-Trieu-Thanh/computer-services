@@ -14,6 +14,8 @@ import ManageStaff from "./components/manageStaff/ManageStaff";
 import ManageCustomer from "./components/manageCustomer/ManageCustomer";
 import OrderDetailInformation from "./components/orderDetailInformation/OrderDetailInformation";
 import UserProfile from "./components/userProfile/UserProfile";
+import ManageService from "./components/manageService/ManageService";
+import ManageAccessory from "./components/manageAccessory/ManageAccessory";
 import Error from "./components/error/Error";
 
 //Functions
@@ -61,6 +63,8 @@ function App() {
               element={<OrderDetailInformation />}
             />
             <Route path="/userProfile" element={<UserProfile />} />
+            <Route path="/service" element={<ManageService />} />
+            <Route path="/accessory" element={<ManageAccessory />} />
           </Route>
 
           {/* Error page */}

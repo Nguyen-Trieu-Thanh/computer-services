@@ -14,45 +14,60 @@ import {
   Button,
   OverlayTrigger,
   Pagination,
-  Table,
   Spinner,
+  Table,
   Tooltip,
 } from "react-bootstrap";
 
-//CSS
-import "./ManageCustomer.css";
-
 //Icons
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faPenToSquare,
   faPlus,
   faTrash,
-  faCalendarCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Components
-import StaffDetail from "../staffDetail/StaffDetail";
-import ManageSchedule from "../manageSchedule/ManageSchedule";
+import CustomerDetail from "../customerDetail/CustomerDetail";
+import CreateCustomer from "../createCustomer/CreateCustomer";
+
+//CSS
+import "./ManageCustomer.css";
 
 const ManageCustomer = () => {
-  const { data: staffsData = [], refetch, isFetching } = useGetAccountsQuery();
+  const {
+    data: customersData = [],
+    refetch,
+    isFetching,
+  } = useGetAccountsQuery();
 
   //Local state
   const [active, setActive] = useState(1);
-  const [staffs, setStaffs] = useState([]);
-  const [showStaffDetail, setShowStaffDetail] = useState(false);
-  const [staffDetail, setStaffDetail] = useState({
-    number: 0,
-    id: "",
-    name: "",
+  const [customers, setCustomers] = useState([]);
+  const [customer, setCustomer] = useState({
+    username: "",
+    password: "",
+    role: "customer",
   });
-  const [showStaffSchedule, setShowStaffSchedule] = useState(false);
-  const [staffScheduleId, setStaffScheduleId] = useState(0);
+  const [showCreateCustomer, setShowCreateCustomer] = useState(false);
+  const [showConfirmCreateCustomer, setShowConfirmCreateCustomer] =
+    useState(false);
+  const [showCustomerDetail, setShowCustomerDetail] = useState(false);
+  const [customerDetail, setCustomerDetail] = useState({
+    _id: "",
+    username: "",
+    role: "",
+    bookings: [],
+  });
+  const [isRefetch, setIsRefetch] = useState(false);
 
   //Pagination
   let items = [];
-  for (let number = 1; number <= Math.ceil(staffsData.length / 10); number++) {
+  for (
+    let number = 1;
+    number <= Math.ceil(customersData.length / 10);
+    number++
+  ) {
     items.push(
       <Pagination.Item
         onClick={() => {
@@ -69,12 +84,19 @@ const ManageCustomer = () => {
 
   const handlePaginationClick = (number) => {
     setActive(number);
-    setStaffs(staffsData.slice(10 * (number - 1), 10 * number));
+    setCustomers(customersData.slice(10 * (number - 1), 10 * number));
   };
 
   useEffect(() => {
+    if (isRefetch) {
+      refetch();
+      setIsRefetch(false);
+    }
+  }, [isRefetch]);
+
+  useEffect(() => {
     if (!isFetching) {
-      setStaffs(staffsData.slice(0, 10));
+      setCustomers(customersData.slice(0, 10));
     }
   }, [isFetching]);
 
@@ -93,8 +115,13 @@ const ManageCustomer = () => {
     <>
       <div className="manage-customer-container">
         <div className="button-container">
-          <Button>
-            ADD <FontAwesomeIcon icon={faPlus} color="" />
+          <Button
+            variant="primary"
+            onClick={() => {
+              setShowCreateCustomer(true);
+            }}
+          >
+            Thêm tài khoản <FontAwesomeIcon icon={faPlus} color="" />
           </Button>
         </div>
         <div className="table-container">
@@ -108,12 +135,12 @@ const ManageCustomer = () => {
               </tr>
             </thead>
             <tbody>
-              {staffs.map((staff, index) => {
+              {customers.map((customer, index) => {
                 return (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{staff.username}</td>
-                    <td>{staff.role}</td>
+                    <td>{customer.username}</td>
+                    <td>{customer.role}</td>
                     <td>
                       <div className="action-button-container">
                         <OverlayTrigger
@@ -131,41 +158,17 @@ const ManageCustomer = () => {
                           <Button
                             variant="primary"
                             onClick={() => {
-                              setShowStaffDetail(true);
-                              setStaffDetail({
-                                number: index + 1,
-                                id: staff.id,
-                                name: staff.name,
+                              setShowCustomerDetail(true);
+                              setCustomerDetail({
+                                _id: customer._id,
+                                username: customer.username,
+                                role: customer.role,
+                                bookings: [...customer.booking],
                               });
                             }}
                           >
                             <FontAwesomeIcon
                               icon={faPenToSquare}
-                              color="#ffffff"
-                            />
-                          </Button>
-                        </OverlayTrigger>
-                        <OverlayTrigger
-                          placement="bottom"
-                          delay={{ show: 200, hide: 100 }}
-                          overlay={
-                            <Tooltip
-                              className="customer-schedule-button"
-                              id="schedule-button-tooltip"
-                            >
-                              SCHEDULE
-                            </Tooltip>
-                          }
-                        >
-                          <Button
-                            variant="success"
-                            onClick={() => {
-                              setShowStaffSchedule(true);
-                              setStaffScheduleId(staff.scheduleId);
-                            }}
-                          >
-                            <FontAwesomeIcon
-                              icon={faCalendarCheck}
                               color="#ffffff"
                             />
                           </Button>
@@ -198,15 +201,17 @@ const ManageCustomer = () => {
           <Pagination className="pagination-container">{items}</Pagination>
         </div>
       </div>
-      <StaffDetail
-        showStaffDetail={showStaffDetail}
-        setShowStaffDetail={setShowStaffDetail}
-        staffDetail={staffDetail}
+      <CustomerDetail
+        showCustomerDetail={showCustomerDetail}
+        setShowCustomerDetail={setShowCustomerDetail}
+        customerDetail={customerDetail}
       />
-      <ManageSchedule
-        showStaffSchedule={showStaffSchedule}
-        setShowStaffSchedule={setShowStaffSchedule}
-        staffScheduleId={staffScheduleId}
+      <CreateCustomer
+        showCreateCustomer={showCreateCustomer}
+        setShowCreateCustomer={setShowCreateCustomer}
+        customer={customer}
+        setCustomer={setCustomer}
+        setShowConfirmCreateCustomer={setShowConfirmCreateCustomer}
       />
     </>
   );

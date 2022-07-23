@@ -56,33 +56,36 @@ const MenuBar = () => {
   return (
     <>
       <div className="nav-bar">
-        <div className="user-avatar">
-          <Link to="/userProfile">
-            <Image src={defaultUserAvatar} roundedCircle fluid />
-          </Link>
-        </div>
         <Navbar expand="lg">
-          <Nav className="nav flex-column" defaultActiveKey={location.pathname}>
+          <Nav className="nav flex-column" activeKey={location.pathname}>
             <Nav.Item>
+              <div className="user-avatar">
+                <Link to="/userProfile">
+                  <Image src={defaultUserAvatar} roundedCircle fluid />
+                </Link>
+              </div>
+            </Nav.Item>
+            <Nav.Item className="menu-button">
               <Nav.Link as={Link} to="/dashboard" eventKey="/dashboard">
-                DASHBOARD
+                Dashboard
               </Nav.Link>
             </Nav.Item>
 
-            <Nav.Item>
+            <Nav.Item className="menu-button">
               <Nav.Link as={Link} to="/booking" eventKey="/booking">
-                LỊCH HẸN
+                Lịch hẹn
               </Nav.Link>
             </Nav.Item>
 
-            <Nav.Item>
+            <Nav.Item className="menu-button">
               <Nav.Link as={Link} to="/order" eventKey="/order">
-                ĐƠN HÀNG
+                Đơn hàng
               </Nav.Link>
             </Nav.Item>
 
             <Accordion>
               <Accordion.Toggle
+                className="menu-button"
                 as={Nav.Item}
                 eventKey="0"
                 onClick={() => {
@@ -90,7 +93,7 @@ const MenuBar = () => {
                 }}
               >
                 <Nav.Link>
-                  TÀI KHOẢN
+                  Tài khoản
                   <FontAwesomeIcon
                     icon={isCollapse ? faAngleUp : faAngleDown}
                     color="#000000"
@@ -98,24 +101,36 @@ const MenuBar = () => {
                 </Nav.Link>
               </Accordion.Toggle>
               <Accordion.Collapse eventKey="0">
-                <Nav.Item>
+                <Nav.Item className="menu-button">
                   <Nav.Link as={Link} to="/customer" eventKey="/customer">
-                    KHÁCH HÀNG
+                    Khách hàng
                   </Nav.Link>
                 </Nav.Item>
               </Accordion.Collapse>
               <Accordion.Collapse eventKey="0">
-                <Nav.Item>
+                <Nav.Item className="menu-button">
                   <Nav.Link as={Link} to="/staff" eventKey="/staff">
-                    NHÂN VIÊN
+                    Nhân viên
                   </Nav.Link>
                 </Nav.Item>
               </Accordion.Collapse>
             </Accordion>
 
-            <Nav.Item>
+            <Nav.Item className="menu-button">
+              <Nav.Link as={Link} to="/service" eventKey="/service">
+                Dịch vụ
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item className="menu-button">
+              <Nav.Link as={Link} to="/accessory" eventKey="/accessory">
+                Phụ kiện
+              </Nav.Link>
+            </Nav.Item>
+
+            <Nav.Item className="log-out-button menu-button">
               <Nav.Link onClick={handleLogout} eventKey="/logout">
-                ĐĂNG XUẤT
+                Đăng xuất
               </Nav.Link>
             </Nav.Item>
           </Nav>

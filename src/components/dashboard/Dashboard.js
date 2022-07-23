@@ -45,9 +45,10 @@ const Dashboard = () => {
   const [tableType, setTableType] = useState(dashboardDynamicTableEnum.BOOKING);
   const todayDate = moment().format("DD MMMM YYYY");
   const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
-  const [endDate, setEndDate] = useState(
-    moment().endOf("month").format("YYYY-MM-DD")
-  );
+  // const [endDate, setEndDate] = useState(
+  //   moment().endOf("month").format("YYYY-MM-DD")
+  // );
+  const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [datesInBetween, setDatesInBetween] = useState([]);
 
   //Global state
@@ -100,7 +101,7 @@ const Dashboard = () => {
         <div className="dashboard-card-container">
           <Card className="dashboard-card">
             <Card.Header className="dashboard-card-header">
-              <div>Lịch Hẹn</div>
+              <div>Lịch hẹn</div>
               <div className="profit">
                 <FontAwesomeIcon icon={faPlus} size="xs" />
                 <span>6%</span>
@@ -109,7 +110,7 @@ const Dashboard = () => {
             </Card.Header>
             <Card.Body className="dashboard-card-body">
               <Card.Title>25</Card.Title>
-              <Card.Text>Lịch Hẹn Mới</Card.Text>
+              <Card.Text>Lịch hẹn mới</Card.Text>
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/order">
@@ -121,7 +122,7 @@ const Dashboard = () => {
 
           <Card className="dashboard-card">
             <Card.Header className="dashboard-card-header">
-              <div>Đơn Hàng</div>
+              <div>Đơn hàng</div>
               <div className="loss">
                 <FontAwesomeIcon icon={faMinus} size="xs" />
                 <span>3%</span>
@@ -130,7 +131,7 @@ const Dashboard = () => {
             </Card.Header>
             <Card.Body className="dashboard-card-body">
               <Card.Title>25</Card.Title>
-              <Card.Text>Đơn Hàng Mới</Card.Text>
+              <Card.Text>Đơn hàng mới</Card.Text>
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/staff">
@@ -151,7 +152,7 @@ const Dashboard = () => {
             </Card.Header>
             <Card.Body className="dashboard-card-body">
               <Card.Title>25</Card.Title>
-              <Card.Text>Placeholder Mới</Card.Text>
+              <Card.Text>Placeholder mới</Card.Text>
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
               <Card.Link as={Link} to="/booking">
@@ -161,12 +162,12 @@ const Dashboard = () => {
             </Card.Footer>
           </Card>
         </div>
-        <div className="dashboard-schedule-container">
+        {/* <div className="dashboard-schedule-container">
           <ListGroup>
             <ListGroup.Item>
               <div className="filter-container">
                 <Form.Group controlId="formStartDate">
-                  <Form.Label>FROM DATE</Form.Label>
+                  <Form.Label>Từ ngày</Form.Label>
                   <Form.Control
                     type="date"
                     value={startDate}
@@ -176,7 +177,7 @@ const Dashboard = () => {
                   />
                 </Form.Group>
                 <Form.Group controlId="formEndDate">
-                  <Form.Label>TO DATE</Form.Label>
+                  <Form.Label>Đến ngày</Form.Label>
                   <Form.Control
                     type="date"
                     value={endDate}
@@ -214,8 +215,73 @@ const Dashboard = () => {
               </div>
             </ListGroup.Item>
           </ListGroup>
+        </div> */}
+
+        <div className="dashboard-schedule-container">
+          <ListGroup>
+            <ListGroup.Item>
+              <div className="filter-container">
+                <Form inline>
+                  <Form.Group controlId="formDashboardStartDate">
+                    <Form.Label style={{ marginRight: "10px" }}>
+                      Lịch làm việc từ ngày
+                    </Form.Label>
+                    <Form.Control
+                      style={{ marginRight: "10px" }}
+                      type="date"
+                      value={startDate}
+                      onChange={(e) => {
+                        setStartDate(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                  <Form.Group controlId="formDashboardEndDate">
+                    <Form.Label style={{ marginRight: "10px" }}>
+                      đến ngày
+                    </Form.Label>
+                    <Form.Control
+                      type="date"
+                      value={endDate}
+                      onChange={(e) => {
+                        setEndDate(e.target.value);
+                      }}
+                    />
+                  </Form.Group>
+                </Form>
+              </div>
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <div className="dashboard-schedule-table-container">
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th>Ngày\Slot</th>
+                      {slots.map((slot) => {
+                        return <th key={slot}>Slot {slot}</th>;
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {datesInBetween.map((date, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{date}</td>
+                          {slots.map((slot) => {
+                            return <td key={slot} />;
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              </div>
+            </ListGroup.Item>
+          </ListGroup>
         </div>
-        <div className="dashboard-recent-container">
+
+        {
+          //#region dashboard recent container
+          /* <div className="dashboard-recent-container">
           <div className="dashboard-dynamic-table">
             <ListGroup>
               <ListGroup.Item className="dashboard-dynamic-table-title">
@@ -295,7 +361,9 @@ const Dashboard = () => {
               })}
             </ListGroup>
           </div>
-        </div>
+        </div> */
+          //#endregion
+        }
       </div>
     </>
   );

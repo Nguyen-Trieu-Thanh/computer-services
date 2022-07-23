@@ -24,34 +24,33 @@ const StaffDetail = ({ showStaffDetail, setShowStaffDetail, staffDetail }) => {
           <Modal.Header closeButton={true}>
             <Modal.Title>Staff No. {staffDetail.number}</Modal.Title>
           </Modal.Header>
-          <div className="modal-body-container">
-            <Modal.Body>
-              <Form>
-                <Row>
-                  <Col>
-                    <Form.Group controlId="formStaffDetailPhoneNumber">
-                      <Form.Label>Số điện thoại:</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="phonenum"
-                        defaultValue={staffDetail.phonenum}
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="formStaffDetailRole">
-                      <Form.Label>Vai trò:</Form.Label>
-                      <Form.Control
-                        type="text"
-                        name="role"
-                        defaultValue={staffDetail.role}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Form>
-            </Modal.Body>
-          </div>
+          <Modal.Body className="modal-body-container">
+            <Form>
+              <Row>
+                <Col>
+                  <Form.Group controlId="formStaffDetailPhoneNumber">
+                    <Form.Label>Số điện thoại:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="phonenum"
+                      defaultValue={staffDetail.phonenum}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="formStaffDetailRole">
+                    <Form.Label>Vai trò:</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="role"
+                      defaultValue={staffDetail.role}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Form>
+          </Modal.Body>
+
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close

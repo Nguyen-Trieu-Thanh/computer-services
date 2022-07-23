@@ -1,0 +1,55 @@
+.manage-service-container {
+  margin: 10px 0 0 0;
+}
+
+.manage-service-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-service-container .table-container {
+}
+
+.manage-service-container .table-container {
+}
+
+.manage-service-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.manage-service-container .table-container th {
+  text-align: center;
+}
+
+.manage-service-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-service-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-service-container .pagination-container {
+  float: right;
+}
+
+/*Tooltip CSS*/
+
+.service-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.service-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.service-edit-button .arrow::before {
+  border-bottom-color: blue;
+}

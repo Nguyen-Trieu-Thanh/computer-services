@@ -1,0 +1,55 @@
+.manage-accessory-container {
+  margin: 10px 0 0 0;
+}
+
+.manage-accessory-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-accessory-container .table-container {
+}
+
+.manage-accessory-container .table-container {
+}
+
+.manage-accessory-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.manage-accessory-container .table-container th {
+  text-align: center;
+}
+
+.manage-accessory-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-accessory-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-accessory-container .pagination-container {
+  float: right;
+}
+
+/*Tooltip CSS*/
+
+.accessory-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.accessory-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.accessory-edit-button .arrow::before {
+  border-bottom-color: blue;
+}

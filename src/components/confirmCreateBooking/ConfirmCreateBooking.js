@@ -26,8 +26,6 @@ const ConfirmCreateBooking = ({
 }) => {
   const [createBooking, { isLoading }] = useCreateBookingMutation();
 
-  console.log();
-
   const dispatch = useDispatch();
 
   const handleClose = () => {
@@ -35,14 +33,23 @@ const ConfirmCreateBooking = ({
     setShowCreateBooking(true);
   };
 
+  // const address =
+  //   "Đường " +
+  //   booking.cus_address.street +
+  //   ", Phường " +
+  //   booking.cus_address.ward +
+  //   ", Quận " +
+  //   booking.cus_address.district +
+  //   ", Thành phố " +
+  //   booking.cus_address.city;
+
   const address =
-    "Đường " +
     booking.cus_address.street +
-    ", Phường " +
+    ", " +
     booking.cus_address.ward +
-    ", Quận " +
+    ", " +
     booking.cus_address.district +
-    ", Thành phố " +
+    ", " +
     booking.cus_address.city;
 
   const handleConfirmBookingSubmit = async (e) => {
@@ -88,7 +95,7 @@ const ConfirmCreateBooking = ({
             <Form>
               <Row>
                 <Col>
-                  <Form.Group controlId="formCreateBookingPhoneNumber">
+                  <Form.Group controlId="formConfirmCreateBookingPhoneNumber">
                     <Form.Label>Số điện thoại:</Form.Label>
                     <Form.Control
                       plaintext
@@ -101,7 +108,7 @@ const ConfirmCreateBooking = ({
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId="formCreateBookingCustomerName">
+                  <Form.Group controlId="formConfirmCreateBookingCustomerName">
                     <Form.Label>Họ và tên khách hàng:</Form.Label>
                     <Form.Control
                       plaintext
@@ -116,7 +123,7 @@ const ConfirmCreateBooking = ({
               </Row>
               <Row>
                 <Col>
-                  <Form.Group controlId="formCreateBookingDescription">
+                  <Form.Group controlId="formConfirmCreateBookingDescription">
                     <Form.Label>Mô tả lịch hẹn:</Form.Label>
                     <Form.Control
                       as="textarea"
@@ -131,7 +138,7 @@ const ConfirmCreateBooking = ({
               </Row>
               <Row>
                 <Col>
-                  <Form.Group controlId="formCreateBookingType">
+                  <Form.Group controlId="formConfirmCreateBookingType">
                     <Form.Label>Loại lịch hẹn:</Form.Label>
                     <Form.Control
                       plaintext
@@ -144,7 +151,7 @@ const ConfirmCreateBooking = ({
                   </Form.Group>
                 </Col>
                 <Col>
-                  <Form.Group controlId="formCreateBookingAddress">
+                  <Form.Group controlId="formConfirmCreateBookingServices">
                     <Form.Label>Danh sách dịch vụ:</Form.Label>
                     <Form.Control
                       plaintext
@@ -164,7 +171,7 @@ const ConfirmCreateBooking = ({
               </Row>
               <Row>
                 <Col>
-                  <Form.Group controlId="formCreateBookingAddress">
+                  <Form.Group controlId="formConfirmCreateBookingAddress">
                     <Form.Label>Địa chỉ khách hàng:</Form.Label>
                     <Form.Control
                       plaintext

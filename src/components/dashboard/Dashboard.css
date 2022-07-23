@@ -70,15 +70,15 @@
 .dashboard-container .dashboard-schedule-container .filter-container {
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
-  text-align: center;
+  /* justify-content: space-evenly; */
+  /* text-align: center; */
 }
 
 .dashboard-container
   .dashboard-schedule-container
   .dashboard-schedule-table-container {
-  overflow-y: scroll;
-  height: 50vh;
+  /* overflow-y: scroll; */
+  /* height: 50vh; */
 }
 
 .dashboard-container .dashboard-schedule-container .table {

@@ -1,0 +1,24 @@
+.filter-booking-container {
+  width: 90vw;
+  max-width: none !important;
+}
+
+.filter-booking-container .modal-content-container {
+  /* height: 90vh; */
+}
+
+.filter-booking-container .modal-content-container .modal-body-container {
+  /* height: 80%; */
+}
+
+.filter-booking-container
+  .modal-content-container
+  .modal-body-container
+  .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.filter-booking-container .modal-content-container .booking-type-dropdown {
+  width: auto;
+}

@@ -9,11 +9,14 @@ import { useGetServicesQuery } from "../../redux/slices/service/serviceApiSlice"
 //React-redux
 import { useDispatch } from "react-redux";
 
-//CSS
-import "./CreateBooking.css";
-
 //React-bootstrap
 import { Button, Col, Form, InputGroup, Modal, Row } from "react-bootstrap";
+
+//Data
+import districts from "../../datas/HoChiMinhCityDistricts";
+
+//CSS
+import "./CreateBooking.css";
 
 const CreateBooking = ({
   showCreateBooking,
@@ -26,11 +29,6 @@ const CreateBooking = ({
   const dispatch = useDispatch();
 
   //Local state
-  const [serviceCheckboxes, setServiceCheckboxes] = useState({
-    clean: false,
-    replace: false,
-    install: false,
-  });
 
   const handleClose = () => {
     setShowCreateBooking(false);
@@ -45,20 +43,21 @@ const CreateBooking = ({
   const handleCreateBookingAddressChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    setBooking({
-      ...booking,
-      cus_address: { ...booking.cus_address, [name]: value },
-    });
+
+    if (name === "district") {
+      const ward = districts.find((district) => district.name === value)
+        .wards[0].name;
+      setBooking({
+        ...booking,
+        cus_address: { ...booking.cus_address, [name]: value, ward: ward },
+      });
+    } else {
+      setBooking({
+        ...booking,
+        cus_address: { ...booking.cus_address, [name]: value },
+      });
+    }
   };
-
-  // const handleCreateBookingServiceChange = (e) => {
-  //   const name = e.target.name;
-
-  //   setServiceCheckboxes({
-  //     ...serviceCheckboxes,
-  //     [name]: !serviceCheckboxes[name],
-  //   });
-  // };
 
   const handleCreateBookingServiceChange = (e) => {
     let newServices = [...booking.services];
@@ -76,35 +75,6 @@ const CreateBooking = ({
       services: [...newServices],
     });
   };
-
-  // useEffect(() => {
-  //   let newServices = [...booking.services];
-  //   if (serviceCheckboxes.clean) {
-  //     if (!newServices.includes("Vệ sinh máy")) {
-  //       newServices.push("Vệ sinh máy");
-  //     }
-  //   } else {
-  //     newServices = newServices.filter((x) => x !== "Vệ sinh máy");
-  //   }
-
-  //   if (serviceCheckboxes.replace) {
-  //     if (!newServices.includes("Thay linh kiện")) {
-  //       newServices.push("Thay linh kiện");
-  //     }
-  //   } else {
-  //     newServices = newServices.filter((x) => x !== "Thay linh kiện");
-  //   }
-
-  //   if (serviceCheckboxes.install) {
-  //     if (!newServices.includes("Cài đặt phần mềm")) {
-  //       newServices.push("Cài đặt phần mềm");
-  //     }
-  //   } else {
-  //     newServices = newServices.filter((x) => x !== "Cài đặt phần mềm");
-  //   }
-
-  //   setBooking({ ...booking, services: newServices });
-  // }, [serviceCheckboxes]);
 
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
@@ -151,35 +121,7 @@ const CreateBooking = ({
                 </Col>
               </Row>
               <Row>
-                <Col>
-                  <Form.Group controlId="formCreateBookingDescription">
-                    <Form.Label>Mô tả lịch hẹn:</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      name="description"
-                      value={booking.description}
-                      onChange={handleCreateBookingChange}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formCreateBookingType">
-                    <Form.Label>Loại lịch hẹn:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="type"
-                      value={booking.type}
-                      onChange={handleCreateBookingChange}
-                    >
-                      <option>Door-to-Door</option>
-                      <option>In place</option>
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col>
+                {/* <Col>
                   <Form.Group controlId="formCreateBookingAddress">
                     <Form.Label>Địa chỉ khách hàng:</Form.Label>
                     <InputGroup>
@@ -212,6 +154,84 @@ const CreateBooking = ({
                         onChange={handleCreateBookingAddressChange}
                       />
                     </InputGroup>
+                  </Form.Group>
+                </Col> */}
+                <Col lg={9}>
+                  <Form.Group controlId="formCreateBookingAddress">
+                    <Form.Label>Địa chỉ khách hàng:</Form.Label>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>Thành phố Hồ Chí Minh</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        as="select"
+                        name="district"
+                        value={booking.cus_address.district}
+                        onChange={handleCreateBookingAddressChange}
+                      >
+                        {districts.map((district, index) => {
+                          return (
+                            <option key={index} value={district.name}>
+                              {district.name}
+                            </option>
+                          );
+                        })}
+                      </Form.Control>
+                      <Form.Control
+                        as="select"
+                        name="ward"
+                        value={booking.cus_address.ward}
+                        onChange={handleCreateBookingAddressChange}
+                      >
+                        {districts
+                          .find(
+                            (district) =>
+                              district.name === booking.cus_address.district
+                          )
+                          .wards.map((ward, index) => {
+                            return (
+                              <option key={index} value={ward.name}>
+                                {ward.name}
+                              </option>
+                            );
+                          })}
+                      </Form.Control>
+                      <Form.Control
+                        type="text"
+                        placeholder="Đường"
+                        name="street"
+                        value={booking.cus_address.street}
+                        onChange={handleCreateBookingAddressChange}
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="formCreateBookingType">
+                    <Form.Label>Loại lịch hẹn:</Form.Label>
+                    <Form.Control
+                      as="select"
+                      name="type"
+                      value={booking.type}
+                      onChange={handleCreateBookingChange}
+                    >
+                      <option>Door-to-Door</option>
+                      <option>In place</option>
+                    </Form.Control>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group controlId="formCreateBookingDescription">
+                    <Form.Label>Mô tả lịch hẹn:</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={5}
+                      name="description"
+                      value={booking.description}
+                      onChange={handleCreateBookingChange}
+                    />
                   </Form.Group>
                 </Col>
               </Row>
