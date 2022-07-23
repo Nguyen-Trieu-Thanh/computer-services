@@ -47,14 +47,23 @@ const BookingDetail = ({
     setBookingDetail({ ...bookingDetail, [name]: value });
   };
 
+  // const address =
+  //   "Đường " +
+  //   bookingDetail.cus_address.street +
+  //   ", Phường " +
+  //   bookingDetail.cus_address.ward +
+  //   ", Quận " +
+  //   bookingDetail.cus_address.district +
+  //   ", Thành phố " +
+  //   bookingDetail.cus_address.city;
+
   const address =
-    "Đường " +
     bookingDetail.cus_address.street +
-    ", Phường " +
+    ", " +
     bookingDetail.cus_address.ward +
-    ", Quận " +
+    ", " +
     bookingDetail.cus_address.district +
-    ", Thành phố " +
+    ", " +
     bookingDetail.cus_address.city;
 
   const handleUpdateBookingSubmit = async (e) => {
@@ -264,6 +273,9 @@ const BookingDetail = ({
                 setIsEditBooking(!isEditBooking);
               }}
             />
+            <Button variant="secondary" onClick={handleClose}>
+              Đóng
+            </Button>
             <Button
               type="submit"
               variant="primary"
@@ -271,9 +283,6 @@ const BookingDetail = ({
               onClick={handleUpdateBookingSubmit}
             >
               {isLoading ? <Spinner animation="border" /> : "Cập nhật"}
-            </Button>
-            <Button variant="secondary" onClick={handleClose}>
-              Đóng
             </Button>
           </Modal.Footer>
         </div>

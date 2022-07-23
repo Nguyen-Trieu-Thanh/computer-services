@@ -16,6 +16,7 @@
 }
 
 .manage-booking-container .table-container {
+  height: 70vh;
 }
 
 .manage-booking-container .table-container thead {

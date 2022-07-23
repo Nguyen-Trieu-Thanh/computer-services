@@ -4,7 +4,9 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getBookings: builder.query({
       query: (filterBooking) =>
-        `/booking/all?sort=${filterBooking.sort}&status=${filterBooking.status}`,
+        `/booking/all?sort=${filterBooking.sort}&status=${
+          filterBooking.status
+        }&page=${filterBooking.page}&limit=${10}`,
       keepUnusedDataFor: 0,
     }),
     createBooking: builder.mutation({
