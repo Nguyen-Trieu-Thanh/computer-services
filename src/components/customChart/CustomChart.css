@@ -1,0 +1,32 @@
+.custom-chart-container {
+}
+
+.custom-chart-container .chart-request-container {
+  padding-bottom: 0;
+}
+
+.custom-chart-container .chart-request-container .date-item {
+  /* height: 10px; */
+  text-align: center;
+  padding: 0 1.25rem;
+}
+
+.custom-chart-container .request-type-items-container {
+  margin-top: 20px;
+  justify-content: space-around;
+}
+
+.custom-chart-container .line-chart-container {
+  height: 85vh;
+}
+
+.custom-chart-container .line-chart-container .loading {
+  height: auto;
+  width: 100%;
+  padding: 10px 0 0 0;
+  text-align: center;
+}
+
+.custom-chart-container .line-chart-container .loading-text {
+  font-size: 30px;
+}

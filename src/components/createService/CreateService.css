@@ -1,0 +1,56 @@
+.create-service-container {
+  width: 60vw;
+  max-width: none !important;
+}
+
+.create-service-container .modal-content-container {
+  /* height: 90vh; */
+}
+
+.create-service-container .modal-content-container .modal-body-container {
+  /* height: 80%; */
+}
+
+.create-service-container
+  .modal-content-container
+  .modal-body-container
+  .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.create-service-container .modal-content-container .service-type-dropdown {
+  width: auto;
+}
+
+/*Table*/
+.create-service-container
+  .modal-content-container
+  .modal-body-container
+  .table-container {
+}
+
+.create-service-container
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  thead {
+  background-color: var(--main-color);
+}
+
+.create-service-container
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  th {
+  text-align: center;
+}
+
+.create-service-container
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  td {
+  text-align: center;
+  vertical-align: middle;
+}

@@ -1,0 +1,24 @@
+.create-accessory-container {
+  width: 60vw;
+  max-width: none !important;
+}
+
+.create-accessory-container .modal-content-container {
+  /* height: 90vh; */
+}
+
+.create-accessory-container .modal-content-container .modal-body-container {
+  /* height: 80%; */
+}
+
+.create-accessory-container
+  .modal-content-container
+  .modal-body-container
+  .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.create-accessory-container .modal-content-container .accessory-type-dropdown {
+  width: auto;
+}

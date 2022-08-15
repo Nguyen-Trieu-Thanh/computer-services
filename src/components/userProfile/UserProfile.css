@@ -1,0 +1,11 @@
+.user-profile-container {
+  margin: 10px 0 0 0;
+}
+
+.user-profile-container a {
+  color: #000000;
+}
+
+.user-profile-container .nav-link.active {
+  /* background-color: #fff4e6; */
+}

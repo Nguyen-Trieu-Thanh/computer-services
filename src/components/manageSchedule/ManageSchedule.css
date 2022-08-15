@@ -1,0 +1,101 @@
+.manage-schedule-container {
+  margin: 10px 0 0 0;
+}
+
+.manage-schedule-container .filter-container {
+  width: auto;
+  display: flex;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-schedule-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-schedule-container .table-container {
+  /* height: 70vh; */
+}
+
+.manage-schedule-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.manage-schedule-container .table-container th {
+  text-align: center;
+}
+
+.manage-schedule-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-schedule-container .table-container .tr-disabled {
+  background-color: #cccccc;
+}
+
+.manage-schedule-container .table-container .td-disabled {
+  background-color: #cccccc;
+}
+
+.manage-schedule-container .table-container .tr-disabled td {
+  color: #808080;
+}
+
+.manage-schedule-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-schedule-container .pagination-container {
+  float: right;
+}
+
+/*Tooltip CSS*/
+
+.schedule-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.schedule-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.schedule-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.schedule-approve-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.schedule-approve-button .tooltip-inner {
+  background-color: green;
+  color: #fff;
+}
+
+.schedule-approve-button .arrow::before {
+  border-bottom-color: green;
+}
+
+.schedule-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.schedule-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.schedule-delete-button .arrow::before {
+  border-bottom-color: red;
+}

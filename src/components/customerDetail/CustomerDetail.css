@@ -1,0 +1,57 @@
+.customer-detail {
+  width: 90vw;
+  max-width: none !important;
+}
+
+.customer-detail .modal-content-container {
+  /* height: 90vh; */
+}
+
+.customer-detail .modal-content-container .modal-body-container {
+  /* height: 80%; */
+}
+
+.customer-detail .modal-content-container .modal-body-container .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/*Table*/
+.customer-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container {
+}
+
+.customer-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  thead {
+  background-color: var(--main-color);
+}
+
+.customer-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  th {
+  text-align: center;
+}
+
+.customer-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.customer-detail
+  .modal-content-container
+  .modal-body-container
+  .pagination-container {
+  float: right;
+  margin-bottom: 0;
+}

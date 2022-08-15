@@ -1,0 +1,352 @@
+.dashboard-page-title {
+  margin: 10px 0 10px 0;
+  font-size: 2vw;
+  font-weight: bold;
+}
+
+.dashboard-container {
+}
+
+.dashboard-container .dashboard-user-welcome {
+  width: 30vw;
+  margin: 0 0 50px 0;
+}
+
+.dashboard-container .dashboard-user-welcome .loading {
+  height: auto;
+  width: 100%;
+  padding: 10px 0 0 0;
+  text-align: center;
+}
+
+.dashboard-container .dashboard-user-welcome .loading-text {
+  font-size: 30px;
+}
+
+.dashboard-container .dashboard-user-welcome .card-text {
+  font-size: 30px;
+}
+
+.dashboard-container .dashboard-card-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.dashboard-container .dashboard-card {
+  width: 25vw;
+  background-color: #ffffff;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-header {
+  text-align: center;
+  background-color: var(--main-color);
+}
+
+.dashboard-container .dashboard-card .profit {
+  color: green;
+}
+
+.dashboard-container .dashboard-card .loss {
+  color: red;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-header span {
+  /* margin: 0 2px 0 0; */
+}
+
+.dashboard-container .dashboard-card .dashboard-card-body {
+  text-align: center;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-footer {
+  text-align: right;
+  background-color: #ffffff;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-footer span {
+  font-size: 15px;
+  margin: 0 2px 0 0;
+}
+
+.dashboard-container .dashboard-card .dashboard-card-footer svg {
+  font-size: 12px;
+}
+
+/*Chart container*/
+.dashboard-container .dashboard-chart-container {
+  margin: 50px 0 0 0;
+}
+
+/*Schedule container*/
+.dashboard-container .dashboard-schedule-container {
+  margin: 50px 0 0 0;
+}
+
+.dashboard-container .dashboard-schedule-container .box-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-container .dashboard-schedule-container .box {
+  width: 50px;
+  height: 100%;
+  border: 1px solid #000000;
+  margin: 0 10px 0 0;
+}
+
+.dashboard-container .dashboard-schedule-container .box-disabled {
+  background-color: #cccccc;
+}
+
+.dashboard-container .dashboard-schedule-container .box-almost-full {
+  background-color: #ffff4d;
+}
+
+.dashboard-container .dashboard-schedule-container .box-is-full {
+  background-color: #ff3333;
+}
+
+.dashboard-container .dashboard-schedule-container .filter-container {
+  width: 100%;
+  display: flex;
+  /* justify-content: space-evenly; */
+  /* text-align: center; */
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container {
+  overflow-y: scroll;
+  max-height: 80vh;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .loading {
+  height: auto;
+  width: 100%;
+  padding: 10px 0 0 0;
+  text-align: center;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .loading-text {
+  font-size: 30px;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .table {
+  margin: 0px;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  thead {
+  background-color: var(--main-color);
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  th {
+  text-align: center;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .date-th {
+  width: 11%;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .slot-th {
+  width: 11.125%;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .td-text {
+  font-size: 11px;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .td-clickable {
+  cursor: pointer;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .almost-full {
+  background-color: #ffff4d;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .is-full {
+  background-color: #ff3333;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .tr-disabled {
+  background-color: #cccccc;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .td-disabled {
+  background-color: #cccccc;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .dashboard-schedule-table-container
+  .tr-disabled
+  td {
+  color: #808080;
+}
+/*Recent container*/
+.dashboard-container .dashboard-recent-container {
+  display: flex;
+  margin: 50px 0 0 0;
+}
+
+/*Dashboard dynamic table*/
+.dashboard-container .dashboard-recent-container .dashboard-dynamic-table {
+  flex: 3;
+  margin: 0 20px 0 0;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .dashboard-dynamic-table
+  .dashboard-dynamic-table-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .dashboard-dynamic-table
+  .dashboard-dynamic-table-title
+  .dropdown
+  .btn:disabled {
+  width: 130px;
+  text-align: left;
+  opacity: 1;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .dashboard-dynamic-table
+  .dashboard-dynamic-table-title
+  span {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+/*Recent customer*/
+.dashboard-container .dashboard-recent-container .recent-customer {
+  flex: 1;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-list-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-list-title
+  span {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item {
+  display: flex;
+  align-items: center;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-img {
+  flex: 1;
+  text-align: center;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info {
+  flex: 5;
+  margin: 0 0 0 20px;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info
+  .customer-name {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info
+  .customer-address {
+  font-size: 15x;
+  font-weight: bold;
+}
+
+.dashboard-container
+  .dashboard-recent-container
+  .recent-customer
+  .recent-customer-item
+  .customer-info
+  .customer-phone {
+  font-size: 12px;
+  font-weight: bold;
+  color: #808080;
+}

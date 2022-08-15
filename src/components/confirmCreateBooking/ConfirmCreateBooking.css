@@ -1,0 +1,36 @@
+.confirm-create-booking-container {
+  width: 60vw;
+  max-width: none !important;
+}
+
+.confirm-create-booking-container .modal-content-container {
+  /* height: 90vh; */
+}
+
+.confirm-create-booking-container
+  .modal-content-container
+  .modal-body-container {
+  /* height: 80%; */
+}
+
+.confirm-create-booking-container
+  .modal-content-container
+  .modal-body-container
+  .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.confirm-create-booking-container .modal-content-container .confirm-button {
+  width: 15%;
+}
+
+.confirm-create-booking-container
+  .modal-content-container
+  .confirm-button
+  .spinner-border {
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+}

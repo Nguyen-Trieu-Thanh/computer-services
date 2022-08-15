@@ -1,0 +1,60 @@
+.service-detail {
+  width: 60vw;
+  max-width: none !important;
+}
+
+.service-detail .modal-content-container {
+  /* height: 90vh; */
+}
+
+.service-detail .modal-content-container .modal-body-container {
+  /* height: 80%; */
+}
+
+.service-detail .modal-content-container .modal-body-container .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.service-detail .modal-content-container button {
+  width: 15%;
+}
+
+.service-detail .modal-content-container button .spinner-border {
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+}
+
+/*Table*/
+.service-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container {
+}
+
+.service-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  thead {
+  background-color: var(--main-color);
+}
+
+.service-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  th {
+  text-align: center;
+}
+
+.service-detail
+  .modal-content-container
+  .modal-body-container
+  .table-container
+  td {
+  text-align: center;
+  vertical-align: middle;
+}

@@ -1,0 +1,24 @@
+.create-customer-container {
+  width: 60vw;
+  max-width: none !important;
+}
+
+.create-customer-container .modal-content-container {
+  /* height: 90vh; */
+}
+
+.create-customer-container .modal-content-container .modal-body-container {
+  /* height: 80%; */
+}
+
+.create-customer-container
+  .modal-content-container
+  .modal-body-container
+  .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.create-customer-container .modal-content-container .customer-type-dropdown {
+  width: auto;
+}

@@ -1,0 +1,29 @@
+.login-page {
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--main-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-page .login-title-container {
+  text-align: center;
+  font-weight: 700;
+  font-size: 30px;
+}
+
+.login-page .form-button {
+  width: 60%;
+}
+
+.login-page .form-button .spinner-border {
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+}
+
+.login-page .forgot-password-container .forgot-password-button {
+  float: right;
+}

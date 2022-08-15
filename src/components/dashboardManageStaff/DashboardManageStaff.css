@@ -1,0 +1,23 @@
+.dashboard-manage-staff-table-container {
+}
+
+.dashboard-manage-staff-table-container .table-container {
+}
+
+.dashboard-manage-staff-table-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.dashboard-manage-staff-table-container .table-container th {
+  text-align: center;
+}
+
+.dashboard-manage-staff-table-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dashboard-manage-staff-table-container .pagination-container {
+  float: right;
+  margin-bottom: 0;
+}

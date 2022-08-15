@@ -1,0 +1,41 @@
+.slot-detail {
+  width: 60vw;
+  max-width: none !important;
+}
+
+.slot-detail .modal-content-container {
+  /* height: 90vh; */
+}
+
+.slot-detail .modal-content-container .modal-body-container {
+  /* height: 80%; */
+}
+
+.slot-detail .modal-content-container .modal-body-container thead {
+  background-color: var(--main-color);
+}
+
+.slot-detail .modal-content-container .modal-body-container th {
+  text-align: center;
+}
+
+.slot-detail .modal-content-container .modal-body-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.slot-detail .modal-content-container .modal-body-container .form-label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.slot-detail .modal-content-container button {
+  width: 15%;
+}
+
+.slot-detail .modal-content-container button .spinner-border {
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+}

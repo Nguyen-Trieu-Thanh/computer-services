@@ -1,0 +1,44 @@
+.manage-staff-schedule-container {
+  width: 90vw;
+  max-width: none !important;
+}
+
+.manage-staff-schedule-container .modal-content-container {
+}
+
+.manage-staff-schedule-container .modal-content-container .modal-title {
+  width: 100%;
+}
+
+.manage-staff-schedule-container .modal-content-container .filter-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+}
+
+.manage-staff-schedule-container .modal-content-container .modal-body-container {
+}
+
+.manage-staff-schedule-container
+  .modal-content-container
+  .modal-body-container
+  .table {
+  margin: 0px;
+}
+
+.manage-staff-schedule-container
+  .modal-content-container
+  .modal-body-container
+  thead {
+  background-color: var(--main-color);
+}
+
+.manage-staff-schedule-container .modal-content-container .modal-body-container th {
+  text-align: center;
+}
+
+.manage-staff-schedule-container .modal-content-container .modal-body-container td {
+  text-align: center;
+  vertical-align: middle;
+}

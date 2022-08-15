@@ -1,0 +1,28 @@
+.staff-detail-container {
+  margin: 10px 0 0 0;
+}
+
+.staff-detail-container .table-container .table {
+  margin: 0;
+}
+
+.staff-detail-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.staff-detail-container .table-container th {
+  text-align: center;
+}
+
+.staff-detail-container .table-container .date-th {
+  width: 11;
+}
+
+.staff-detail-container .table-container .slot-th {
+  width: 11.125%;
+}
+
+.staff-detail-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}

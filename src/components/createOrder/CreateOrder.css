@@ -1,0 +1,27 @@
+.create-order-container {
+  margin: 10px 0 0 0;
+}
+
+.create-order-container .create-order-body-container {
+}
+
+.create-order-container .create-order-body-container .dropdown .btn:disabled {
+  width: 140px;
+  text-align: left;
+  opacity: 1;
+}
+
+.create-order-container .create-order-body-container thead {
+  background-color: var(--main-color);
+}
+
+.create-order-container .create-order-body-container th {
+  text-align: center;
+}
+
+.create-order-container .create-order-body-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+.create-order-container .create-order-body-container .step-progress-container {
+}

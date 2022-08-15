@@ -1,0 +1,67 @@
+.manage-order-container {
+  margin: 10px 0 0 0;
+}
+
+.manage-order-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-order-container .table-container {
+}
+
+.manage-order-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.manage-order-container .table-container th {
+  text-align: center;
+}
+
+.manage-order-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-order-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-order-container .pagination-container {
+  float: right;
+}
+
+/*Tooltip CSS*/
+
+.order-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.order-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.order-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.order-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.order-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.order-delete-button .arrow::before {
+  border-bottom-color: red;
+}

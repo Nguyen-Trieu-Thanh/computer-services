@@ -1,0 +1,82 @@
+.manage-staff-container {
+  margin: 10px 0 0 0;
+}
+
+.manage-staff-container .button-container {
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  padding: 0px 0px 10px 0px;
+}
+
+.manage-staff-container .table-container {
+}
+
+.manage-staff-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.manage-staff-container .table-container th {
+  text-align: center;
+}
+
+.manage-staff-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-staff-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-staff-container .pagination-container {
+  float: right;
+}
+
+/*Tooltip CSS*/
+
+.staff-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.staff-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.staff-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.staff-schedule-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.staff-schedule-button .tooltip-inner {
+  background-color: green;
+  color: #fff;
+}
+
+.staff-schedule-button .arrow::before {
+  border-bottom-color: green;
+}
+
+.staff-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.staff-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.staff-delete-button .arrow::before {
+  border-bottom-color: red;
+}

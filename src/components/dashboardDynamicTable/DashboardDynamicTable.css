@@ -1,0 +1,23 @@
+.dashboard-dynamic-table-container {
+}
+
+.dashboard-dynamic-table-container .table-container {
+}
+
+.dashboard-dynamic-table-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.dashboard-dynamic-table-container .table-container th {
+  text-align: center;
+}
+
+.dashboard-dynamic-table-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dashboard-dynamic-table-container .pagination-container {
+  float: right;
+  margin-bottom: 0;
+}

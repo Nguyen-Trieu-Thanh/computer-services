@@ -1,0 +1,23 @@
+.dashboard-manage-booking-table-container {
+}
+
+.dashboard-manage-booking-table-container .table-container {
+}
+
+.dashboard-manage-booking-table-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.dashboard-manage-booking-table-container .table-container th {
+  text-align: center;
+}
+
+.dashboard-manage-booking-table-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.dashboard-manage-booking-table-container .pagination-container {
+  float: right;
+  margin-bottom: 0;
+}
