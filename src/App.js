@@ -15,6 +15,9 @@ import ManageOrder from "./components/manageOrder/ManageOrder";
 import ManageStaff from "./components/manageStaff/ManageStaff";
 import StaffDetail from "./components/staffDetail/StaffDetail";
 import ManageCustomer from "./components/manageCustomer/ManageCustomer";
+import CustomerDetail from "./components/customerDetail/CustomerDetail";
+import ManageManager from "./components/manageManager/ManageManager";
+
 import OrderDetail from "./components/orderDetail/OrderDetail";
 import UserProfile from "./components/userProfile/UserProfile";
 import ManageService from "./components/manageService/ManageService";
@@ -61,12 +64,25 @@ function App() {
             }
           >
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/booking" element={<ManageBooking />} />
+            {/* <Route path="/booking" element={<ManageBooking />} /> */}
+            <Route
+              path="/booking"
+              element={
+                <ProtectedRoute user={["manager"]}>
+                  <ManageBooking />
+                </ProtectedRoute>
+              }
+            />
             <Route path="/create-booking" element={<CreateBooking />} />
             <Route path="/order" element={<ManageOrder />} />
             <Route path="/staff" element={<ManageStaff />} />
             <Route path="/staff-detail/:account_id" element={<StaffDetail />} />
             <Route path="/customer" element={<ManageCustomer />} />
+            <Route
+              path="/customer-detail/:account_id"
+              element={<CustomerDetail />}
+            />
+            <Route path="/manager" element={<ManageManager />} />
             <Route path="/order-detail" element={<OrderDetail />} />
             <Route path="/userProfile" element={<UserProfile />} />
             <Route path="/service" element={<ManageService />} />

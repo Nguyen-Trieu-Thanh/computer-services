@@ -37,6 +37,7 @@ const RememberMeLogin = ({ children }) => {
           setCredentials({
             accessToken: res.accessToken,
             username: jwt_decode(res.accessToken).username,
+            role: jwt_decode(res.accessToken).role,
           })
         );
       });

@@ -20,6 +20,10 @@ export const scheduleApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getWorkSlotsById: builder.query({
+      query: (staffId) => `/schedule/work-slot/${staffId}`,
+      keepUnusedDataFor: 0,
+    }),
   }),
 });
 
@@ -27,4 +31,5 @@ export const {
   useGetSchedulesQuery,
   useGetSchedulesWithStaffDetailQuery,
   useAssignWorkSlotToOrderMutation,
+  useGetWorkSlotsByIdQuery,
 } = scheduleApiSlice;

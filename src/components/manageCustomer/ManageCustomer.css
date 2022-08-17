@@ -1,15 +1,26 @@
 .manage-customer-container {
-  margin: 10px 0 0 0;
+  margin: 5px 0 0 0;
+}
+
+.manage-customer-container .filter-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
 }
 
 .manage-customer-container .button-container {
-  width: 100%;
   display: flex;
   flex-direction: row-reverse;
-  padding: 0px 0px 10px 0px;
+}
+
+.manage-customer-container .content-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+}
+
+.manage-customer-container .content-container .pagination {
+  margin-bottom: 0;
 }
 
 .manage-customer-container .table-container {
+  height: 70vh;
 }
 
 .manage-customer-container .table-container thead {

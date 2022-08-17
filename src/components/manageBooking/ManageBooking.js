@@ -12,9 +12,12 @@ import { useGetServicesQuery } from "../../redux/slices/service/serviceApiSlice"
 //React-bootstrap
 import {
   Button,
+  Card,
+  Col,
   Form,
   InputGroup,
   OverlayTrigger,
+  Row,
   Spinner,
   Table,
   Tooltip,
@@ -131,150 +134,163 @@ const ManageBooking = () => {
   return (
     <>
       <div className="manage-booking-container">
-        <div className="button-container">
-          <Button
-            variant="primary"
-            onClick={() => {
-              navigate("/create-booking");
-            }}
-          >
-            Tạo lịch hẹn <FontAwesomeIcon icon={faPlus} color="" />
-          </Button>
-        </div>
-        <div className="filter-container">
-          <InputGroup className="mr-3">
-            <InputGroup.Prepend>
-              <InputGroup.Text>Trạng thái:</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              as="select"
-              name="status"
-              value={filterBooking.status}
-              onChange={handleFilterBookingChange}
-            >
-              <option value="">Toàn bộ</option>
-              <option value="Đã tiếp nhận">Đã tiếp nhận</option>
-              <option value="Đang xử lí">Đang xử lí</option>
-              <option value="Hủy">Hủy</option>
-            </Form.Control>
-          </InputGroup>
-          <InputGroup>
-            <InputGroup.Prepend>
-              <InputGroup.Text>Thứ tự:</InputGroup.Text>
-            </InputGroup.Prepend>
-            <Form.Control
-              as="select"
-              name="sort"
-              value={filterBooking.sort}
-              onChange={handleFilterBookingChange}
-            >
-              <option value="asc">Cũ đến mới</option>
-              <option value="desc">Mới đến cũ</option>
-            </Form.Control>
-          </InputGroup>
-        </div>
-        {isFetching ? (
-          <div className="loading">
-            <Spinner animation="border" />
-            <div className="loading-text">Đang tải dữ liệu...</div>
-          </div>
-        ) : (
-          <div className="table-container">
-            <Table bordered hover size="sm">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>TÊN KHÁCH HÀNG</th>
-                  <th>SỐ ĐIỆN THOẠI</th>
-                  <th>LOẠI LỊCH HẸN</th>
-                  <th>NGÀY HẸN (MM/DD/YYYY)</th>
-                  <th>TRẠNG THÁI LỊCH HẸN</th>
-                  <th>TRẠNG THÁI ĐƠN HÀNG</th>
-                  <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bookings.map((booking, index) => {
-                  return (
-                    <tr key={index}>
-                      <td>{index + 1}</td>
-                      <td>{booking.cus_name}</td>
-                      <td>{booking.phonenum}</td>
-                      <td>{booking.type}</td>
-                      <td>{moment(booking.time).format("MM/DD/YYYY")}</td>
-                      <td className={checkBookingStatus(booking.status)}>
-                        {booking.status}
-                      </td>
-                      {/* {booking.status === "pending" ? (
+        <Card body className="filter-container">
+          <Row>
+            <Col>
+              <h4>Quản lý lịch hẹn</h4>
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Trạng thái:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  as="select"
+                  name="status"
+                  value={filterBooking.status}
+                  onChange={handleFilterBookingChange}
+                >
+                  <option value="">Toàn bộ</option>
+                  <option value="Đã tiếp nhận">Đã tiếp nhận</option>
+                  <option value="Đang xử lí">Đang xử lí</option>
+                  <option value="Hủy">Hủy</option>
+                </Form.Control>
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  as="select"
+                  name="sort"
+                  value={filterBooking.sort}
+                  onChange={handleFilterBookingChange}
+                >
+                  <option value="asc">Cũ đến mới</option>
+                  <option value="desc">Mới đến cũ</option>
+                </Form.Control>
+              </InputGroup>
+            </Col>
+            <Col xs={2} className="button-container">
+              <Button
+                variant="primary"
+                onClick={() => {
+                  navigate("/create-booking");
+                }}
+              >
+                Tạo lịch hẹn <FontAwesomeIcon icon={faPlus} color="" />
+              </Button>
+            </Col>
+          </Row>
+        </Card>
+        <Card body className="content-container">
+          {isFetching ? (
+            <div className="loading">
+              <Spinner animation="border" />
+              <div className="loading-text">Đang tải dữ liệu...</div>
+            </div>
+          ) : (
+            <div className="table-container">
+              <Table bordered hover size="sm">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>TÊN KHÁCH HÀNG</th>
+                    <th>SỐ ĐIỆN THOẠI</th>
+                    <th>LOẠI LỊCH HẸN</th>
+                    <th>NGÀY HẸN (MM/DD/YYYY)</th>
+                    <th>TRẠNG THÁI LỊCH HẸN</th>
+                    <th>TRẠNG THÁI ĐƠN HÀNG</th>
+                    <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bookings.map((booking, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{index + 1}</td>
+                        <td>{booking.cus_name}</td>
+                        <td>{booking.phonenum}</td>
+                        <td>{booking.type}</td>
+                        <td>{moment(booking.time).format("MM/DD/YYYY")}</td>
+                        <td className={checkBookingStatus(booking.status)}>
+                          {booking.status}
+                        </td>
+                        {/* {booking.status === "pending" ? (
                         <td>Đang chờ</td>
                       ) : booking.status === "accept" ? (
                         <td>Chấp nhận</td>
                       ) : (
                         <td>Từ chối</td>
                       )} */}
-                      <td>
-                        {booking.order_id ? booking.order_id.status : "Chưa có"}
-                      </td>
-                      <td>
-                        <div className="action-button-container">
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 200, hide: 100 }}
-                            overlay={
-                              <Tooltip
-                                className="booking-edit-button"
-                                id="edit-button-tooltip"
-                              >
-                                XEM CHI TIẾT
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              variant="primary"
-                              onClick={() => {
-                                setShowBookingDetail(true);
-                                setBookingDetail({
-                                  _id: booking._id,
-                                  cus_name: booking.cus_name,
-                                  services: booking.services,
-                                  description: booking.description,
-                                  type: booking.type,
-                                  cus_address: booking.cus_address,
-                                  time: booking.time,
-                                  status: booking.status,
-                                  phonenum: booking.phonenum,
-                                  order_id: booking.order_id,
-                                });
-                                setInitBookingDetail({
-                                  _id: booking._id,
-                                  cus_name: booking.cus_name,
-                                  services: booking.services,
-                                  description: booking.description,
-                                  type: booking.type,
-                                  cus_address: booking.cus_address,
-                                  time: booking.time,
-                                  status: booking.status,
-                                  phonenum: booking.phonenum,
-                                  order_id: booking.order_id,
-                                });
-                              }}
+                        <td>
+                          {booking.order_id
+                            ? booking.order_id.status
+                            : "Chưa có"}
+                        </td>
+                        <td>
+                          <div className="action-button-container">
+                            <OverlayTrigger
+                              placement="bottom"
+                              delay={{ show: 200, hide: 100 }}
+                              overlay={
+                                <Tooltip
+                                  className="booking-edit-button"
+                                  id="edit-button-tooltip"
+                                >
+                                  XEM CHI TIẾT
+                                </Tooltip>
+                              }
                             >
-                              <FontAwesomeIcon
-                                icon={faPenToSquare}
-                                color="#ffffff"
-                              />
-                            </Button>
-                          </OverlayTrigger>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </div>
-        )}
-        <div>
+                              <Button
+                                variant="primary"
+                                onClick={() => {
+                                  setShowBookingDetail(true);
+                                  setBookingDetail({
+                                    _id: booking._id,
+                                    cus_name: booking.cus_name,
+                                    services: booking.services,
+                                    description: booking.description,
+                                    type: booking.type,
+                                    cus_address: booking.cus_address,
+                                    time: booking.time,
+                                    status: booking.status,
+                                    phonenum: booking.phonenum,
+                                    order_id: booking.order_id,
+                                  });
+                                  setInitBookingDetail({
+                                    _id: booking._id,
+                                    cus_name: booking.cus_name,
+                                    services: booking.services,
+                                    description: booking.description,
+                                    type: booking.type,
+                                    cus_address: booking.cus_address,
+                                    time: booking.time,
+                                    status: booking.status,
+                                    phonenum: booking.phonenum,
+                                    order_id: booking.order_id,
+                                  });
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPenToSquare}
+                                  color="#ffffff"
+                                />
+                              </Button>
+                            </OverlayTrigger>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </Table>
+            </div>
+          )}
           <CustomPagination
             count={bookingsData.count}
             handlePaginationClick={(number) => {
@@ -282,7 +298,7 @@ const ManageBooking = () => {
             }}
             page={filterBooking.page}
           />
-        </div>
+        </Card>
       </div>
       <BookingDetail
         showBookingDetail={showBookingDetail}

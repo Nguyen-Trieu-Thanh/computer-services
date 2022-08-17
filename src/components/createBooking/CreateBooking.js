@@ -86,7 +86,7 @@ const CreateBooking = () => {
         setValidation({
           ...validation,
           phonenum: {
-            message: "Số điện thoại chỉ được chứa chữ số",
+            message: "Số điện thoại chỉ được chứa số",
             isInvalid: true,
           },
         });
@@ -97,7 +97,7 @@ const CreateBooking = () => {
           setValidation({
             ...validation,
             phonenum: {
-              message: "Số điện thoại không được vượt quá 10 chữ số",
+              message: "Số điện thoại không được vượt quá 10 số",
               isInvalid: true,
             },
           });

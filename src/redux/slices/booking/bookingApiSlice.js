@@ -16,6 +16,13 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
         }&page=${filterBooking.page}&limit=${10}`,
       keepUnusedDataFor: 0,
     }),
+    getBookingsWithOrderDetailByCusId: builder.query({
+      query: ({cusId, filterBooking}) =>
+        `/booking/booking-by-id/${cusId}?sort=${filterBooking.sort}&status=${
+          filterBooking.status
+        }&page=${filterBooking.page}&limit=${7}`,
+      keepUnusedDataFor: 0,
+    }),
     createBooking: builder.mutation({
       query: (booking) => ({
         url: "/booking/create",
@@ -74,6 +81,7 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetBookingsQuery,
   useGetBookingsWithOrderDetailQuery,
+  useGetBookingsWithOrderDetailByCusIdQuery,
   useCreateBookingMutation,
   useCreateBookingManagerMutation,
   useUpdateBookingMutation,

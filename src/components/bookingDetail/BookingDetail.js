@@ -1,10 +1,12 @@
 import { FormControlLabel, FormGroup, Switch } from "@mui/material";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
 //Redux
 //Actions
 import { setToast } from "../../redux/slices/toast/toastSlice";
+import { selectCurrentRole } from "../../redux/slices/auth/authSlice";
 
 //API Actions
 import {
@@ -21,7 +23,6 @@ import moment from "moment";
 
 //CSS
 import "./BookingDetail.css";
-import { useDispatch } from "react-redux";
 
 const BookingDetail = ({
   showBookingDetail,
@@ -35,6 +36,9 @@ const BookingDetail = ({
   const [updateBooking, { isLoading }] = useUpdateBookingMutation();
   const [acceptBooking, { isLoading: acceptBookingLoading }] =
     useAcceptBookingMutation();
+
+  //Global state
+  const isAdmin = useSelector(selectCurrentRole) === "admin";
 
   //Local state
   const [showGeneralSchedule, setShowGeneralSchedule] = useState(false);
@@ -156,44 +160,18 @@ const BookingDetail = ({
                   <Col>
                     <Form.Group controlId="formBookingDetailPhoneNumber">
                       <Form.Label>Số điện thoại:</Form.Label>
-                      {/* <Form.Control
-                        plaintext
-                        readOnly
-                        disabled
-                        type="text"
-                        name="phonenum"
-                        defaultValue={bookingDetail.phonenum}
-                      /> */}
                       <p>{bookingDetail.phonenum}</p>
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group controlId="formBookingDetailCustomerName">
                       <Form.Label>Khách hàng:</Form.Label>
-                      {/* <Form.Control
-                        plaintext
-                        readOnly
-                        disabled
-                        type="text"
-                        name="cus_name"
-                        defaultValue={bookingDetail.cus_name}
-                      /> */}
                       <p>{bookingDetail.cus_name}</p>
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group controlId="formBookingDetailTime">
                       <Form.Label>Ngày hẹn (MM/DD/YYYY):</Form.Label>
-                      {/* <Form.Control
-                        plaintext
-                        readOnly
-                        disabled
-                        type="text"
-                        name="time"
-                        defaultValue={moment(bookingDetail.time).format(
-                          "MM/DD/YYYY"
-                        )}
-                      /> */}
                       <p>{moment(bookingDetail.time).format("MM/DD/YYYY")}</p>
                     </Form.Group>
                   </Col>
@@ -217,14 +195,6 @@ const BookingDetail = ({
                   <Col>
                     <Form.Group controlId="formBookingDetailType">
                       <Form.Label>Loại lịch hẹn:</Form.Label>
-                      {/* <Form.Control
-                        plaintext
-                        readOnly
-                        disabled
-                        type="text"
-                        name="type"
-                        defaultValue={bookingDetail.type}
-                      /> */}
                       <p>{bookingDetail.type}</p>
                     </Form.Group>
                   </Col>
@@ -243,14 +213,6 @@ const BookingDetail = ({
                   <Col>
                     <Form.Group controlId="formBookingDetailAddress">
                       <Form.Label>Địa chỉ khách hàng:</Form.Label>
-                      {/* <Form.Control
-                        plaintext
-                        readOnly
-                        disabled
-                        type="text"
-                        name="address"
-                        defaultValue={address}
-                      /> */}
                       <p>{address}</p>
                     </Form.Group>
                   </Col>
@@ -277,8 +239,8 @@ const BookingDetail = ({
                     <Form.Control
                       as="select"
                       name="status"
-                      // disabled={!isEditBooking}
                       disabled={
+                        isAdmin ||
                         initBookingDetail.order_id ||
                         initBookingDetail.status === "Đã tiếp nhận" ||
                         initBookingDetail.status === "Hủy"
@@ -306,22 +268,24 @@ const BookingDetail = ({
             <Button variant="secondary" onClick={handleClose}>
               Đóng
             </Button>
-            <Button
-              disabled={
-                !isChange() ||
-                (initBookingDetail.order_id &&
-                  initBookingDetail.status !== "Đã tiếp nhận")
-              }
-              type="submit"
-              variant="primary"
-              onClick={handleUpdateBookingSubmit}
-            >
-              {isLoading || acceptBookingLoading ? (
-                <Spinner animation="border" />
-              ) : (
-                "Cập nhật"
-              )}
-            </Button>
+            {!isAdmin && (
+              <Button
+                disabled={
+                  !isChange() ||
+                  (initBookingDetail.order_id &&
+                    initBookingDetail.status !== "Đã tiếp nhận")
+                }
+                type="submit"
+                variant="primary"
+                onClick={handleUpdateBookingSubmit}
+              >
+                {isLoading || acceptBookingLoading ? (
+                  <Spinner animation="border" />
+                ) : (
+                  "Cập nhật"
+                )}
+              </Button>
+            )}
           </Modal.Footer>
         </div>
       </Modal>

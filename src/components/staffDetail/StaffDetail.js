@@ -3,22 +3,29 @@ import { useParams } from "react-router-dom";
 
 //API Actions
 import { useGetAccountDetailByIdQuery } from "../../redux/slices/account/accountApiSlice";
+import {
+  useGetSchedulesWithStaffDetailQuery,
+  useGetWorkSlotsByIdQuery,
+} from "../../redux/slices/schedule/scheduleApiSlice";
 
 //React-bootstrap
 import {
-  Button,
-  Modal,
-  Form,
-  Row,
+  Card,
   Col,
-  Spinner,
-  InputGroup,
-  Table,
   Container,
+  Form,
+  InputGroup,
+  Row,
+  Spinner,
+  Table,
 } from "react-bootstrap";
 
 //Momentjs
 import moment from "moment";
+
+//Icons
+import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //CSS
 import "./StaffDetail.css";
@@ -29,15 +36,28 @@ const StaffDetail = () => {
   const { account_id } = useParams();
 
   const {
-    data: staffDetailData = [],
+    data: staffDetailData,
     refetch,
     isFetching,
   } = useGetAccountDetailByIdQuery(account_id);
+
+  const {
+    data: workSlotsData = [],
+    refetch: getWorkSlotsByIdRefetch,
+    isFetching: isGetWorkSlotsByIdRefetch,
+  } = useGetWorkSlotsByIdQuery(account_id);
+
+  const {
+    data: schedulesDatas = [],
+    refetch: schedulesRefetch,
+    isFetching: schedulesIsFetching,
+  } = useGetSchedulesWithStaffDetailQuery();
 
   //Local state
   const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
   const [endDate, setEndDate] = useState(moment().format("YYYY-MM-DD"));
   const [datesInBetween, setDatesInBetween] = useState([]);
+  const [schedules, setSchedules] = useState([]);
 
   const getDateInBetween = () => {
     let dates = [];
@@ -46,7 +66,7 @@ const StaffDetail = () => {
 
     while (currentDate <= stopDate) {
       dates.push({
-        date: currentDate.format("MM/DD/YYYY"),
+        date: currentDate.format(),
         slots: [],
         status: false,
       });
@@ -57,180 +77,199 @@ const StaffDetail = () => {
     setDatesInBetween(dates);
   };
 
+  for (let dateIndex = 0; dateIndex < datesInBetween.length; dateIndex++) {
+    for (
+      let scheduleIndex = 0;
+      scheduleIndex < schedules.length;
+      scheduleIndex++
+    ) {
+      if (
+        moment(datesInBetween[dateIndex].date).format("MM/DD/YYYY") ===
+        moment(schedules[scheduleIndex].date).format("MM/DD/YYYY")
+      ) {
+        datesInBetween[dateIndex].slots = [...schedules[scheduleIndex].slots];
+        datesInBetween[dateIndex].status = true;
+      }
+    }
+  }
+
   useEffect(() => {
+    schedulesRefetch();
+    getWorkSlotsByIdRefetch();
     getDateInBetween();
   }, [startDate, endDate]);
 
-  if (isFetching) {
-    return (
-      <>
-        <div className="loading mt-3">
-          <Spinner animation="border" />
-          <div className="loading-text">Đang tải dữ liệu...</div>
-        </div>
-      </>
-    );
-  }
+  useEffect(() => {
+    if (!schedulesIsFetching) {
+      setSchedules([...schedulesDatas]);
+    }
+  }, [schedulesIsFetching]);
 
   return (
     <>
       <Container fluid className="staff-detail-container">
         <Row>
           <Col>
-            <h3>Thông tin chi tiết nhân viên {account_id}</h3>
+            <h4>Thông tin chi tiết nhân viên {account_id}</h4>
           </Col>
         </Row>
-        <Row className="mt-2">
-          <Col>
-            <h4>Thông tin của nhân viên</h4>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>Họ và tên:</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                readOnly
-                defaultValue={staffDetailData.user_id?.name}
-              />
-            </InputGroup>
-          </Col>
-          <Col>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>Số điện thoại:</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                readOnly
-                defaultValue={staffDetailData.user_id?.phonenum}
-              />
-            </InputGroup>
-          </Col>
-          <Col>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>Vai trò:</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control readOnly defaultValue={staffDetailData.role} />
-            </InputGroup>
-          </Col>
-        </Row>
-        <Row className="mt-5">
-          <Col>
-            <h4>Thời gian biểu của nhân viên</h4>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>Từ ngày (MM/DD/YYYY):</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                type="date"
-                value={startDate}
-                onChange={(e) => {
-                  setStartDate(e.target.value);
-                }}
-              />
-            </InputGroup>
-          </Col>
-          <Col>
-            <InputGroup>
-              <InputGroup.Prepend>
-                <InputGroup.Text>Đến ngày (MM/DD/YYYY):</InputGroup.Text>
-              </InputGroup.Prepend>
-              <Form.Control
-                type="date"
-                value={endDate}
-                onChange={(e) => {
-                  setEndDate(e.target.value);
-                }}
-              />
-            </InputGroup>
-          </Col>
-        </Row>
-        <Row className="table-container mt-2">
-          <Col>
-            <Table bordered>
-              <thead>
-                <tr>
-                  <th className="date-th">Thời gian biểu</th>
-                  {slots.map((slot) => {
-                    return (
-                      <th key={slot} className="slot-th">
-                        Slot {slot}
-                      </th>
-                    );
-                  })}
-                </tr>
-              </thead>
-              <tbody>
-                {datesInBetween.map((date, dateIndex) => {
-                  return (
-                    <tr key={dateIndex}>
-                      <td>{date.date}</td>
+
+        <Card body className="staff-info-container">
+          <Row>
+            <Col>
+              <Card.Title>Thông tin của nhân viên</Card.Title>
+            </Col>
+          </Row>
+          {isFetching ? (
+            <Row className="loading">
+              <Col className="loading-text">Đang tải dữ liệu...</Col>
+            </Row>
+          ) : (
+            <Row>
+              <Col>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>Họ và tên:</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    readOnly
+                    defaultValue={staffDetailData.user_id?.name}
+                  />
+                </InputGroup>
+              </Col>
+              <Col>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>Số điện thoại:</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control
+                    readOnly
+                    defaultValue={staffDetailData.user_id?.phonenum}
+                  />
+                </InputGroup>
+              </Col>
+              <Col>
+                <InputGroup>
+                  <InputGroup.Prepend>
+                    <InputGroup.Text>Vai trò:</InputGroup.Text>
+                  </InputGroup.Prepend>
+                  <Form.Control readOnly defaultValue={staffDetailData.role} />
+                </InputGroup>
+              </Col>
+            </Row>
+          )}
+        </Card>
+
+        <Card body className="card-table-container mt-2">
+          <Row>
+            <Col>
+              <Card.Title>Thời gian biểu của nhân viên</Card.Title>
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Từ ngày (MM/DD/YYYY):</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => {
+                    setStartDate(e.target.value);
+                  }}
+                />
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Đến ngày (MM/DD/YYYY):</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => {
+                    setEndDate(e.target.value);
+                  }}
+                />
+              </InputGroup>
+            </Col>
+          </Row>
+          <Row className="table-filter-container mt-2">
+            <Col>
+              <div className="box-container">
+                <div className="box" />
+                <span>Không có lịch làm việc</span>
+              </div>
+            </Col>
+            <Col>
+              <div className="box-container">
+                <div className="box box-checked" />
+                <span>Có lịch làm việc</span>
+              </div>
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col className="table-container">
+              {schedulesIsFetching || isGetWorkSlotsByIdRefetch ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Table bordered>
+                  <thead>
+                    <tr>
+                      <th className="date-th">Thời gian biểu</th>
                       {slots.map((slot) => {
-                        return <td key={slot}></td>;
+                        return (
+                          <th key={slot} className="slot-th">
+                            Slot {slot}
+                          </th>
+                        );
                       })}
                     </tr>
-                  );
-                })}
-              </tbody>
-            </Table>
-          </Col>
-        </Row>
+                  </thead>
+                  <tbody>
+                    {datesInBetween.map((date, dateIndex) => {
+                      return (
+                        <tr key={dateIndex}>
+                          <td>{moment(date.date).format("MM/DD/YYYY")}</td>
+                          {slots.map((slot, slotIndex) => {
+                            return date.slots.find((x) => x.slot === slot) !==
+                              undefined ? (
+                              date.slots
+                                .find((x) => x.slot === slot)
+                                .work_slot.map((x) => x._id)
+                                .some((y) =>
+                                  workSlotsData
+                                    .map((workSlot) => workSlot._id)
+                                    .includes(y)
+                                ) ? (
+                                <td key={slotIndex} className="td-checked">
+                                  <FontAwesomeIcon
+                                    icon={faCheck}
+                                    color="#ffffff"
+                                  />
+                                </td>
+                              ) : (
+                                <td key={slotIndex}></td>
+                              )
+                            ) : (
+                              <td key={slotIndex}></td>
+                            );
+                          })}
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </Table>
+              )}
+            </Col>
+          </Row>
+        </Card>
       </Container>
-      {/* <Modal
-        size="lg"
-        show={showStaffDetail}
-        onHide={handleClose}
-        dialogClassName="staff-detail-container"
-        centered
-      >
-        <div className="modal-content-container">
-          <Modal.Header closeButton={true}>
-            <Modal.Title>Staff No. {staffDetail.number}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="modal-body-container">
-            <Form>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formStaffDetailPhoneNumber">
-                    <Form.Label>Số điện thoại:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="phonenum"
-                      defaultValue={staffDetail.phonenum}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formStaffDetailRole">
-                    <Form.Label>Vai trò:</Form.Label>
-                    <Form.Control
-                      type="text"
-                      name="role"
-                      defaultValue={staffDetail.role}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Form>
-          </Modal.Body>
-
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={handleClose}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
-        </div>
-      </Modal> */}
     </>
   );
 };

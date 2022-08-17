@@ -6,7 +6,7 @@ import { setToast } from "../../redux/slices/toast/toastSlice";
 //API Actions
 import {
   useGetAccountByUsernameMutation,
-  useCreateStaffMutation,
+  useCreateManagerMutation,
 } from "../../redux/slices/account/accountApiSlice";
 
 //React-redux
@@ -24,20 +24,24 @@ import {
 } from "react-bootstrap";
 
 //CSS
-import "./CreateStaff.css";
+import "./CreateManager.css";
 
-const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
+const CreateManager = ({
+  showCreateManager,
+  setShowCreateManager,
+  refetch,
+}) => {
   const [getAccountByUsername, { isLoading }] =
     useGetAccountByUsernameMutation();
-  const [createStaff, { isLoading: isCreateStaffLoading }] =
-    useCreateStaffMutation();
+  const [createManager, { isLoading: isCreateManagerLoading }] =
+    useCreateManagerMutation();
 
   //Local state
-  const [staff, setStaff] = useState({
+  const [manager, setManager] = useState({
     username: "",
     password: "",
     confirmPassword: "",
-    role: "staff",
+    role: "manager",
     agency_id: "62d11bfdee51782c70fe0736",
   });
   const [validation, setValidation] = useState({
@@ -55,19 +59,18 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
       isInvalid: false,
     },
   });
-
   const [showConfirmClose, setShowConfirmClose] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleClose = () => {
     setShowConfirmClose(false);
-    setShowCreateStaff(false);
-    setStaff({
+    setShowCreateManager(false);
+    setManager({
       username: "",
       password: "",
       confirmPassword: "",
-      role: "staff",
+      role: "manager",
       agency_id: "62d11bfdee51782c70fe0736",
     });
     setValidation({
@@ -87,12 +90,12 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
     });
   };
 
-  const handleCreateStaffChange = (e) => {
+  const handleCreateManagerChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
     if (name === "username") {
       if (value.length > 10) {
-        setStaff({ ...staff, [name]: value });
+        setManager({ ...manager, [name]: value });
         setValidation({
           ...validation,
           username: {
@@ -103,7 +106,8 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
         });
         return;
       } else {
-        setStaff({ ...staff, [name]: value });
+        setManager({ ...manager, [name]: value });
+
         setValidation({
           ...validation,
           username: {
@@ -117,36 +121,22 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
     }
 
     if (name === "password") {
-      setStaff({ ...staff, [name]: value });
-      //   setValidation({
-      //     ...validation,
-      //     confirmPassword: {
-      //       message: "",
-      //       isInvalid: false,
-      //       isValid: false,
-      //     },
-      //   });
+      setManager({ ...manager, [name]: value });
+
       return;
     }
 
     if (name === "confirmPassword") {
-      setStaff({ ...staff, [name]: value });
-      //   setValidation({
-      //     ...validation,
-      //     confirmPassword: {
-      //       message: "",
-      //       isInvalid: false,
-      //       isValid: true,
-      //     },
-      //   });
+      setManager({ ...manager, [name]: value });
+
       return;
     }
   };
 
   const handleGetAccountByUsername = async () => {
-    if (staff.username.length <= 10) {
+    if (manager.username.length <= 10) {
       try {
-        await getAccountByUsername(staff.username)
+        await getAccountByUsername(manager.username)
           .unwrap()
           .then(async (res) => {
             if (res) {
@@ -173,10 +163,10 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
     }
   };
 
-  const handleCreateStaffSubmit = async (e) => {
+  const handleCreateManagerSubmit = async (e) => {
     e.preventDefault();
 
-    if (staff.username === "") {
+    if (manager.username === "") {
       setValidation({
         ...validation,
         username: {
@@ -202,7 +192,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
       return;
     }
 
-    if (staff.password === "") {
+    if (manager.password === "") {
       setValidation({
         ...validation,
         password: {
@@ -217,7 +207,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
       return;
     }
 
-    if (staff.password !== staff.confirmPassword) {
+    if (manager.password !== manager.confirmPassword) {
       setValidation({
         ...validation,
         password: {
@@ -229,7 +219,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
           isInvalid: true,
         },
       });
-      setStaff({ ...staff, password: "", confirmPassword: "" });
+      setManager({ ...manager, password: "", confirmPassword: "" });
       return;
     }
 
@@ -240,7 +230,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
       !validation.confirmPassword.isInvalid
     ) {
       try {
-        await createStaff(staff)
+        await createManager(manager)
           .unwrap()
           .then((res) => {
             if (res) {
@@ -256,11 +246,11 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                   },
                 })
               );
-              setStaff({
+              setManager({
                 username: "",
                 password: "",
                 confirmPassword: "",
-                role: "staff",
+                role: "manager",
                 agency_id: "62d11bfdee51782c70fe0736",
               });
               setValidation({
@@ -279,7 +269,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                 },
               });
               refetch();
-              setShowCreateStaff(false);
+              setShowCreateManager(false);
             }
           });
       } catch (error) {}
@@ -290,21 +280,21 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
   return (
     <>
       <Modal
-        show={showCreateStaff}
+        show={showCreateManager}
         onHide={() => {
           setShowConfirmClose(true);
         }}
-        dialogClassName="create-staff-container"
+        dialogClassName="create-manager-container"
         centered
       >
         <Modal.Header>
-          <Modal.Title>Đăng kí tài khoản nhân viên</Modal.Title>
+          <Modal.Title>Đăng kí tài khoản quản lí</Modal.Title>
         </Modal.Header>
-        <Form onSubmit={handleCreateStaffSubmit}>
+        <Form onSubmit={handleCreateManagerSubmit}>
           <Modal.Body>
             <Row>
               <Col>
-                <Form.Group controlId="formCreateStaffUsername">
+                <Form.Group controlId="formCreateManagerUsername">
                   <Form.Label>Tên đăng nhập:</Form.Label>
                   <InputGroup>
                     <Form.Control
@@ -312,8 +302,8 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                       isValid={validation.username.isValid}
                       type="text"
                       name="username"
-                      value={staff.username}
-                      onChange={handleCreateStaffChange}
+                      value={manager.username}
+                      onChange={handleCreateManagerChange}
                     />
                     <InputGroup.Append>
                       <Button
@@ -335,30 +325,30 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="formCreateStaffRole">
+                <Form.Group controlId="formCreateManagerRole">
                   <Form.Label>Vai trò:</Form.Label>
                   <Form.Control
                     disabled
                     as="select"
                     name="role"
-                    value={staff.role}
-                    onChange={handleCreateStaffChange}
+                    value={manager.role}
+                    onChange={handleCreateManagerChange}
                   >
-                    <option value="staff">Nhân viên</option>
+                    <option value="manager">Quản lí</option>
                   </Form.Control>
                 </Form.Group>
               </Col>
             </Row>
             <Row>
               <Col>
-                <Form.Group controlId="formCreateStaffPassword">
+                <Form.Group controlId="formCreateManagerPassword">
                   <Form.Label>Mật khẩu:</Form.Label>
                   <Form.Control
                     isInvalid={validation.password.isInvalid}
                     type="password"
                     name="password"
-                    value={staff.password}
-                    onChange={handleCreateStaffChange}
+                    value={manager.password}
+                    onChange={handleCreateManagerChange}
                   />
                   <Form.Control.Feedback type="invalid">
                     {validation.password.message}
@@ -366,14 +356,14 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group controlId="formCreateStaffConfirmPassword">
+                <Form.Group controlId="formCreateManagerConfirmPassword">
                   <Form.Label>Xác nhận mật khẩu:</Form.Label>
                   <Form.Control
                     isInvalid={validation.confirmPassword.isInvalid}
                     type="password"
                     name="confirmPassword"
-                    value={staff.confirmPassword}
-                    onChange={handleCreateStaffChange}
+                    value={manager.confirmPassword}
+                    onChange={handleCreateManagerChange}
                   />
                   <Form.Control.Feedback type="invalid">
                     {validation.confirmPassword.message}
@@ -392,7 +382,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
               Đóng
             </Button>
             <Button type="submit" variant="primary" className="confirm-button">
-              {isCreateStaffLoading ? (
+              {isCreateManagerLoading ? (
                 <Spinner animation="border" />
               ) : (
                 "Đăng kí"
@@ -430,4 +420,4 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
   );
 };
 
-export default CreateStaff;
+export default CreateManager;

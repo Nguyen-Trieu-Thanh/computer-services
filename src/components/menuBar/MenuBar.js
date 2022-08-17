@@ -5,6 +5,7 @@ import { Link, useLocation } from "react-router-dom";
 //Redux
 //Actions
 import {
+  selectCurrentRole,
   setCredentials,
   setRememberMe,
 } from "../../redux/slices/auth/authSlice";
@@ -13,7 +14,7 @@ import {
 import { useLogoutMutation } from "../../redux/slices/auth/authApiSlice";
 
 //React-redux
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 //CSS
 import "./MenuBar.css";
@@ -31,6 +32,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import defaultUserAvatar from "../../images/default-user-avatar.jpg";
 
 const MenuBar = () => {
+  //Global state
+  const isAdmin = useSelector(selectCurrentRole) === "admin";
+
   //Local state
   const [isCollapse, setIsCollapse] = useState(false);
 
@@ -46,7 +50,9 @@ const MenuBar = () => {
       await logout()
         .unwrap()
         .then(async (res) => {
-          await dispatch(setCredentials({ username: null, accessToken: null }));
+          await dispatch(
+            setCredentials({ username: null, accessToken: null, role: "" })
+          );
           await dispatch(setRememberMe({ rememberMe: false }));
           await localStorage.setItem("rememberMe", false);
         });
@@ -70,18 +76,13 @@ const MenuBar = () => {
                 Dashboard
               </Nav.Link>
             </Nav.Item>
-
-            <Nav.Item className="menu-button">
-              <Nav.Link as={Link} to="/booking" eventKey="/booking">
-                Lịch hẹn
-              </Nav.Link>
-            </Nav.Item>
-
-            {/* <Nav.Item className="menu-button">
-              <Nav.Link as={Link} to="/order" eventKey="/order">
-                Đơn hàng
-              </Nav.Link>
-            </Nav.Item> */}
+            {!isAdmin && (
+              <Nav.Item className="menu-button">
+                <Nav.Link as={Link} to="/booking" eventKey="/booking">
+                  Lịch hẹn
+                </Nav.Link>
+              </Nav.Item>
+            )}
 
             <Accordion>
               <Accordion.Toggle
@@ -107,13 +108,24 @@ const MenuBar = () => {
                   </Nav.Link>
                 </Nav.Item>
               </Accordion.Collapse>
-              <Accordion.Collapse eventKey="0">
-                <Nav.Item className="menu-button">
-                  <Nav.Link as={Link} to="/staff" eventKey="/staff">
-                    Nhân viên
-                  </Nav.Link>
-                </Nav.Item>
-              </Accordion.Collapse>
+
+              {isAdmin ? (
+                <Accordion.Collapse eventKey="0">
+                  <Nav.Item className="menu-button">
+                    <Nav.Link as={Link} to="/staff" eventKey="/staff">
+                      Quản lí
+                    </Nav.Link>
+                  </Nav.Item>
+                </Accordion.Collapse>
+              ) : (
+                <Accordion.Collapse eventKey="0">
+                  <Nav.Item className="menu-button">
+                    <Nav.Link as={Link} to="/staff" eventKey="/staff">
+                      Nhân viên
+                    </Nav.Link>
+                  </Nav.Item>
+                </Accordion.Collapse>
+              )}
             </Accordion>
 
             <Nav.Item className="menu-button">

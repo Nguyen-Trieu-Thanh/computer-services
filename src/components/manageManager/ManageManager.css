@@ -1,0 +1,93 @@
+.manage-manager-container {
+  margin: 5px 0 0 0;
+}
+
+.manage-manager-container .filter-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+}
+
+.manage-manager-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.manage-manager-container .content-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+}
+
+.manage-manager-container .content-container .pagination {
+  margin-bottom: 0;
+}
+
+.manage-manager-container .table-container {
+  height: 70vh;
+}
+
+.manage-manager-container .table-container thead {
+  background-color: var(--main-color);
+}
+
+.manage-manager-container .table-container th {
+  text-align: center;
+}
+
+.manage-manager-container .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.manage-manager-container .table-container .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.manage-manager-container .pagination-container {
+  float: right;
+}
+
+/*Tooltip CSS*/
+
+.manager-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.manager-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.manager-edit-button .arrow::before {
+  border-bottom-color: blue;
+}
+
+.manager-schedule-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.manager-schedule-button .tooltip-inner {
+  background-color: green;
+  color: #fff;
+}
+
+.manager-schedule-button .arrow::before {
+  border-bottom-color: green;
+}
+
+.manager-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.manager-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.manager-delete-button .arrow::before {
+  border-bottom-color: red;
+}

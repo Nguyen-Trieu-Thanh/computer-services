@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from "react";
 
-//Redux
-//Actions
-
 //API Actions
-import { useGetCustomersDetailQuery } from "../../redux/slices/account/accountApiSlice";
+import { useGetManagersDetailQuery } from "../../redux/slices/account/accountApiSlice";
 
 //React-bootstrap
 import {
@@ -24,40 +21,35 @@ import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Components
-import CreateCustomer from "../createCustomer/CreateCustomer";
-import CustomerDetail from "../customerDetail/CustomerDetail";
 import CustomPagination from "../customPagination/CustomPagination";
+import CreateManager from "../createManager/CreateManager";
 
 //CSS
-import "./ManageCustomer.css";
-import { useNavigate } from "react-router-dom";
+import "./ManageManager.css";
 
-const ManageCustomer = () => {
+const ManageManager = () => {
   const {
-    data: customersData = [],
+    data: managersData = [],
     refetch,
     isFetching,
-  } = useGetCustomersDetailQuery();
+  } = useGetManagersDetailQuery();
 
   //Local state
   const [active, setActive] = useState(1);
-  const [customers, setCustomers] = useState([]);
-  const [showCreateCustomer, setShowCreateCustomer] = useState(false);
-  const [showCustomerDetail, setShowCustomerDetail] = useState(false);
-  const [customerDetail, setCustomerDetail] = useState({
+  const [managers, setManagers] = useState([]);
+  const [showCreateManager, setShowCreateManager] = useState(false);
+  const [showManagerDetail, setShowManagerDetail] = useState(false);
+  const [managerDetail, setManagerDetail] = useState({
     _id: "",
     username: "",
     role: "",
-    bookings: [],
   });
-
-  const navigate = useNavigate();
 
   //Pagination
   let items = [];
   for (
     let number = 1;
-    number <= Math.ceil(customersData.length / 10);
+    number <= Math.ceil(managersData.length / 10);
     number++
   ) {
     items.push(
@@ -78,23 +70,22 @@ const ManageCustomer = () => {
     refetch();
 
     setActive(number);
-    setCustomers(customersData.slice(10 * (number - 1), 10 * number));
+    setManagers(managersData.slice(10 * (number - 1), 10 * number));
   };
 
   useEffect(() => {
     if (!isFetching) {
-      // setCustomers(customersData.slice(0, 10));
-      setCustomers(customersData.slice(10 * (active - 1), 10 * active));
+      setManagers(managersData.slice(10 * (active - 1), 10 * active));
     }
   }, [isFetching]);
 
   return (
     <>
-      <div className="manage-customer-container">
+      <div className="manage-manager-container">
         <Card body className="filter-container">
           <Row>
             <Col>
-              <h4>Danh sách khách hàng</h4>
+              <h4>Danh sách quản lí</h4>
             </Col>
           </Row>
           <Row className="mt-2">
@@ -102,7 +93,7 @@ const ManageCustomer = () => {
               <Button
                 variant="primary"
                 onClick={() => {
-                  setShowCreateCustomer(true);
+                  setShowCreateManager(true);
                 }}
               >
                 Thêm tài khoản <FontAwesomeIcon icon={faPlus} color="" />
@@ -122,20 +113,20 @@ const ManageCustomer = () => {
                 <thead>
                   <tr>
                     <th>#</th>
-                    <th>Tên khách hàng</th>
+                    <th>Tên quản lí</th>
                     <th>Số điện thoại</th>
                     <th>Vai trò</th>
                     <th style={{ width: "200px" }}>Hành động</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {customers.map((customer, index) => {
+                  {managers.map((manager, index) => {
                     return (
                       <tr key={index}>
                         <td>{index + 1}</td>
-                        <td>{customer.user_id?.name}</td>
-                        <td>{customer.user_id?.phonenum}</td>
-                        <td>{customer.role}</td>
+                        <td>{manager.user_id?.name}</td>
+                        <td>{manager.user_id?.phonenum}</td>
+                        <td>{manager.role}</td>
                         <td>
                           <div className="action-button-container">
                             <OverlayTrigger
@@ -143,7 +134,7 @@ const ManageCustomer = () => {
                               delay={{ show: 200, hide: 100 }}
                               overlay={
                                 <Tooltip
-                                  className="customer-edit-button"
+                                  className="manager-edit-button"
                                   id="edit-button-tooltip"
                                 >
                                   Chi tiết
@@ -153,14 +144,12 @@ const ManageCustomer = () => {
                               <Button
                                 variant="primary"
                                 onClick={() => {
-                                  // setShowCustomerDetail(true);
-                                  // setCustomerDetail({
-                                  //   _id: customer._id,
-                                  //   username: customer.username,
-                                  //   role: customer.role,
-                                  //   bookings: [...customer.booking],
-                                  // });
-                                  navigate("/customer-detail/" + customer._id);
+                                  setShowManagerDetail(true);
+                                  setManagerDetail({
+                                    _id: manager._id,
+                                    username: manager.username,
+                                    role: manager.role,
+                                  });
                                 }}
                               >
                                 <FontAwesomeIcon
@@ -169,25 +158,6 @@ const ManageCustomer = () => {
                                 />
                               </Button>
                             </OverlayTrigger>
-                            {/* <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 200, hide: 100 }}
-                              overlay={
-                                <Tooltip
-                                  className="customer-delete-button"
-                                  id="delete-button-tooltip"
-                                >
-                                  DELETE
-                                </Tooltip>
-                              }
-                            >
-                              <Button variant="danger">
-                                <FontAwesomeIcon
-                                  icon={faTrash}
-                                  color="#ffffff"
-                                />
-                              </Button>
-                            </OverlayTrigger> */}
                           </div>
                         </td>
                       </tr>
@@ -198,7 +168,7 @@ const ManageCustomer = () => {
             </div>
           )}
           <CustomPagination
-            count={Math.ceil(customersData.length / 10)}
+            count={Math.ceil(managersData.length / 10)}
             handlePaginationClick={handlePaginationClick}
             page={active}
           />
@@ -209,13 +179,13 @@ const ManageCustomer = () => {
         setShowCustomerDetail={setShowCustomerDetail}
         customerDetail={customerDetail}
       /> */}
-      <CreateCustomer
-        showCreateCustomer={showCreateCustomer}
-        setShowCreateCustomer={setShowCreateCustomer}
+      <CreateManager
+        showCreateManager={showCreateManager}
+        setShowCreateManager={setShowCreateManager}
         refetch={refetch}
       />
     </>
   );
 };
 
-export default ManageCustomer;
+export default ManageManager;

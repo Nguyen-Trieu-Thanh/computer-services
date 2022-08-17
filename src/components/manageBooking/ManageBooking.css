@@ -1,22 +1,26 @@
 .manage-booking-container {
-  margin: 10px 0 0 0;
+  margin: 5px 0 0 0;
 }
 
 .manage-booking-container .filter-container {
-  width: auto;
-  display: flex;
-  padding: 0px 0px 10px 0px;
+  box-shadow: 0px 3px 8px #a6a6a6;
 }
 
 .manage-booking-container .button-container {
-  width: 100%;
   display: flex;
   flex-direction: row-reverse;
-  padding: 0px 0px 10px 0px;
+}
+
+.manage-booking-container .content-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+}
+
+.manage-booking-container .content-container .pagination {
+  margin-bottom: 0;
 }
 
 .manage-booking-container .table-container {
-  height: 70vh;
+  min-height: 70vh;
 }
 
 .manage-booking-container .table-container .accept {
@@ -52,12 +56,7 @@
   justify-content: space-evenly;
 }
 
-.manage-booking-container .pagination-container {
-  float: right;
-}
-
 /*Tooltip CSS*/
-
 .booking-edit-button {
   font-size: 10px;
   letter-spacing: 1px;
@@ -71,34 +70,4 @@
 
 .booking-edit-button .arrow::before {
   border-bottom-color: blue;
-}
-
-.booking-approve-button {
-  font-size: 10px;
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-
-.booking-approve-button .tooltip-inner {
-  background-color: green;
-  color: #fff;
-}
-
-.booking-approve-button .arrow::before {
-  border-bottom-color: green;
-}
-
-.booking-delete-button {
-  font-size: 10px;
-  letter-spacing: 1px;
-  font-weight: bold;
-}
-
-.booking-delete-button .tooltip-inner {
-  background-color: red;
-  color: #fff;
-}
-
-.booking-delete-button .arrow::before {
-  border-bottom-color: red;
 }

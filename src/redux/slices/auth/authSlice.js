@@ -8,6 +8,7 @@ const initState = {
     name: "",
     phonenum: "",
   },
+  role: "",
 };
 
 const authSlice = createSlice({
@@ -15,8 +16,8 @@ const authSlice = createSlice({
   initialState: initState,
   reducers: {
     setCredentials: (state, action) => {
-      const { username, accessToken, _id } = action.payload;
-      return { ...state, username: username, token: accessToken };
+      const { username, accessToken, _id, role } = action.payload;
+      return { ...state, username: username, token: accessToken, role: role };
     },
     setRememberMe: (state, action) => {
       const { rememberMe } = action.payload;
@@ -36,3 +37,4 @@ export const selectCurrentUsername = (state) => state.auth.username;
 export const selectCurrentToken = (state) => state.auth.token;
 export const selectCurrentRememberMe = (state) => state.auth.rememberMe;
 export const selectCurrentProfile = (state) => state.auth.profile;
+export const selectCurrentRole = (state) => state.auth.role;

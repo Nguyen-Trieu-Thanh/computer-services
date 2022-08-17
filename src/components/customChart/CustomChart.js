@@ -152,107 +152,115 @@ const CustomChart = () => {
 
   return (
     <>
-      <Container fluid className="custom-chart-container">
-        <ListGroup>
-          <ListGroup.Item className="chart-request-container">
-            <Row>
-              <Col>
-                <ListGroup horizontal defaultActiveKey="7days">
-                  <ListGroup.Item
-                    className="date-item"
-                    action
-                    eventKey="7days"
-                    onClick={() => {
-                      getDatesInBetween(7);
-                    }}
-                  >
-                    7 ngày
-                  </ListGroup.Item>
-                  <ListGroup.Item
-                    className="date-item"
-                    action
-                    eventKey="14days"
-                    onClick={() => {
-                      getDatesInBetween(14);
-                    }}
-                  >
-                    14 ngày
-                  </ListGroup.Item>
-                  <ListGroup.Item
-                    className="date-item"
-                    action
-                    eventKey="30days"
-                    onClick={() => {
-                      getDatesInBetween(30);
-                    }}
-                  >
-                    30 ngày
-                  </ListGroup.Item>
-                  <ListGroup.Item
-                    className="date-item"
-                    action
-                    eventKey="6months"
-                    onClick={() => {
-                      getMonthsInBetween(6);
-                    }}
-                  >
-                    6 tháng
-                  </ListGroup.Item>
-                  <ListGroup.Item
-                    className="date-item"
-                    action
-                    eventKey="12months"
-                    onClick={() => {
-                      getMonthsInBetween(12);
-                    }}
-                  >
-                    12 tháng
-                  </ListGroup.Item>
-                </ListGroup>
-              </Col>
-            </Row>
-            <Row className="request-type-items-container">
-              {chartDataTypes.map((chartDataType, index) => {
-                return (
-                  <Form.Group
-                    key={index}
-                    controlId={"formChartDataType-" + index}
-                  >
-                    <Col>
-                      <Form.Check
-                        inline
-                        label={chartDataType.nameVN}
-                        value={chartDataType.nameEN}
-                        checked={request.types.includes(chartDataType.nameEN)}
-                        onChange={handleRequestTypesChange}
-                      />
-                    </Col>
-                  </Form.Group>
-                );
-              })}
-            </Row>
-          </ListGroup.Item>
-          <ListGroup.Item className="line-chart-container">
-            <Row>
-              <Col>
-                {isLoading ? (
-                  <div className="loading">
-                    <Spinner animation="border" />
-                    <div className="loading-text">Đang tải dữ liệu...</div>
-                  </div>
-                ) : (
-                  <Line
-                    data={{
-                      labels: labels,
-                      datasets: datasets,
-                    }}
-                  />
-                )}
-              </Col>
-            </Row>
-          </ListGroup.Item>
-        </ListGroup>
-      </Container>
+      <ListGroup className="custom-chart-container">
+        <ListGroup.Item className="chart-request-container">
+          <Row>
+            <Col>
+              <ListGroup horizontal defaultActiveKey="7days">
+                <ListGroup.Item
+                  className="date-item"
+                  action
+                  eventKey="7days"
+                  onClick={() => {
+                    getDatesInBetween(7);
+                  }}
+                >
+                  7 ngày
+                </ListGroup.Item>
+                <ListGroup.Item
+                  className="date-item"
+                  action
+                  eventKey="14days"
+                  onClick={() => {
+                    getDatesInBetween(14);
+                  }}
+                >
+                  14 ngày
+                </ListGroup.Item>
+                <ListGroup.Item
+                  className="date-item"
+                  action
+                  eventKey="30days"
+                  onClick={() => {
+                    getDatesInBetween(30);
+                  }}
+                >
+                  30 ngày
+                </ListGroup.Item>
+                <ListGroup.Item
+                  className="date-item"
+                  action
+                  eventKey="6months"
+                  onClick={() => {
+                    getMonthsInBetween(6);
+                  }}
+                >
+                  6 tháng
+                </ListGroup.Item>
+                <ListGroup.Item
+                  className="date-item"
+                  action
+                  eventKey="9months"
+                  onClick={() => {
+                    getMonthsInBetween(9);
+                  }}
+                >
+                  9 tháng
+                </ListGroup.Item>
+                <ListGroup.Item
+                  className="date-item"
+                  action
+                  eventKey="12months"
+                  onClick={() => {
+                    getMonthsInBetween(12);
+                  }}
+                >
+                  12 tháng
+                </ListGroup.Item>
+              </ListGroup>
+            </Col>
+          </Row>
+          <Row className="request-type-items-container">
+            {chartDataTypes.map((chartDataType, index) => {
+              return (
+                <Form.Group
+                  key={index}
+                  controlId={"formChartDataType-" + index}
+                >
+                  <Col>
+                    <Form.Check
+                      inline
+                      label={chartDataType.nameVN}
+                      value={chartDataType.nameEN}
+                      checked={request.types.includes(chartDataType.nameEN)}
+                      onChange={handleRequestTypesChange}
+                    />
+                  </Col>
+                </Form.Group>
+              );
+            })}
+          </Row>
+        </ListGroup.Item>
+        <ListGroup.Item className="line-chart-container">
+          <Row>
+            <Col>
+              {isLoading ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Line
+                  data={{
+                    labels: labels,
+                    datasets: datasets,
+                  }}
+                />
+              )}
+            </Col>
+          </Row>
+        </ListGroup.Item>
+      </ListGroup>
     </>
   );
 };

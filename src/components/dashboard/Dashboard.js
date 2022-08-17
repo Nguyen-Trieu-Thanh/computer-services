@@ -32,10 +32,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import dashboardDynamicTableEnum from "../../enums/dashboardDynamicTableEnum";
 import {
   selectCurrentProfile,
+  selectCurrentRole,
   selectCurrentUsername,
 } from "../../redux/slices/auth/authSlice";
 import SlotDetail from "../slotDetail/SlotDetail";
 import CustomChart from "../customChart/CustomChart";
+import {
+  useDataForDashboardQuery,
+  useDataForDashboardRealtimeQuery,
+} from "../../redux/slices/chart/chartApiSlice";
 
 const slots = [1, 2, 3, 4, 5, 6, 7, 8];
 
@@ -56,9 +61,25 @@ const Dashboard = () => {
     slot: 0,
     work_slots: [],
   });
+  const [dashboardBoxs, setDashboardBoxs] = useState({
+    booking: {
+      name: "Lịch hẹn mới trong hôm nay",
+      count: 0,
+    },
+    order: {
+      name: "Đơn hàng được hoàn thành trong hôm nay",
+      count: 0,
+    },
+    customer: {
+      name: "Khách hàng mới trong tháng này",
+      count: 0,
+    },
+  });
+
   //Global state
   const profile = useSelector(selectCurrentProfile);
   const username = useSelector(selectCurrentUsername);
+  const role = useSelector(selectCurrentRole);
 
   //Fetch API
   const {
@@ -66,11 +87,19 @@ const Dashboard = () => {
     refetch,
     isFetching,
   } = useGetSchedulesWithStaffDetailQuery();
+
   const {
     data: currentUserData,
     refetch: userRefetch,
     isFetching: userIsFetching,
   } = useGetAccountDetailByUsernameQuery(username);
+
+  const {
+    data: dashboardBoxDatas,
+    refetch: dashboardBoxDatasRefetch,
+    isFetching: isDashboardBoxDatasFetching,
+    isLoading: isDashboardBoxDatasLoading,
+  } = useDataForDashboardQuery(null, { pollingInterval: 5000 });
 
   const navigate = useNavigate();
 
@@ -145,6 +174,12 @@ const Dashboard = () => {
     }
   }, [isFetching]);
 
+  useEffect(() => {
+    if (!isDashboardBoxDatasFetching) {
+      setDashboardBoxs({ ...dashboardBoxDatas });
+    }
+  }, [isDashboardBoxDatasFetching]);
+
   return (
     <>
       <div className="dashboard-page-title">DASHBOARD</div>
@@ -159,6 +194,7 @@ const Dashboard = () => {
                   Xin chào {currentUserData.user_id.name},
                 </Card.Title>
               )}
+              <Card.Subtitle>Chức vụ: {role}</Card.Subtitle>
               <Card.Text>{todayDate}</Card.Text>
             </Card.Body>
           </Card>
@@ -169,7 +205,11 @@ const Dashboard = () => {
               Lịch hẹn mới trong hôm nay
             </Card.Header>
             <Card.Body className="dashboard-card-body">
-              <Card.Title>25</Card.Title>
+              <Card.Title>
+                {isDashboardBoxDatasLoading
+                  ? "Đang tải dữ liệu..."
+                  : dashboardBoxs.booking.count}
+              </Card.Title>
               <Card.Text>Lịch hẹn</Card.Text>
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
@@ -185,7 +225,11 @@ const Dashboard = () => {
               Đơn hàng được hoàn thành trong hôm nay
             </Card.Header>
             <Card.Body className="dashboard-card-body">
-              <Card.Title>25</Card.Title>
+              <Card.Title>
+                {isDashboardBoxDatasLoading
+                  ? "Đang tải dữ liệu..."
+                  : dashboardBoxs.order.count}
+              </Card.Title>
               <Card.Text>Đơn hàng</Card.Text>
             </Card.Body>
           </Card>
@@ -195,7 +239,11 @@ const Dashboard = () => {
               Khách hàng mới trong tháng này
             </Card.Header>
             <Card.Body className="dashboard-card-body">
-              <Card.Title>25</Card.Title>
+              <Card.Title>
+                {isDashboardBoxDatasLoading
+                  ? "Đang tải dữ liệu..."
+                  : dashboardBoxs.customer.count}
+              </Card.Title>
               <Card.Text>Khách hàng</Card.Text>
             </Card.Body>
             <Card.Footer className="dashboard-card-footer">
@@ -206,9 +254,7 @@ const Dashboard = () => {
             </Card.Footer>
           </Card>
         </div>
-        <div className="dashboard-chart-container">
-          <CustomChart />
-        </div>
+        {role === "admin" && <CustomChart />}
         <div className="dashboard-schedule-container">
           <ListGroup>
             <ListGroup.Item>
@@ -380,92 +426,6 @@ const Dashboard = () => {
             </ListGroup.Item>
           </ListGroup>
         </div>
-
-        {
-          //#region dashboard recent container
-          /* <div className="dashboard-recent-container">
-          <div className="dashboard-dynamic-table">
-            <ListGroup>
-              <ListGroup.Item className="dashboard-dynamic-table-title">
-                <Dropdown as={ButtonGroup}>
-                  <Button variant="outline-dark" disabled>
-                    {tableType} mới
-                  </Button>
-                  <Dropdown.Toggle split variant="dark" id="table-dropdown" />
-                  <Dropdown.Menu align="right">
-                    <Dropdown.Item
-                      as="button"
-                      onClick={() => {
-                        setTableType(dashboardDynamicTableEnum.BOOKING);
-                      }}
-                    >
-                      Lịch hẹn
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      as="button"
-                      onClick={() => {
-                        setTableType(dashboardDynamicTableEnum.ORDER);
-                      }}
-                    >
-                      Đơn hàng
-                    </Dropdown.Item>
-                    <Dropdown.Item
-                      as="button"
-                      onClick={() => {
-                        setTableType(dashboardDynamicTableEnum.STAFF);
-                      }}
-                    >
-                      Nhân viên
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Button variant="primary" onClick={handleTableSeeAllClick}>
-                  Xem thêm <FontAwesomeIcon icon={faArrowRight} />
-                </Button>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                {tableType === dashboardDynamicTableEnum.BOOKING ? (
-                  <DashboardManageBooking />
-                ) : null}
-
-                {tableType === dashboardDynamicTableEnum.STAFF ? (
-                  <DashboardManageStaff />
-                ) : null}
-              </ListGroup.Item>
-            </ListGroup>
-          </div>
-          <div className="recent-customer">
-            <ListGroup>
-              <ListGroup.Item className="recent-customer-list-title">
-                <span>Khách hàng mới</span>
-                <Button
-                  variant="primary"
-                  onClick={() => {
-                    navigate("/customer");
-                  }}
-                >
-                  Xem thêm <FontAwesomeIcon icon={faArrowRight} />
-                </Button>
-              </ListGroup.Item>
-              {[0, 1, 2, 3, 4].map((customer, index) => {
-                return (
-                  <ListGroup.Item key={index} className="recent-customer-item">
-                    <div className="customer-img">
-                      <FontAwesomeIcon icon={faCircleUser} size="4x" />
-                    </div>
-                    <div className="customer-info">
-                      <div className="customer-name">Nguyễn Văn A</div>
-                      <div className="customer-address">24 Trần Hưng Đạo</div>
-                      <div className="customer-phone">0994215628</div>
-                    </div>
-                  </ListGroup.Item>
-                );
-              })}
-            </ListGroup>
-          </div>
-        </div> */
-          //#endregion
-        }
       </div>
       <SlotDetail
         slotDetail={slotDetail}

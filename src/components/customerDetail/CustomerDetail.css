@@ -1,57 +1,84 @@
-.customer-detail {
-  width: 90vw;
-  max-width: none !important;
+.customer-detail-container {
+  margin: 10px 0 0 0;
 }
 
-.customer-detail .modal-content-container {
-  /* height: 90vh; */
+.customer-detail-container .customer-info-container {
+  height: 15vh;
+  box-shadow: 0px 3px 8px #a6a6a6;
 }
 
-.customer-detail .modal-content-container .modal-body-container {
-  /* height: 80%; */
+.customer-detail-container .customer-info-container .loading {
+  height: 100%;
+  padding: 0;
 }
 
-.customer-detail .modal-content-container .modal-body-container .form-label {
-  font-size: 18px;
-  font-weight: 700;
+.customer-detail-container .customer-info-container .loading .loading-text {
+  font-size: 30px;
 }
 
-/*Table*/
-.customer-detail
-  .modal-content-container
-  .modal-body-container
-  .table-container {
+.customer-detail-container .table-filter-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
 }
 
-.customer-detail
-  .modal-content-container
-  .modal-body-container
+.customer-detail-container .customer-bookings-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+}
+
+.customer-detail-container .customer-bookings-container .pagination {
+  margin-bottom: 0;
+}
+
+.customer-detail-container .customer-bookings-container .table-container {
+  height: 414px;
+}
+
+.customer-detail-container
+  .customer-bookings-container
   .table-container
-  thead {
+  .loading {
+  height: 100%;
+}
+
+.customer-detail-container
+  .customer-bookings-container
+  .table-container
+  .table {
+  margin: 0;
+}
+
+.customer-detail-container .customer-bookings-container .table-container thead {
   background-color: var(--main-color);
 }
 
-.customer-detail
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  th {
+.customer-detail-container .customer-bookings-container .table-container th {
   text-align: center;
 }
 
-.customer-detail
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  td {
+.customer-detail-container .customer-bookings-container .table-container td {
   text-align: center;
   vertical-align: middle;
 }
 
-.customer-detail
-  .modal-content-container
-  .modal-body-container
-  .pagination-container {
-  float: right;
-  margin-bottom: 0;
+.customer-detail-container
+  .customer-bookings-container
+  .table-container
+  .action-button-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+/*Tooltip CSS*/
+.booking-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.booking-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.booking-edit-button .arrow::before {
+  border-bottom-color: blue;
 }

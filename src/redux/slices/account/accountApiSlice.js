@@ -18,6 +18,10 @@ export const accountApiSlice = apiSlice.injectEndpoints({
       query: () => "/account/all-staff",
       keepUnusedDataFor: 0,
     }),
+    getManagersDetail: builder.query({
+      query: () => "/account/all-manager",
+      keepUnusedDataFor: 0,
+    }),
     getAccountByUsername: builder.mutation({
       query: (username) => ({
         url: `/account/${username}`,
@@ -55,6 +59,18 @@ export const accountApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    createManager: builder.mutation({
+      query: (manager) => ({
+        url: "/account/register-staff",
+        method: "POST",
+        body: {
+          username: manager.username,
+          password: manager.password,
+          role: manager.role,
+          agency_id: manager.agency_id,
+        },
+      }),
+    }),
     viewOwnedProfile: builder.query({
       query: () => "/account/view-profile",
       keepUnusedDataFor: 0,
@@ -79,11 +95,13 @@ export const {
   useGetAccountsDetailQuery,
   useGetCustomersDetailQuery,
   useGetStaffsDetailQuery,
+  useGetManagersDetailQuery,
   useGetAccountByUsernameMutation,
   useGetAccountDetailByUsernameQuery,
   useGetAccountDetailByIdQuery,
   useUpdatePasswordMutation,
   useCreateStaffMutation,
+  useCreateManagerMutation,
   useViewOwnedProfileQuery,
   useUpdateProfileAccountMutation,
 } = accountApiSlice;
