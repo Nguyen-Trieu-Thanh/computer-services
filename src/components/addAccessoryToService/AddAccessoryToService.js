@@ -19,7 +19,6 @@ import "./AddAccessoryToService.css";
 const AddAccessoryToService = ({
   showAddAccessoryToService,
   setShowAddAccessoryToService,
-  setShowServiceDetail,
   serviceDetail,
   setServiceDetail,
 }) => {
@@ -34,7 +33,6 @@ const AddAccessoryToService = ({
 
   const handleClose = () => {
     setShowAddAccessoryToService(false);
-    setShowServiceDetail(true);
   };
 
   const handleAccessoriesChange = (e) => {
@@ -43,11 +41,12 @@ const AddAccessoryToService = ({
 
     newAccessory = {
       ...newAccessory,
-      supplier_id: newAccessory.supplier_id._id,
+      type: newAccessory.type,
+      brandCom: serviceDetail.brand,
     };
 
     if (newAccessories.map((x) => x._id).includes(newAccessory._id)) {
-      const index = newAccessories.indexOf(newAccessory);
+      const index = newAccessories.map((x) => x._id).indexOf(newAccessory._id);
       newAccessories.splice(index, 1);
     } else {
       newAccessories.push(newAccessory);
@@ -61,20 +60,9 @@ const AddAccessoryToService = ({
 
   useEffect(() => {
     if (!isFetching) {
-      setAccessories([...accessoriesData].reverse().slice(0, 10));
+      setAccessories([...accessoriesData]);
     }
   }, [isFetching]);
-
-  // if (isFetching) {
-  //   return (
-  //     <>
-  //       <div className="loading mt-3">
-  //         <Spinner animation="border" />
-  //         <div className="loading-text">Đang tải dữ liệu...</div>
-  //       </div>
-  //     </>
-  //   );
-  // }
 
   return (
     <>
@@ -103,10 +91,11 @@ const AddAccessoryToService = ({
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>TÊN PHỤ KIỆN</th>
-                          <th>GIÁ PHỤ KIỆN</th>
-                          <th>NHÀ CUNG CẤP</th>
-                          <th>HÀNH ĐỘNG</th>
+                          <th>Tên phụ kiện</th>
+                          <th>Giá phụ kiện</th>
+                          <th>Nhà cung cấp</th>
+                          <th>Loại máy tính</th>
+                          <th>Hành động</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -117,6 +106,7 @@ const AddAccessoryToService = ({
                               <td>{accessory.name}</td>
                               <td>{accessory.price}</td>
                               <td>{accessory.supplier_id?.name}</td>
+                              <td>{accessory.type}</td>
                               <td>
                                 <Form.Check
                                   inline

@@ -19,13 +19,7 @@
 }
 
 .nav-bar .user-avatar {
-  margin: 10px 0 10px 0;
-  text-align: center;
-}
-
-.nav-bar .user-avatar img {
-  height: 80%;
-  width: 80%;
+  margin: 10px auto 10px auto;
 }
 
 .nav-bar .log-out-button {

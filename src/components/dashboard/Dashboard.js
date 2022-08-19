@@ -255,177 +255,182 @@ const Dashboard = () => {
           </Card>
         </div>
         {role === "admin" && <CustomChart />}
-        <div className="dashboard-schedule-container">
-          <ListGroup>
-            <ListGroup.Item>
-              <Row>
-                <Col>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>Từ ngày (MM/DD/YYYY):</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <Form.Control
-                      type="date"
-                      value={startDate}
-                      onChange={(e) => {
-                        setStartDate(e.target.value);
-                      }}
-                    />
-                  </InputGroup>
-                </Col>
-                <Col>
-                  <InputGroup>
-                    <InputGroup.Prepend>
-                      <InputGroup.Text>Đến ngày (MM/DD/YYYY):</InputGroup.Text>
-                    </InputGroup.Prepend>
-                    <Form.Control
-                      type="date"
-                      value={endDate}
-                      onChange={(e) => {
-                        setEndDate(e.target.value);
-                      }}
-                    />
-                  </InputGroup>
-                </Col>
-              </Row>
-              <Row className="mt-3">
-                <Col>
-                  <div className="box-container">
-                    <div className="box" />
-                    <span>Bình thường</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className="box-container">
-                    <div className="box box-almost-full" />
-                    <span>Gần đầy</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className="box-container">
-                    <div className="box box-is-full" />
-                    <span>Đã đầy</span>
-                  </div>
-                </Col>
-                <Col>
-                  <div className="box-container">
-                    <div className="box box-disabled" />
-                    <span>Không có nhân viên</span>
-                  </div>
-                </Col>
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              <Row className="dashboard-schedule-table-container">
-                <Col>
-                  {isFetching ? (
-                    <div className="loading">
-                      <Spinner animation="border" />
-                      <div className="loading-text">Đang tải dữ liệu...</div>
+
+        {role === "manager" && (
+          <div className="dashboard-schedule-container">
+            <ListGroup>
+              <ListGroup.Item>
+                <Row>
+                  <Col>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>Từ ngày (MM/DD/YYYY):</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        type="date"
+                        value={startDate}
+                        onChange={(e) => {
+                          setStartDate(e.target.value);
+                        }}
+                      />
+                    </InputGroup>
+                  </Col>
+                  <Col>
+                    <InputGroup>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>
+                          Đến ngày (MM/DD/YYYY):
+                        </InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control
+                        type="date"
+                        value={endDate}
+                        onChange={(e) => {
+                          setEndDate(e.target.value);
+                        }}
+                      />
+                    </InputGroup>
+                  </Col>
+                </Row>
+                <Row className="mt-3">
+                  <Col>
+                    <div className="box-container">
+                      <div className="box" />
+                      <span>Bình thường</span>
                     </div>
-                  ) : (
-                    <Table bordered>
-                      <thead>
-                        <tr>
-                          <th className="date-th">Thời gian biểu</th>
-                          {slots.map((slot) => {
-                            return (
-                              <th key={slot} className="slot-th">
-                                Slot {slot}
-                              </th>
-                            );
-                          })}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {datesInBetween.map((date, dateIndex) => {
-                          return date.status ? (
-                            <tr key={dateIndex}>
-                              <td>{date.date}</td>
-                              {slots.map((slot, slotIndex) => {
-                                return date.slots.find(
-                                  (x) => x.slot === slot
-                                ) !== undefined ? (
-                                  <td
-                                    className={checkSlotStatus(
-                                      date.slots[
-                                        date.slots.findIndex(
-                                          (x) => x.slot === slot
-                                        )
-                                      ].work_slot.filter((y) => y.order_id)
-                                        .length,
-                                      date.slots[
-                                        date.slots.findIndex(
-                                          (x) => x.slot === slot
-                                        )
-                                      ].work_slot.length
-                                    )}
-                                    key={slotIndex}
-                                    onClick={() => {
-                                      setSlotDetail({
-                                        ...slotDetail,
-                                        date: date.date,
-                                        slot: slot,
-                                        work_slots: JSON.parse(
-                                          JSON.stringify(
-                                            date.slots[
-                                              date.slots.findIndex(
-                                                (x) => x.slot === slot
-                                              )
-                                            ].work_slot
+                  </Col>
+                  <Col>
+                    <div className="box-container">
+                      <div className="box box-almost-full" />
+                      <span>Gần đầy</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="box-container">
+                      <div className="box box-is-full" />
+                      <span>Đã đầy</span>
+                    </div>
+                  </Col>
+                  <Col>
+                    <div className="box-container">
+                      <div className="box box-disabled" />
+                      <span>Không có nhân viên</span>
+                    </div>
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row className="dashboard-schedule-table-container">
+                  <Col>
+                    {isFetching ? (
+                      <div className="loading">
+                        <Spinner animation="border" />
+                        <div className="loading-text">Đang tải dữ liệu...</div>
+                      </div>
+                    ) : (
+                      <Table bordered>
+                        <thead>
+                          <tr>
+                            <th className="date-th">Thời gian biểu</th>
+                            {slots.map((slot) => {
+                              return (
+                                <th key={slot} className="slot-th">
+                                  Slot {slot}
+                                </th>
+                              );
+                            })}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {datesInBetween.map((date, dateIndex) => {
+                            return date.status ? (
+                              <tr key={dateIndex}>
+                                <td>{date.date}</td>
+                                {slots.map((slot, slotIndex) => {
+                                  return date.slots.find(
+                                    (x) => x.slot === slot
+                                  ) !== undefined ? (
+                                    <td
+                                      className={checkSlotStatus(
+                                        date.slots[
+                                          date.slots.findIndex(
+                                            (x) => x.slot === slot
                                           )
-                                        ),
-                                      });
-                                      setShowSlotDetail(true);
-                                    }}
-                                  >
-                                    <div className="td-text">
-                                      Tổng số nhân viên:{" "}
-                                      {
+                                        ].work_slot.filter((y) => y.order_id)
+                                          .length,
                                         date.slots[
                                           date.slots.findIndex(
                                             (x) => x.slot === slot
                                           )
                                         ].work_slot.length
-                                      }
-                                    </div>
-                                    <div className="td-text">
-                                      Số nhân viên có sẵn:{" "}
-                                      {
-                                        date.slots[
-                                          date.slots.findIndex(
-                                            (x) => x.slot === slot
-                                          )
-                                        ].work_slot.filter((y) => !y.order_id)
-                                          .length
-                                      }
-                                    </div>
-                                  </td>
-                                ) : (
-                                  <td
-                                    key={slotIndex}
-                                    className="td-disabled"
-                                  ></td>
-                                );
-                              })}
-                            </tr>
-                          ) : (
-                            <tr key={dateIndex} className="tr-disabled">
-                              <td>{date.date}</td>
-                              {slots.map((slot, slotIndex) => {
-                                return <td key={slotIndex}></td>;
-                              })}
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </Table>
-                  )}
-                </Col>
-              </Row>
-            </ListGroup.Item>
-          </ListGroup>
-        </div>
+                                      )}
+                                      key={slotIndex}
+                                      onClick={() => {
+                                        setSlotDetail({
+                                          ...slotDetail,
+                                          date: date.date,
+                                          slot: slot,
+                                          work_slots: JSON.parse(
+                                            JSON.stringify(
+                                              date.slots[
+                                                date.slots.findIndex(
+                                                  (x) => x.slot === slot
+                                                )
+                                              ].work_slot
+                                            )
+                                          ),
+                                        });
+                                        setShowSlotDetail(true);
+                                      }}
+                                    >
+                                      <div className="td-text">
+                                        Tổng số nhân viên:{" "}
+                                        {
+                                          date.slots[
+                                            date.slots.findIndex(
+                                              (x) => x.slot === slot
+                                            )
+                                          ].work_slot.length
+                                        }
+                                      </div>
+                                      <div className="td-text">
+                                        Số nhân viên có sẵn:{" "}
+                                        {
+                                          date.slots[
+                                            date.slots.findIndex(
+                                              (x) => x.slot === slot
+                                            )
+                                          ].work_slot.filter((y) => !y.order_id)
+                                            .length
+                                        }
+                                      </div>
+                                    </td>
+                                  ) : (
+                                    <td
+                                      key={slotIndex}
+                                      className="td-disabled"
+                                    ></td>
+                                  );
+                                })}
+                              </tr>
+                            ) : (
+                              <tr key={dateIndex} className="tr-disabled">
+                                <td>{date.date}</td>
+                                {slots.map((slot, slotIndex) => {
+                                  return <td key={slotIndex}></td>;
+                                })}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </Table>
+                    )}
+                  </Col>
+                </Row>
+              </ListGroup.Item>
+            </ListGroup>
+          </div>
+        )}
       </div>
       <SlotDetail
         slotDetail={slotDetail}

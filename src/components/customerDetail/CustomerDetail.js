@@ -155,39 +155,68 @@ const CustomerDetail = () => {
               <Col className="loading-text">Đang tải dữ liệu...</Col>
             </Row>
           ) : (
+            // <Row>
+            //   <Col>
+            //     <InputGroup>
+            //       <InputGroup.Prepend>
+            //         <InputGroup.Text>Họ và tên:</InputGroup.Text>
+            //       </InputGroup.Prepend>
+            //       <Form.Control
+            //         readOnly
+            //         defaultValue={customerDetailData.user_id?.name}
+            //       />
+            //     </InputGroup>
+            //   </Col>
+            //   <Col>
+            //     <InputGroup>
+            //       <InputGroup.Prepend>
+            //         <InputGroup.Text>Số điện thoại:</InputGroup.Text>
+            //       </InputGroup.Prepend>
+            //       <Form.Control
+            //         readOnly
+            //         defaultValue={customerDetailData.user_id?.phonenum}
+            //       />
+            //     </InputGroup>
+            //   </Col>
+            //   <Col>
+            //     <InputGroup>
+            //       <InputGroup.Prepend>
+            //         <InputGroup.Text>Vai trò:</InputGroup.Text>
+            //       </InputGroup.Prepend>
+            //       <Form.Control
+            //         readOnly
+            //         defaultValue={customerDetailData.role}
+            //       />
+            //     </InputGroup>
+            //   </Col>
+            // </Row>
             <Row>
               <Col>
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Họ và tên:</InputGroup.Text>
-                  </InputGroup.Prepend>
+                <Form.Group controlId="formCustomerDetailName">
+                  <Form.Label>Họ và tên:</Form.Label>
                   <Form.Control
                     readOnly
                     defaultValue={customerDetailData.user_id?.name}
                   />
-                </InputGroup>
+                </Form.Group>
               </Col>
               <Col>
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Số điện thoại:</InputGroup.Text>
-                  </InputGroup.Prepend>
+                <Form.Group controlId="formCustomerDetailPhonenum">
+                  <Form.Label>Họ và tên:</Form.Label>
                   <Form.Control
                     readOnly
                     defaultValue={customerDetailData.user_id?.phonenum}
                   />
-                </InputGroup>
+                </Form.Group>
               </Col>
               <Col>
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Vai trò:</InputGroup.Text>
-                  </InputGroup.Prepend>
+                <Form.Group controlId="formCustomerDetailRole">
+                  <Form.Label>Họ và tên:</Form.Label>
                   <Form.Control
                     readOnly
                     defaultValue={customerDetailData.role}
                   />
-                </InputGroup>
+                </Form.Group>
               </Col>
             </Row>
           )}

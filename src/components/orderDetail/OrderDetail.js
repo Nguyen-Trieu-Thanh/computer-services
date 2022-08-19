@@ -66,6 +66,7 @@ const OrderDetail = () => {
     data: schedulesDatas = [],
     refetch: schedulesRefetch,
     isFetching: schedulesIsFetching,
+    isLoading: schedulesIsLoading,
   } = useGetSchedulesWithStaffDetailQuery();
 
   const [updateOrderById, { isLoading: isUpdateOrderByIdLoading }] =
@@ -218,6 +219,8 @@ const OrderDetail = () => {
     }
   }, [isFetching, schedulesIsFetching, schedules]);
 
+  console.log(orderDetail);
+
   if (isFetching || !orderDetail) {
     return (
       <>
@@ -277,7 +280,7 @@ const OrderDetail = () => {
               <h4>Thông tin đơn hàng</h4>
             </Col>
           </Row>
-          {schedulesIsFetching ? (
+          {schedulesIsLoading ? (
             <div className="loading">
               <Spinner animation="border" />
               <div className="loading-text">Đang tải dữ liệu...</div>

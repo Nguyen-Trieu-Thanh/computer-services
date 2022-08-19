@@ -1,60 +1,63 @@
-.service-detail {
-  width: 60vw;
-  max-width: none !important;
+.service-detail-container {
+  margin: 5px 0 0 0;
 }
 
-.service-detail .modal-content-container {
-  /* height: 90vh; */
+.service-detail-container .service-info-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+  height: 40vh;
 }
 
-.service-detail .modal-content-container .modal-body-container {
-  /* height: 80%; */
+.service-detail-container .service-info-container .loading {
+  height: 100%;
+  padding: 0;
 }
 
-.service-detail .modal-content-container .modal-body-container .form-label {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.service-detail .modal-content-container button {
-  width: 15%;
-}
-
-.service-detail .modal-content-container button .spinner-border {
-  width: 20px;
-  height: 20px;
-  border: 3px solid currentColor;
-  border-right-color: transparent;
+.service-detail-container .service-info-container .loading .loading-text {
+  font-size: 30px;
 }
 
 /*Table*/
-.service-detail
-  .modal-content-container
-  .modal-body-container
-  .table-container {
+.service-detail-container .service-table-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+  height: 45vh;
+  overflow-y: scroll;
 }
 
-.service-detail
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  thead {
+.service-detail-container .service-table-container .loading {
+  height: 100%;
+  padding: 0;
+}
+
+.service-detail-container .service-table-container .loading .loading-text {
+  font-size: 30px;
+}
+
+.service-detail-container .service-table-container .table-container {
+}
+
+.service-detail-container .service-table-container .table-container thead {
   background-color: var(--main-color);
 }
 
-.service-detail
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  th {
+.service-detail-container .service-table-container .table-container th {
   text-align: center;
 }
 
-.service-detail
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  td {
+.service-detail-container .service-table-container .table-container td {
   text-align: center;
   vertical-align: middle;
+}
+
+.service-detail-container .service-table-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.service-detail-container .service-button-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+}
+
+.service-detail-container .service-button-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
 }

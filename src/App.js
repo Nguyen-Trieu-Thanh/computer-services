@@ -21,6 +21,9 @@ import ManageManager from "./components/manageManager/ManageManager";
 import OrderDetail from "./components/orderDetail/OrderDetail";
 import UserProfile from "./components/userProfile/UserProfile";
 import ManageService from "./components/manageService/ManageService";
+import CreateService from "./components/createService/CreateService";
+import ServiceDetail from "./components/serviceDetail/ServiceDetail";
+
 import ManageAccessory from "./components/manageAccessory/ManageAccessory";
 import ManageSchedule from "./components/manageSchedule/ManageSchedule";
 import CustomGoogleMap from "./components/customGoogleMap/CustomGoogleMap";
@@ -86,6 +89,8 @@ function App() {
             <Route path="/order-detail" element={<OrderDetail />} />
             <Route path="/userProfile" element={<UserProfile />} />
             <Route path="/service" element={<ManageService />} />
+            <Route path="/create-service" element={<CreateService />} />
+            <Route path="/service-detail/:service_id" element={<ServiceDetail />} />
             <Route path="/accessory" element={<ManageAccessory />} />
             <Route path="/schedule" element={<ManageSchedule />} />
             <Route path="/google-map" element={<CustomGoogleMap />} />

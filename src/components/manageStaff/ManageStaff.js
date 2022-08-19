@@ -17,6 +17,8 @@ import {
   Button,
   Card,
   Col,
+  Form,
+  InputGroup,
   OverlayTrigger,
   Pagination,
   Row,
@@ -55,6 +57,8 @@ const ManageStaff = () => {
   const [showStaffSchedule, setShowStaffSchedule] = useState(false);
   const [staffScheduleId, setStaffScheduleId] = useState(0);
   const [showCreateStaff, setShowCreateStaff] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("desc");
 
   //Utilities
   const navigate = useNavigate();
@@ -79,13 +83,30 @@ const ManageStaff = () => {
   const handlePaginationClick = (number) => {
     refetch();
     setActive(number);
-    setStaffs(staffsData.slice(10 * (number - 1), 10 * number));
+    // setStaffs(staffsData.slice(10 * (number - 1), 10 * number));
+  };
+
+  const handleSearch = () => {
+    setActive(1);
+    refetch();
+  };
+
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    setActive(1);
+    refetch();
   };
 
   useEffect(() => {
     if (!isFetching) {
       // setStaffs(staffsData.slice(0, 10));
-      setStaffs(staffsData.slice(10 * (active - 1), 10 * active));
+      if (sort === "asc") {
+        setStaffs(staffsData.filter((x) => x.user_id?.name.includes(search)));
+      } else {
+        setStaffs(
+          staffsData.filter((x) => x.user_id?.name.includes(search)).reverse()
+        );
+      }
     }
   }, [isFetching]);
 
@@ -95,11 +116,52 @@ const ManageStaff = () => {
         <Card body className="filter-container">
           <Row>
             <Col>
-              <h4>Quản lý nhân viên</h4>
+              <h4>Danh sách nhân viên</h4>
             </Col>
           </Row>
           <Row className="mt-2">
-            <Col className="button-container">
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  name="search"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+                <InputGroup.Append>
+                  <Button
+                    disabled={isFetching}
+                    variant="primary"
+                    onClick={handleSearch}
+                    className="search-button"
+                  >
+                    Tìm kiếm
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  as="select"
+                  name="sort"
+                  value={sort}
+                  onChange={handleSort}
+                >
+                  <option value="asc">Cũ đến mới</option>
+                  <option value="desc">Mới đến cũ</option>
+                </Form.Control>
+              </InputGroup>
+            </Col>
+            <Col xs={2} className="button-container">
               <Button
                 onClick={() => {
                   setShowCreateStaff(true);
@@ -129,40 +191,42 @@ const ManageStaff = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {staffs.map((staff, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{staff.user_id?.name}</td>
-                        <td>{staff.user_id?.phonenum}</td>
-                        <td>{staff.role}</td>
-                        <td>
-                          <div className="action-button-container">
-                            <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 200, hide: 100 }}
-                              overlay={
-                                <Tooltip
-                                  className="staff-edit-button"
-                                  id="edit-button-tooltip"
-                                >
-                                  Chi tiết
-                                </Tooltip>
-                              }
-                            >
-                              <Button
-                                variant="primary"
-                                onClick={() => {
-                                  navigate("/staff-detail/" + staff._id);
-                                }}
+                  {staffs
+                    .slice(10 * (active - 1), 10 * active)
+                    .map((staff, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{staff.user_id?.name}</td>
+                          <td>{staff.user_id?.phonenum}</td>
+                          <td>{staff.role}</td>
+                          <td>
+                            <div className="action-button-container">
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 200, hide: 100 }}
+                                overlay={
+                                  <Tooltip
+                                    className="staff-edit-button"
+                                    id="edit-button-tooltip"
+                                  >
+                                    Chi tiết
+                                  </Tooltip>
+                                }
                               >
-                                <FontAwesomeIcon
-                                  icon={faPenToSquare}
-                                  color="#ffffff"
-                                />
-                              </Button>
-                            </OverlayTrigger>
-                            {/* <OverlayTrigger
+                                <Button
+                                  variant="primary"
+                                  onClick={() => {
+                                    navigate("/staff-detail/" + staff._id);
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faPenToSquare}
+                                    color="#ffffff"
+                                  />
+                                </Button>
+                              </OverlayTrigger>
+                              {/* <OverlayTrigger
                               placement="bottom"
                               delay={{ show: 200, hide: 100 }}
                               overlay={
@@ -206,17 +270,17 @@ const ManageStaff = () => {
                                 />
                               </Button>
                             </OverlayTrigger> */}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </Table>
             </div>
           )}
           <CustomPagination
-            count={Math.ceil(staffsData.length / 10)}
+            count={Math.ceil(staffs.length / 10)}
             handlePaginationClick={handlePaginationClick}
             page={active}
           />

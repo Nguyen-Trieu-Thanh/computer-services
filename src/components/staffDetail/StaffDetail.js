@@ -125,36 +125,62 @@ const StaffDetail = () => {
               <Col className="loading-text">Đang tải dữ liệu...</Col>
             </Row>
           ) : (
+            // <Row>
+            //   <Col>
+            //     <InputGroup>
+            //       <InputGroup.Prepend>
+            //         <InputGroup.Text>Họ và tên:</InputGroup.Text>
+            //       </InputGroup.Prepend>
+            //       <Form.Control
+            //         readOnly
+            //         defaultValue={staffDetailData.user_id?.name}
+            //       />
+            //     </InputGroup>
+            //   </Col>
+            //   <Col>
+            //     <InputGroup>
+            //       <InputGroup.Prepend>
+            //         <InputGroup.Text>Số điện thoại:</InputGroup.Text>
+            //       </InputGroup.Prepend>
+            //       <Form.Control
+            //         readOnly
+            //         defaultValue={staffDetailData.user_id?.phonenum}
+            //       />
+            //     </InputGroup>
+            //   </Col>
+            //   <Col>
+            //     <InputGroup>
+            //       <InputGroup.Prepend>
+            //         <InputGroup.Text>Vai trò:</InputGroup.Text>
+            //       </InputGroup.Prepend>
+            //       <Form.Control readOnly defaultValue={staffDetailData.role} />
+            //     </InputGroup>
+            //   </Col>
+            // </Row>
             <Row>
               <Col>
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Họ và tên:</InputGroup.Text>
-                  </InputGroup.Prepend>
+                <Form.Group controlId="formStaffDetailName">
+                  <Form.Label>Họ và tên:</Form.Label>
                   <Form.Control
                     readOnly
                     defaultValue={staffDetailData.user_id?.name}
                   />
-                </InputGroup>
+                </Form.Group>
               </Col>
               <Col>
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Số điện thoại:</InputGroup.Text>
-                  </InputGroup.Prepend>
+                <Form.Group controlId="formStaffDetailPhonenum">
+                  <Form.Label>Họ và tên:</Form.Label>
                   <Form.Control
                     readOnly
                     defaultValue={staffDetailData.user_id?.phonenum}
                   />
-                </InputGroup>
+                </Form.Group>
               </Col>
               <Col>
-                <InputGroup>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Vai trò:</InputGroup.Text>
-                  </InputGroup.Prepend>
+                <Form.Group controlId="formStaffDetailRole">
+                  <Form.Label>Họ và tên:</Form.Label>
                   <Form.Control readOnly defaultValue={staffDetailData.role} />
-                </InputGroup>
+                </Form.Group>
               </Col>
             </Row>
           )}

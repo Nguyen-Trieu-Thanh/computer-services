@@ -1,11 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 //Redux
 
+//Actions
+import { setToast } from "../../redux/slices/toast/toastSlice";
+
 //API Actions
+import {
+  useGetServiceDetailQuery,
+  useUpdateServiceMutation,
+} from "../../redux/slices/service/serviceApiSlice";
 
 //React-bootstrap
-import { Button, Col, Form, Modal, Row, Table } from "react-bootstrap";
+import {
+  Button,
+  Col,
+  Form,
+  Modal,
+  Row,
+  Table,
+  Container,
+  Card,
+  InputGroup,
+  Spinner,
+} from "react-bootstrap";
 
 //React-redux
 
@@ -17,118 +35,330 @@ import AddAccessoryToService from "../addAccessoryToService/AddAccessoryToServic
 
 //CSS
 import "./ServiceDetail.css";
+import { useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
-const ServiceDetail = ({
-  showServiceDetail,
-  setShowServiceDetail,
-  serviceDetail,
-  setServiceDetail,
-  initServiceDetail,
-}) => {
+const ServiceDetail = () => {
+  const { service_id } = useParams();
+
+  const {
+    data: serviceDetailData,
+    refetch,
+    isFetching,
+  } = useGetServiceDetailQuery(service_id);
+
+  const [updateService, { isLoading }] = useUpdateServiceMutation();
+
   //Local state
   const [showAddAccessoryToService, setShowAddAccessoryToService] =
     useState(false);
+  const [validation, setValidation] = useState({
+    name: {
+      message: "",
+      isInvalid: false,
+    },
+    price: {
+      message: "",
+      isInvalid: false,
+    },
+    description: {
+      message: "",
+      isInvalid: false,
+    },
+  });
+  const [serviceDetail, setServiceDetail] = useState({
+    name: "",
+    description: "",
+    price: "",
+    type: "Thay thế",
+    brand: "Asus",
+    accessories_id: [],
+    hasAccessory: false,
+  });
+  const [initServiceDetail, setInitServiceDetail] = useState({
+    name: "",
+    description: "",
+    price: "",
+    type: "Thay thế",
+    brand: "Asus",
+    serHasAcc: [],
+    hasAccessory: false,
+  });
 
-  const handleClose = () => {
-    setShowServiceDetail(false);
+  const dispatch = useDispatch();
+
+  const handleUpdateServiceChange = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
+
+    if (name === "name") {
+      setServiceDetail({ ...serviceDetail, [name]: value });
+      setValidation({
+        ...validation,
+        name: {
+          message: "",
+          isInvalid: false,
+        },
+      });
+      return;
+    }
+
+    if (name === "price") {
+      const priceRegex = /^(?:\d+|)$/;
+
+      if (!priceRegex.test(value)) {
+        setServiceDetail({ ...serviceDetail, [name]: value });
+        setValidation({
+          ...validation,
+          price: {
+            message: "Giá dịch vụ chỉ được chứa chữ số",
+            isInvalid: true,
+          },
+        });
+        return;
+      } else {
+        setServiceDetail({ ...serviceDetail, [name]: value });
+        setValidation({
+          ...validation,
+          price: {
+            message: "",
+            isInvalid: false,
+          },
+        });
+      }
+    }
+
+    if (name === "type") {
+      setServiceDetail({ ...serviceDetail, [name]: value });
+      return;
+    }
+
+    if (name === "brand") {
+      setServiceDetail({ ...serviceDetail, [name]: value });
+      return;
+    }
+
+    if (name === "description") {
+      if (value?.length > 100) {
+        setServiceDetail({ ...serviceDetail, [name]: value });
+        setValidation({
+          ...validation,
+          description: {
+            message: "Số lượng từ vượt quá giới hạn",
+            isInvalid: true,
+          },
+        });
+        return;
+      } else {
+        setServiceDetail({ ...serviceDetail, [name]: value });
+        setValidation({
+          ...validation,
+          description: {
+            message: "",
+            isInvalid: false,
+          },
+        });
+      }
+    }
   };
+
+  const handleConfirmUpdateServiceSubmit = async (e) => {
+    e.preventDefault();
+    if (serviceDetail.name === "") {
+      setValidation({
+        ...validation,
+        name: {
+          message: "Tên dịch vụ không được để trống",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
+    if (serviceDetail.price === "") {
+      setValidation({
+        ...validation,
+        price: {
+          message: "Giá dịch vụ không được để trống",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
+    if (
+      !validation.name.isInvalid &&
+      !validation.price.isInvalid &&
+      !validation.description.isInvalid
+    ) {
+      try {
+        await updateService(serviceDetail)
+          .unwrap()
+          .then(async (res) => {
+            if (res) {
+              await dispatch(
+                setToast({
+                  show: true,
+                  title: "Tạo lịch hẹn",
+                  time: "just now",
+                  content: "Lịch hẹn được tạo thành công!",
+                  color: {
+                    header: "#dbf0dc",
+                    body: "#41a446",
+                  },
+                })
+              );
+              refetch();
+            }
+          });
+      } catch (error) {}
+    }
+  };
+
+  // console.log(serviceDetail);
 
   const isChange = () => {
     return JSON.stringify(initServiceDetail) === JSON.stringify(serviceDetail);
   };
 
+  useEffect(() => {
+    if (!isFetching) {
+      setServiceDetail({
+        ...serviceDetailData,
+        accessories_id: serviceDetailData?.serHasAcc.map((x) => {
+          return {
+            ...x.accessory_id,
+          };
+        }),
+      });
+      setInitServiceDetail({
+        ...serviceDetailData,
+        accessories_id: serviceDetailData?.serHasAcc.map((x) => {
+          return {
+            ...x.accessory_id,
+          };
+        }),
+      });
+    }
+  }, [isFetching]);
+
   return (
     <>
-      <Modal
-        show={showServiceDetail}
-        onHide={handleClose}
-        dialogClassName="service-detail"
-        centered
-      >
-        <div className="modal-content-container">
-          <Modal.Header>
-            <Modal.Title>CHI TIẾT DỊCH VỤ MÃ: {serviceDetail._id}</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="modal-body-container">
-            <Form>
+      <Container fluid className="service-detail-container">
+        <Form onSubmit={handleConfirmUpdateServiceSubmit}>
+          <Card body className="service-info-container">
+            <Row>
+              <Col>
+                <Card.Title>Thông tin dịch vụ</Card.Title>
+              </Col>
+            </Row>
+            {isFetching ? (
+              <div className="loading">
+                <Spinner animation="border" />
+                <div className="loading-text">Đang tải dữ liệu...</div>
+              </div>
+            ) : (
+              <>
+                <Row>
+                  <Col>
+                    <Form.Group controlId="formCreateServiceName">
+                      <Form.Label>Tên dịch vụ:</Form.Label>
+                      <Form.Control
+                        isInvalid={validation.name.isInvalid}
+                        type="text"
+                        name="name"
+                        value={serviceDetail.name}
+                        onChange={handleUpdateServiceChange}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.name.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formCreateServicePrice">
+                      <Form.Label>Giá dịch vụ (VNĐ):</Form.Label>
+                      <Form.Control
+                        isInvalid={validation.price.isInvalid}
+                        type="text"
+                        name="price"
+                        value={serviceDetail.price}
+                        onChange={handleUpdateServiceChange}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.price.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formCreateServiceType">
+                      <Form.Label>Loại dịch vụ:</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="type"
+                        value={serviceDetail.type}
+                        onChange={handleUpdateServiceChange}
+                      >
+                        <option>Thay thế</option>
+                        <option>Vệ sinh</option>
+                        <option>Cài đặt</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formCreateServiceType">
+                      <Form.Label>Hãng:</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="brand"
+                        value={serviceDetail.brand}
+                        onChange={handleUpdateServiceChange}
+                      >
+                        <option>Asus</option>
+                        <option>MSI</option>
+                        <option>Razer</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Group controlId="formCreateServiceDescription">
+                      <Form.Label>
+                        Mô tả dịch vụ ({serviceDetail?.description?.length}/100
+                        từ) (không bắt buộc):
+                      </Form.Label>
+                      <Form.Control
+                        isInvalid={validation.description.isInvalid}
+                        as="textarea"
+                        rows={3}
+                        name="description"
+                        value={serviceDetail.description}
+                        onChange={handleUpdateServiceChange}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.description.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </>
+            )}
+          </Card>
+          <Card body className="service-table-container">
+            <Row>
+              <Col>
+                <Card.Title>Dịch vụ bao gồm phụ kiện</Card.Title>
+              </Col>
+            </Row>
+            {isFetching ? (
+              <div className="loading">
+                <Spinner animation="border" />
+                <div className="loading-text">Đang tải dữ liệu...</div>
+              </div>
+            ) : (
               <Row>
                 <Col>
-                  <Form.Group controlId="formServiceDetailName">
-                    <Form.Label>Tên dịch vụ:</Form.Label>
-                    <Form.Control
-                      plaintext
-                      readOnly
-                      disabled
-                      type="text"
-                      name="name"
-                      defaultValue={serviceDetail.name}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formServiceDetailPrice">
-                    <Form.Label>Giá dịch vụ:</Form.Label>
-                    <Form.Control
-                      plaintext
-                      readOnly
-                      disabled
-                      type="text"
-                      name="price"
-                      defaultValue={serviceDetail.price}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formServiceDetailDescription">
-                    <Form.Label>Mô tả dịch vụ:</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      readOnly
-                      disabled
-                      name="description"
-                      defaultValue={serviceDetail.description}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formServiceDetailPrice">
-                    <Form.Label>Ngày tạo:</Form.Label>
-                    <Form.Control
-                      plaintext
-                      readOnly
-                      disabled
-                      type="text"
-                      name="price"
-                      defaultValue={moment(serviceDetail.createdAt).format(
-                        "MM/DD/YYYY"
-                      )}
-                    />
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formServiceDetailPrice">
-                    <Form.Label>Ngày cập nhật:</Form.Label>
-                    <Form.Control
-                      plaintext
-                      readOnly
-                      disabled
-                      type="text"
-                      name="price"
-                      defaultValue={moment(serviceDetail.updatedAt).format(
-                        "MM/DD/YYYY"
-                      )}
-                    />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Label>Dịch vụ bao gồm phụ kiện:</Form.Label>
                   <div className="table-container">
                     <Table bordered size="sm">
                       <thead>
@@ -147,7 +377,7 @@ const ServiceDetail = ({
                                 <td>{index + 1}</td>
                                 <td>{accessory.name}</td>
                                 <td>{accessory.price}</td>
-                                <td>{accessory.supplier_id}</td>
+                                <td>{accessory.supplier_id?.name}</td>
                               </tr>
                             );
                           }
@@ -158,7 +388,6 @@ const ServiceDetail = ({
                               variant="link"
                               size="sm"
                               onClick={() => {
-                                setShowServiceDetail(false);
                                 setShowAddAccessoryToService(true);
                               }}
                             >
@@ -171,26 +400,22 @@ const ServiceDetail = ({
                   </div>
                 </Col>
               </Row>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Đóng
-            </Button>
-            <Button
-              variant="primary"
-              disabled={isChange()}
-              onClick={handleClose}
-            >
-              Xác nhận
-            </Button>
-          </Modal.Footer>
-        </div>
-      </Modal>
+            )}
+          </Card>
+          <Card body className="service-button-container">
+            <Row>
+              <Col className="button-container">
+                <Button type="submit" variant="primary">
+                  Cập nhật
+                </Button>
+              </Col>
+            </Row>
+          </Card>
+        </Form>
+      </Container>
       <AddAccessoryToService
         showAddAccessoryToService={showAddAccessoryToService}
         setShowAddAccessoryToService={setShowAddAccessoryToService}
-        setShowServiceDetail={setShowServiceDetail}
         serviceDetail={serviceDetail}
         setServiceDetail={setServiceDetail}
       />

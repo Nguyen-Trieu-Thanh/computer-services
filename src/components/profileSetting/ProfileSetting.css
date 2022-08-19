@@ -1,9 +1,25 @@
 .profile-setting-container {
 }
 
+.profile-setting-container .image-container {
+  margin: auto;
+  text-align: center;
+  height: 30vh;
+  width: auto;
+}
+
+.profile-setting-container .image-container label {
+  margin-bottom: 0;
+  height: 100%;
+}
+
+.profile-setting-container .image-container img {
+  cursor: pointer;
+}
+
 .profile-setting-container .save-button {
   float: right;
-  width: 10%;
+  width: 120px;
 }
 
 .profile-setting-container .save-button .spinner-border {
@@ -11,4 +27,20 @@
   height: 20px;
   border: 3px solid currentColor;
   border-right-color: transparent;
+}
+
+/*Tooltip CSS*/
+.avatar-edit-button {
+  font-size: 15px;
+  letter-spacing: 1px;
+  font-weight: 500;
+}
+
+.avatar-edit-button .tooltip-inner {
+  background-color: black;
+  color: #fff;
+}
+
+.avatar-edit-button .arrow::before {
+  border-bottom-color: black;
 }

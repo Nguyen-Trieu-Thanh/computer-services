@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://computer-services-api.herokuapp.com",
   // baseUrl: "http://localhost:5000",
+  // baseUrl: "http://localhost:5500",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const token = getState().auth.token;

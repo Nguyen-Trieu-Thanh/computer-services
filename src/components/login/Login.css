@@ -7,6 +7,14 @@
   justify-content: center;
 }
 
+.login-page .logo-container {
+  margin: auto;
+}
+
+.login-page .logo-container img {
+  height: 250px;
+}
+
 .login-page .login-title-container {
   text-align: center;
   font-weight: 700;

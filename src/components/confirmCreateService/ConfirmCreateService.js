@@ -15,21 +15,22 @@ import { Button, Col, Form, Modal, Row, Spinner, Table } from "react-bootstrap";
 
 //CSS
 import "./ConfirmCreateService.css";
+import { useNavigate } from "react-router-dom";
 
 const ConfirmCreateService = ({
-  setShowCreateService,
   service,
-  setIsRefetch,
   setShowConfirmCreateService,
   showConfirmCreateService,
 }) => {
   const [createService, { isLoading }] = useCreateServiceMutation();
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleClose = () => {
-    setShowConfirmCreateService(false);
-    setShowCreateService(true);
+    if (!isLoading) {
+      setShowConfirmCreateService(false);
+    }
   };
 
   const handleConfirmCreateServiceSubmit = async (e) => {
@@ -52,8 +53,7 @@ const ConfirmCreateService = ({
                 },
               })
             );
-            await setIsRefetch(true);
-            setShowConfirmCreateService(false);
+            navigate("/service-detail/" + res._id);
           }
         });
     } catch (error) {}
@@ -128,7 +128,7 @@ const ConfirmCreateService = ({
                               <td>{index + 1}</td>
                               <td>{accessory.name}</td>
                               <td>{accessory.price}</td>
-                              <td>{accessory.supplier_id}</td>
+                              <td>{accessory.supplier_id?.name}</td>
                             </tr>
                           );
                         })}
@@ -139,10 +139,15 @@ const ConfirmCreateService = ({
               </Row>
             </Modal.Body>
             <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
+              <Button
+                disabled={isLoading}
+                variant="secondary"
+                onClick={handleClose}
+              >
                 Quay lại
               </Button>
               <Button
+                disabled={isLoading}
                 type="submit"
                 variant="primary"
                 className="confirm-button"

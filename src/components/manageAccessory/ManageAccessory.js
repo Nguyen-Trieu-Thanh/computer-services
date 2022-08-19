@@ -13,6 +13,8 @@ import {
   Button,
   Card,
   Col,
+  Form,
+  InputGroup,
   OverlayTrigger,
   Pagination,
   Row,
@@ -57,6 +59,8 @@ const ManageAccessory = () => {
   const [showConfirmCreateAccessory, setShowConfirmCreateAccessory] =
     useState(false);
   const [isRefetch, setIsRefetch] = useState(false);
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("desc");
 
   //Pagination
   let items = [];
@@ -83,19 +87,37 @@ const ManageAccessory = () => {
     refetch();
 
     setActive(number);
-    setAccessories(accessoriesData.slice(10 * (number - 1), 10 * number));
+    // setAccessories(accessoriesData.slice(10 * (number - 1), 10 * number));
   };
 
-  useEffect(() => {
-    if (isRefetch) {
-      refetch();
-      setIsRefetch(false);
-    }
-  }, [isRefetch]);
+  const handleSearch = () => {
+    setActive(1);
+    refetch();
+  };
+
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    setActive(1);
+    refetch();
+  };
+
+  // useEffect(() => {
+  //   if (isRefetch) {
+  //     refetch();
+  //     setIsRefetch(false);
+  //   }
+  // }, [isRefetch]);
 
   useEffect(() => {
     if (!isFetching) {
-      setAccessories(accessoriesData.slice(10 * (active - 1), 10 * active));
+      // setAccessories(accessoriesData.slice(10 * (active - 1), 10 * active));
+      if (sort === "asc") {
+        setAccessories(accessoriesData.filter((x) => x.name.includes(search)));
+      } else {
+        setAccessories(
+          accessoriesData.filter((x) => x.name.includes(search)).reverse()
+        );
+      }
     }
   }, [isFetching]);
 
@@ -109,7 +131,48 @@ const ManageAccessory = () => {
             </Col>
           </Row>
           <Row className="mt-2">
-            <Col className="button-container">
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  name="search"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+                <InputGroup.Append>
+                  <Button
+                    disabled={isFetching}
+                    variant="primary"
+                    onClick={handleSearch}
+                    className="search-button"
+                  >
+                    Tìm kiếm
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  as="select"
+                  name="sort"
+                  value={sort}
+                  onChange={handleSort}
+                >
+                  <option value="asc">Cũ đến mới</option>
+                  <option value="desc">Mới đến cũ</option>
+                </Form.Control>
+              </InputGroup>
+            </Col>
+            <Col xs={2} className="button-container">
               <Button
                 variant="primary"
                 onClick={() => {
@@ -143,53 +206,55 @@ const ManageAccessory = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {accessories.map((accessory, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{accessory.name}</td>
-                        <td>{accessory.price}</td>
-                        <td>{accessory.insurance}</td>
-                        <td>{accessory.supplier_id?.name}</td>
-                        <td>
-                          {moment(accessory.updatedAt).format("MM/DD/YYYY")}
-                        </td>
-                        <td>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 200, hide: 100 }}
-                            overlay={
-                              <Tooltip
-                                className="accessory-edit-button"
-                                id="edit-button-tooltip"
-                              >
-                                CHI TIẾT
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              variant="primary"
-                              onClick={() => {
-                                // setShowAccessoryDetail(true);
-                                // setAccessoryDetail({ ...accessory });
-                              }}
+                  {accessories
+                    .slice(10 * (active - 1), 10 * active)
+                    .map((accessory, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{accessory.name}</td>
+                          <td>{accessory.price}</td>
+                          <td>{accessory.insurance}</td>
+                          <td>{accessory.supplier_id?.name}</td>
+                          <td>
+                            {moment(accessory.updatedAt).format("MM/DD/YYYY")}
+                          </td>
+                          <td>
+                            <OverlayTrigger
+                              placement="bottom"
+                              delay={{ show: 200, hide: 100 }}
+                              overlay={
+                                <Tooltip
+                                  className="accessory-edit-button"
+                                  id="edit-button-tooltip"
+                                >
+                                  CHI TIẾT
+                                </Tooltip>
+                              }
                             >
-                              <FontAwesomeIcon
-                                icon={faPenToSquare}
-                                color="#ffffff"
-                              />
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                              <Button
+                                variant="primary"
+                                onClick={() => {
+                                  // setShowAccessoryDetail(true);
+                                  // setAccessoryDetail({ ...accessory });
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPenToSquare}
+                                  color="#ffffff"
+                                />
+                              </Button>
+                            </OverlayTrigger>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </Table>
             </div>
           )}
           <CustomPagination
-            count={Math.ceil(accessoriesData.length / 10)}
+            count={Math.ceil(accessories.length / 10)}
             handlePaginationClick={handlePaginationClick}
             page={active}
           />

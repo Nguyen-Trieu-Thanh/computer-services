@@ -32,6 +32,8 @@ import {
   Spinner,
 } from "react-bootstrap";
 
+import logo from "../../images/computer-services-logo.png";
+
 //CSS
 import "./Login.css";
 
@@ -146,101 +148,190 @@ const Login = () => {
 
   return (
     <>
+      {/* <div className="login-page-container">
+        <div className="logo-container">
+          <img src={logo} />
+        </div> */}
       <div className="login-page">
-        <Card style={{ width: "350px" }}>
-          <Card.Body>
-            <Card.Title>
-              <Row>
-                <Col className="text-center">ĐĂNG NHẬP</Col>
-              </Row>
-            </Card.Title>
-            <Form onSubmit={handleLoginSubmit}>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formBasicUsername">
-                    <Form.Label>Tên tài khoản</Form.Label>
-                    <Form.Control
-                      isInvalid={validation.username.isInvalid}
-                      type="text"
-                      value={username}
-                      onChange={(e) => {
-                        setUsername(e.target.value);
-                        setValidation({
-                          ...validation,
-                          username: {
-                            message: "",
-                            isInvalid: false,
-                          },
-                        });
-                      }}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {validation.username.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formBasicPassword">
-                    <Form.Label>Mật khẩu</Form.Label>
-                    <Form.Control
-                      isInvalid={validation.password.isInvalid}
-                      type="password"
-                      value={password}
-                      onChange={(e) => {
-                        setPassword(e.target.value);
-                        setValidation({
-                          ...validation,
-                          password: {
-                            message: "",
-                            isInvalid: false,
-                          },
-                        });
-                      }}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {validation.password.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-              {/* <Row>
-                  <Col>
-                    <Form.Group controlId="remember-me-form-group">
-                      <Form.Check
-                        inline
-                        label="Ghi nhớ đăng nhập"
-                        name="rememberMe"
-                        checked={rememberMe}
-                        onChange={toogleRememberMe}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row> */}
-
-              <Row>
-                <Col className="text-center">
-                  <Button
-                    className="form-button"
-                    variant="primary"
-                    type="submit"
-                  >
-                    {isLoading ? <Spinner animation="border" /> : "ĐĂNG NHẬP"}
-                  </Button>
-                </Col>
-              </Row>
-              <Row className="text-center">
-                <Col>
-                  <Nav.Link as={Link} to="/">
-                    Forgot password?
-                  </Nav.Link>
-                </Col>
-              </Row>
-            </Form>
-          </Card.Body>
+        <Card style={{ width: "750px" }}>
+          <Row>
+            <Col>
+              <Card.Body>
+                <Card.Title>
+                  <Row>
+                    <Col className="text-center">ĐĂNG NHẬP</Col>
+                  </Row>
+                </Card.Title>
+                <Form onSubmit={handleLoginSubmit}>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="formBasicUsername">
+                        <Form.Label>Tên tài khoản</Form.Label>
+                        <Form.Control
+                          isInvalid={validation.username.isInvalid}
+                          type="text"
+                          value={username}
+                          onChange={(e) => {
+                            setUsername(e.target.value);
+                            setValidation({
+                              ...validation,
+                              username: {
+                                message: "",
+                                isInvalid: false,
+                              },
+                            });
+                          }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {validation.username.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Mật khẩu</Form.Label>
+                        <Form.Control
+                          isInvalid={validation.password.isInvalid}
+                          type="password"
+                          value={password}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            setValidation({
+                              ...validation,
+                              password: {
+                                message: "",
+                                isInvalid: false,
+                              },
+                            });
+                          }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {validation.password.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center">
+                      <Button
+                        className="form-button"
+                        variant="primary"
+                        type="submit"
+                      >
+                        {isLoading ? (
+                          <Spinner animation="border" />
+                        ) : (
+                          "ĐĂNG NHẬP"
+                        )}
+                      </Button>
+                    </Col>
+                  </Row>
+                  <Row className="text-center">
+                    <Col>
+                      <Nav.Link as={Link} to="/">
+                        Forgot password?
+                      </Nav.Link>
+                    </Col>
+                  </Row>
+                </Form>
+              </Card.Body>
+            </Col>
+            <Col xs={7} className="logo-container">
+              <img src={logo} />
+            </Col>
+          </Row>
         </Card>
       </div>
+      {/* <Col>
+          <div className="login-page">
+            <Card style={{ width: "350px" }}>
+              <Card.Body>
+                <Card.Title>
+                  <Row>
+                    <Col className="text-center">ĐĂNG NHẬP</Col>
+                  </Row>
+                </Card.Title>
+                <Form onSubmit={handleLoginSubmit}>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="formBasicUsername">
+                        <Form.Label>Tên tài khoản</Form.Label>
+                        <Form.Control
+                          isInvalid={validation.username.isInvalid}
+                          type="text"
+                          value={username}
+                          onChange={(e) => {
+                            setUsername(e.target.value);
+                            setValidation({
+                              ...validation,
+                              username: {
+                                message: "",
+                                isInvalid: false,
+                              },
+                            });
+                          }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {validation.username.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Mật khẩu</Form.Label>
+                        <Form.Control
+                          isInvalid={validation.password.isInvalid}
+                          type="password"
+                          value={password}
+                          onChange={(e) => {
+                            setPassword(e.target.value);
+                            setValidation({
+                              ...validation,
+                              password: {
+                                message: "",
+                                isInvalid: false,
+                              },
+                            });
+                          }}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {validation.password.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col className="text-center">
+                      <Button
+                        className="form-button"
+                        variant="primary"
+                        type="submit"
+                      >
+                        {isLoading ? (
+                          <Spinner animation="border" />
+                        ) : (
+                          "ĐĂNG NHẬP"
+                        )}
+                      </Button>
+                    </Col>
+                  </Row>
+                  <Row className="text-center">
+                    <Col>
+                      <Nav.Link as={Link} to="/">
+                        Forgot password?
+                      </Nav.Link>
+                    </Col>
+                  </Row>
+                </Form>
+              </Card.Body>
+            </Card>
+          </div>
+        </Col> */}
+      {/* </div> */}
     </>
   );
 };

@@ -87,6 +87,17 @@ export const accountApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    getAvatar: builder.query({
+      query: (filename) => `/account/avatar/${filename}`,
+      keepUnusedDataFor: 0,
+    }),
+    updateImgProfileAccount: builder.mutation({
+      query: (body) => ({
+        url: "/account/editimgprofile",
+        method: "POST",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -104,4 +115,6 @@ export const {
   useCreateManagerMutation,
   useViewOwnedProfileQuery,
   useUpdateProfileAccountMutation,
+  useGetAvatarQuery,
+  useUpdateImgProfileAccountMutation,
 } = accountApiSlice;

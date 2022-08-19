@@ -13,6 +13,8 @@ import {
   Button,
   Card,
   Col,
+  Form,
+  InputGroup,
   OverlayTrigger,
   Pagination,
   Row,
@@ -22,9 +24,7 @@ import {
 } from "react-bootstrap";
 
 //Components
-import CreateService from "../createService/CreateService";
 import ServiceDetail from "../serviceDetail/ServiceDetail";
-import ConfirmCreateService from "../confirmCreateService/ConfirmCreateService";
 
 //Icons
 import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
@@ -34,8 +34,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
 
 //CSS
-import "./ManageService.css";
+import { useNavigate } from "react-router-dom";
 import CustomPagination from "../customPagination/CustomPagination";
+import "./ManageService.css";
 
 const ManageService = () => {
   const {
@@ -47,36 +48,10 @@ const ManageService = () => {
   //Local state
   const [active, setActive] = useState(1);
   const [services, setServices] = useState([]);
-  const [service, setService] = useState({
-    name: "",
-    description: "",
-    price: "",
-    type: "Thay thế",
-    accessories_id: [],
-    hasAccessory: false,
-  });
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("desc");
 
-  const [showCreateService, setShowCreateService] = useState(false);
-  const [showConfirmCreateService, setShowConfirmCreateService] =
-    useState(false);
-  const [serviceDetail, setServiceDetail] = useState({
-    name: "",
-    description: "",
-    price: "",
-    type: "Thay thế",
-    accessories_id: [],
-    hasAccessory: false,
-  });
-  const [initServiceDetail, setInitServiceDetail] = useState({
-    name: "",
-    description: "",
-    price: "",
-    type: "Thay thế",
-    accessories_id: [],
-    hasAccessory: false,
-  });
-  const [showServiceDetail, setShowServiceDetail] = useState(false);
-  const [isRefetch, setIsRefetch] = useState(false);
+  const navigate = useNavigate();
 
   //Pagination
   let items = [];
@@ -103,19 +78,37 @@ const ManageService = () => {
     refetch();
 
     setActive(number);
-    setServices(servicesData.slice(10 * (number - 1), 10 * number));
+    // setServices(servicesData.slice(10 * (number - 1), 10 * number));
   };
 
-  useEffect(() => {
-    if (isRefetch) {
-      refetch();
-      setIsRefetch(false);
-    }
-  }, [isRefetch]);
+  const handleSearch = () => {
+    setActive(1);
+    refetch();
+  };
+
+  const handleSort = (e) => {
+    setSort(e.target.value);
+    setActive(1);
+    refetch();
+  };
+
+  // useEffect(() => {
+  //   if (isRefetch) {
+  //     refetch();
+  //     setIsRefetch(false);
+  //   }
+  // }, [isRefetch]);
 
   useEffect(() => {
     if (!isFetching) {
-      setServices(servicesData.slice(10 * (active - 1), 10 * active));
+      // setServices(servicesData.slice(10 * (active - 1), 10 * active));
+      if (sort === "asc") {
+        setServices(servicesData.filter((x) => x.name.includes(search)));
+      } else {
+        setServices(
+          servicesData.filter((x) => x.name.includes(search)).reverse()
+        );
+      }
     }
   }, [isFetching]);
 
@@ -129,11 +122,52 @@ const ManageService = () => {
             </Col>
           </Row>
           <Row className="mt-2">
-            <Col className="button-container">
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  type="text"
+                  name="search"
+                  value={search}
+                  onChange={(e) => {
+                    setSearch(e.target.value);
+                  }}
+                />
+                <InputGroup.Append>
+                  <Button
+                    disabled={isFetching}
+                    variant="primary"
+                    onClick={handleSearch}
+                    className="search-button"
+                  >
+                    Tìm kiếm
+                  </Button>
+                </InputGroup.Append>
+              </InputGroup>
+            </Col>
+            <Col>
+              <InputGroup>
+                <InputGroup.Prepend>
+                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
+                </InputGroup.Prepend>
+                <Form.Control
+                  as="select"
+                  name="sort"
+                  value={sort}
+                  onChange={handleSort}
+                >
+                  <option value="asc">Cũ đến mới</option>
+                  <option value="desc">Mới đến cũ</option>
+                </Form.Control>
+              </InputGroup>
+            </Col>
+            <Col xs={2} className="button-container">
               <Button
                 variant="primary"
                 onClick={() => {
-                  setShowCreateService(true);
+                  navigate("/create-service");
                 }}
               >
                 Tạo dịch vụ <FontAwesomeIcon icon={faPlus} color="" />
@@ -161,79 +195,72 @@ const ManageService = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {services.map((service, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{service.name}</td>
-                        <td>{service.price}</td>
-                        <td>
-                          {moment(service.createdAt).format("MM/DD/YYYY")}
-                        </td>
-                        <td>
-                          <OverlayTrigger
-                            placement="bottom"
-                            delay={{ show: 200, hide: 100 }}
-                            overlay={
-                              <Tooltip
-                                className="service-edit-button"
-                                id="edit-button-tooltip"
-                              >
-                                CHI TIẾT
-                              </Tooltip>
-                            }
-                          >
-                            <Button
-                              variant="primary"
-                              onClick={() => {
-                                setShowServiceDetail(true);
-                                setServiceDetail({ ...service });
-                                setInitServiceDetail({ ...service });
-                              }}
+                  {services
+                    .slice(10 * (active - 1), 10 * active)
+                    .map((service, index) => {
+                      return (
+                        <tr key={index}>
+                          <td>{index + 1}</td>
+                          <td>{service.name}</td>
+                          <td>{service.price}</td>
+                          <td>
+                            {moment(service.createdAt).format("MM/DD/YYYY")}
+                          </td>
+                          <td>
+                            <OverlayTrigger
+                              placement="bottom"
+                              delay={{ show: 200, hide: 100 }}
+                              overlay={
+                                <Tooltip
+                                  className="service-edit-button"
+                                  id="edit-button-tooltip"
+                                >
+                                  CHI TIẾT
+                                </Tooltip>
+                              }
                             >
-                              <FontAwesomeIcon
-                                icon={faPenToSquare}
-                                color="#ffffff"
-                              />
-                            </Button>
-                          </OverlayTrigger>
-                        </td>
-                      </tr>
-                    );
-                  })}
+                              <Button
+                                variant="primary"
+                                onClick={() => {
+                                  navigate("/service-detail/" + service._id);
+                                }}
+                              >
+                                <FontAwesomeIcon
+                                  icon={faPenToSquare}
+                                  color="#ffffff"
+                                />
+                              </Button>
+                            </OverlayTrigger>
+                          </td>
+                        </tr>
+                      );
+                    })}
                 </tbody>
               </Table>
             </div>
           )}
           <CustomPagination
-            count={Math.ceil(servicesData.length / 10)}
+            count={Math.ceil(services.length / 10)}
             handlePaginationClick={handlePaginationClick}
             page={active}
           />
         </Card>
       </div>
-      <ServiceDetail
+      {/* <ServiceDetail
         showServiceDetail={showServiceDetail}
         setShowServiceDetail={setShowServiceDetail}
         serviceDetail={serviceDetail}
         setServiceDetail={setServiceDetail}
         initServiceDetail={initServiceDetail}
-      />
-      <CreateService
+      /> */}
+      {/* <CreateService
         showCreateService={showCreateService}
         setShowCreateService={setShowCreateService}
         service={service}
         setService={setService}
         setShowConfirmCreateService={setShowConfirmCreateService}
         services={services}
-      />
-      <ConfirmCreateService
-        setShowCreateService={setShowCreateService}
-        service={service}
-        setIsRefetch={setIsRefetch}
-        setShowConfirmCreateService={setShowConfirmCreateService}
-        showConfirmCreateService={showConfirmCreateService}
-      />
+      /> */}
     </>
   );
 };

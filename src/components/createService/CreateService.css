@@ -1,56 +1,40 @@
 .create-service-container {
-  width: 60vw;
-  max-width: none !important;
+  margin: 5px 0 0 0;
 }
 
-.create-service-container .modal-content-container {
-  /* height: 90vh; */
-}
-
-.create-service-container .modal-content-container .modal-body-container {
-  /* height: 80%; */
-}
-
-.create-service-container
-  .modal-content-container
-  .modal-body-container
-  .form-label {
-  font-size: 18px;
-  font-weight: 700;
-}
-
-.create-service-container .modal-content-container .service-type-dropdown {
-  width: auto;
+.create-service-container .service-info-container {
+  height: 40vh;
+  box-shadow: 0px 3px 8px #a6a6a6;
 }
 
 /*Table*/
-.create-service-container
-  .modal-content-container
-  .modal-body-container
-  .table-container {
+.create-service-container .service-table-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+  height: 45vh;
+  overflow-y: scroll;
 }
 
-.create-service-container
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  thead {
+.create-service-container .service-table-container .table-container {
+}
+
+.create-service-container .service-table-container .table-container thead {
   background-color: var(--main-color);
 }
 
-.create-service-container
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  th {
+.create-service-container .service-table-container .table-container th {
   text-align: center;
 }
 
-.create-service-container
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  td {
+.create-service-container .service-table-container .table-container td {
   text-align: center;
   vertical-align: middle;
+}
+
+.create-service-container .service-button-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
+}
+
+.create-service-container .service-button-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
 }

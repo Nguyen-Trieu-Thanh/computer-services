@@ -89,7 +89,7 @@ const ManageBooking = () => {
 
   const {
     data: bookingsData = {
-      count: 1,
+      count: 0,
       bookings: [],
     },
     refetch,

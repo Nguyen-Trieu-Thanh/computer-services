@@ -122,13 +122,14 @@
   .dashboard-schedule-table-container {
   overflow-y: scroll;
   max-height: 80vh;
+  height: 109px;
 }
 
 .dashboard-container
   .dashboard-schedule-container
   .dashboard-schedule-table-container
   .loading {
-  height: auto;
+  height: 100%;
   width: 100%;
   padding: 10px 0 0 0;
   text-align: center;
