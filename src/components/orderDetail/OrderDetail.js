@@ -404,8 +404,6 @@ const OrderDetail = () => {
     }
   }, [isFetching, schedulesIsFetching, schedules]);
 
-  console.log(orderDetail);
-
   if (error) {
     return <Navigate to="/error" state={{ from: location }} replace />;
   }
@@ -499,7 +497,7 @@ const OrderDetail = () => {
                     <Form.Label>Nhân viên:</Form.Label>
                     <Form.Control
                       isInvalid={checkSelectStaffIsInvalid()}
-                      disabled={checkSelectStaffDisabled()}
+                      disabled={checkSelectStaffDisabled() || role === "admin"}
                       as="select"
                       name="work_slot"
                       value={updateOrderSlot.workSlotId}
@@ -628,7 +626,7 @@ const OrderDetail = () => {
                       <th>Tên dịch vụ (nhấn vào để xem chi tiết)</th>
                       <th>Số linh kiện sử dụng</th>
                       <th>Giá dịch vụ</th>
-                      <th>Xác nhận</th>
+                      {role === "manager" && <th>Xác nhận</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -667,7 +665,8 @@ const OrderDetail = () => {
                               <div className="action-button-container">
                                 <Form.Check
                                   disabled={
-                                    orderDetail.status !== "Chờ xác nhận"
+                                    orderDetail.status !== "Chờ xác nhận" ||
+                                    role === "admin"
                                   }
                                   inline
                                   value={orderDetailData._id}
