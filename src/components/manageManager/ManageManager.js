@@ -191,7 +191,8 @@ const ManageManager = () => {
                       <th>#</th>
                       <th>Tên quản lí</th>
                       <th>Số điện thoại</th>
-                      <th>Vai trò</th>
+                      <th>Email</th>
+                      <th>Ngày tạo</th>
                       <th style={{ width: "200px" }}>Hành động</th>
                     </tr>
                   </thead>
@@ -204,7 +205,10 @@ const ManageManager = () => {
                             <td>{index + 1}</td>
                             <td>{manager.user_id?.name}</td>
                             <td>{manager.user_id?.phonenum}</td>
-                            <td>{manager.role}</td>
+                            <td>{manager.user_id?.email}</td>
+                            <td>
+                              {moment(manager.createdAt).format("MM/DD/YYYY")}
+                            </td>
                             <td>
                               <div className="action-button-container">
                                 <OverlayTrigger

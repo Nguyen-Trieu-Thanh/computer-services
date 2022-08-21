@@ -121,7 +121,7 @@ const CreateBooking = () => {
     }
 
     if (name === "description") {
-      if (value.length > 100) {
+      if (value.length > 200) {
         setBooking({ ...booking, [name]: value });
         setValidation({
           ...validation,
@@ -504,7 +504,7 @@ const CreateBooking = () => {
                 <Col>
                   <Form.Group controlId="formCreateBookingDescription">
                     <Form.Label>
-                      Mô tả lịch hẹn ({booking.description.length}/100 từ)
+                      Mô tả lịch hẹn ({booking.description.length}/200 từ)
                       (không bắt buộc):
                     </Form.Label>
                     <Form.Control

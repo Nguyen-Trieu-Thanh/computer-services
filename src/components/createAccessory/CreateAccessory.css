@@ -11,8 +11,10 @@
 }
 
 .create-accessory-container .accessory-image-container img {
-  max-height: 250px;
-  width: auto;
+  /* max-height: 250px;
+  width: auto; */
+  max-width: 100%;
+  height: auto;
 }
 
 .create-accessory-container .accessory-image-container .button-container {

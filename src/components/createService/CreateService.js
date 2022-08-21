@@ -108,7 +108,7 @@ const CreateService = () => {
     }
 
     if (name === "description") {
-      if (value.length > 100) {
+      if (value.length > 200) {
         setService({ ...service, [name]: value });
         setValidation({
           ...validation,
@@ -233,7 +233,7 @@ const CreateService = () => {
               </Col>
               <Col>
                 <Form.Group controlId="formCreateServiceType">
-                  <Form.Label>Hãng:</Form.Label>
+                  <Form.Label>Dùng cho hãng:</Form.Label>
                   <Form.Control
                     as="select"
                     name="brand"
@@ -251,8 +251,8 @@ const CreateService = () => {
               <Col>
                 <Form.Group controlId="formCreateServiceDescription">
                   <Form.Label>
-                    Mô tả dịch vụ ({service.description.length}/100 từ) (không
-                    bắt buộc):
+                    Mô tả dịch vụ ({service.description.length}/200 từ) (bắt
+                    buộc):
                   </Form.Label>
                   <Form.Control
                     isInvalid={validation.description.isInvalid}

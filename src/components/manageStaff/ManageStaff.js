@@ -41,6 +41,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import ManageStaffSchedule from "../manageStaffSchedule/ManageStaffSchedule";
 import CreateStaff from "../createStaff/CreateStaff";
 
+//Momentjs
+import moment from "moment";
+
 //CSS
 import "./ManageStaff.css";
 import CustomPagination from "../customPagination/CustomPagination";
@@ -180,7 +183,8 @@ const ManageStaff = () => {
                       <th>#</th>
                       <th>Tên nhân viên</th>
                       <th>Số điện thoại</th>
-                      <th>Vai trò</th>
+                      <th>Email</th>
+                      <th>Ngày tạo</th>
                       <th style={{ width: "200px" }}>Hành động</th>
                     </tr>
                   </thead>
@@ -193,7 +197,10 @@ const ManageStaff = () => {
                             <td>{index + 1}</td>
                             <td>{staff.user_id?.name}</td>
                             <td>{staff.user_id?.phonenum}</td>
-                            <td>{staff.role}</td>
+                            <td>{staff.user_id?.email}</td>
+                            <td>
+                              {moment(staff.createdAt).format("MM/DD/YYYY")}
+                            </td>
                             <td>
                               <div className="action-button-container">
                                 <OverlayTrigger

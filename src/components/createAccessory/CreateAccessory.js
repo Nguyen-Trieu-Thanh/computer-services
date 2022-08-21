@@ -143,7 +143,7 @@ const CreateAccessory = () => {
     }
 
     if (name === "description") {
-      if (value.length > 100) {
+      if (value.length > 200) {
         setAccessory({ ...accessory, [name]: value });
         setValidation({
           ...validation,
@@ -465,7 +465,7 @@ const CreateAccessory = () => {
               <Col>
                 <Form.Group controlId="formCreateAccessoryDescription">
                   <Form.Label>
-                    Mô tả linh kiện ({accessory.description.length}/100 từ) (Bắt
+                    Mô tả linh kiện ({accessory.description.length}/200 từ) (bắt
                     buộc):
                   </Form.Label>
                   <Form.Control
@@ -487,7 +487,9 @@ const CreateAccessory = () => {
             <Card.Body className="text-center">
               <Form.Group controlId="formProfileSettingAvatar">
                 <Form.Label>
-                  <Card.Link>Tải lên ảnh linh kiện</Card.Link>
+                  <Card.Link style={{ cursor: "pointer" }}>
+                    Tải lên ảnh linh kiện
+                  </Card.Link>
                 </Form.Label>
                 <Form.File
                   accept="image/*"

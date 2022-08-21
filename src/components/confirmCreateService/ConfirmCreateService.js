@@ -124,6 +124,12 @@ const ConfirmCreateService = ({
                     <p>{service.type}</p>
                   </Form.Group>
                 </Col>
+                <Col>
+                  <Form.Group controlId="formConfirmCreateServiceBrand">
+                    <Form.Label>Dùng cho hãng:</Form.Label>
+                    <p>{service.brand}</p>
+                  </Form.Group>
+                </Col>
               </Row>
               <Row>
                 <Col>

@@ -144,7 +144,7 @@ const ServiceDetail = () => {
     }
 
     if (name === "description") {
-      if (value?.length > 100) {
+      if (value?.length > 200) {
         setServiceDetail({ ...serviceDetail, [name]: value });
         setValidation({
           ...validation,
@@ -376,8 +376,8 @@ const ServiceDetail = () => {
                   <Col>
                     <Form.Group controlId="formCreateServiceDescription">
                       <Form.Label>
-                        Mô tả dịch vụ ({serviceDetail?.description?.length}/100
-                        từ) (không bắt buộc):
+                        Mô tả dịch vụ ({serviceDetail?.description?.length}/200
+                        từ) (bắt buộc):
                       </Form.Label>
                       <Form.Control
                         isInvalid={validation.description.isInvalid}

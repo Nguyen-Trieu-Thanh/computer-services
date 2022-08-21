@@ -213,7 +213,8 @@ const BookingDetail = ({
         centered
       >
         <Modal.Header>
-          <Modal.Title>Chi tiết lịch hẹn mã: {bookingDetail._id}</Modal.Title>
+          {/* <Modal.Title>Chi tiết lịch hẹn mã: {bookingDetail._id}</Modal.Title> */}
+          <Modal.Title>Chi tiết lịch hẹn</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
