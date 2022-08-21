@@ -1,57 +1,73 @@
 .manage-booking-container {
-  margin: 5px 0 0 0;
-}
-
-.manage-booking-container .filter-container {
-  box-shadow: 0px 3px 8px #a6a6a6;
-}
-
-.manage-booking-container .button-container {
-  display: flex;
-  flex-direction: row-reverse;
+  padding: 5px 0 0 0;
 }
 
 .manage-booking-container .content-container {
   box-shadow: 0px 3px 8px #a6a6a6;
 }
 
+.manage-booking-container .content-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .manage-booking-container .content-container .pagination {
   margin-bottom: 0;
 }
 
-.manage-booking-container .table-container {
-  min-height: 70vh;
+.manage-booking-container .content-container .table-container {
 }
 
-.manage-booking-container .table-container .accept {
+.manage-booking-container .content-container .table-container .loading {
+  height: 100%;
+}
+
+.manage-booking-container .content-container .table-container .table {
+  margin: 0;
+}
+
+.manage-booking-container .content-container .table-container .not-available {
+  font-weight: 600;
+  color: black;
+}
+
+.manage-booking-container .content-container .table-container .accept {
   font-weight: 600;
   color: green;
 }
 
-.manage-booking-container .table-container .pending {
+.manage-booking-container .content-container .table-container .pending {
   font-weight: 600;
   color: blue;
 }
 
-.manage-booking-container .table-container .cancel {
+.manage-booking-container .content-container .table-container .processing {
+  font-weight: 600;
+  color: orange;
+}
+
+.manage-booking-container .content-container .table-container .cancel {
   font-weight: 600;
   color: red;
 }
 
-.manage-booking-container .table-container thead {
+.manage-booking-container .content-container .table-container thead {
   background-color: var(--main-color);
 }
 
-.manage-booking-container .table-container th {
+.manage-booking-container .content-container .table-container th {
   text-align: center;
 }
 
-.manage-booking-container .table-container td {
+.manage-booking-container .content-container .table-container td {
   text-align: center;
   vertical-align: middle;
 }
 
-.manage-booking-container .table-container .action-button-container {
+.manage-booking-container
+  .content-container
+  .table-container
+  .action-button-container {
   display: flex;
   justify-content: space-evenly;
 }

@@ -12,6 +12,7 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   InputGroup,
   OverlayTrigger,
@@ -30,6 +31,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CreateCustomer from "../createCustomer/CreateCustomer";
 import CustomerDetail from "../customerDetail/CustomerDetail";
 import CustomPagination from "../customPagination/CustomPagination";
+
+//Momentjs
+import moment from "moment";
 
 //CSS
 import "./ManageCustomer.css";
@@ -103,19 +107,17 @@ const ManageCustomer = () => {
 
   return (
     <>
-      <div className="manage-customer-container">
-        <Card body className="filter-container">
+      <Container fluid className="manage-customer-container">
+        <Card body className="content-container">
           <Row>
             <Col>
-              <h4>Danh sách khách hàng</h4>
+              <Card.Title>Danh sách khách hàng</Card.Title>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className="d-flex align-items-end">
             <Col>
+              <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
-                </InputGroup.Prepend>
                 <Form.Control
                   type="text"
                   name="search"
@@ -137,20 +139,16 @@ const ManageCustomer = () => {
               </InputGroup>
             </Col>
             <Col>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  as="select"
-                  name="sort"
-                  value={sort}
-                  onChange={handleSort}
-                >
-                  <option value="asc">Cũ đến mới</option>
-                  <option value="desc">Mới đến cũ</option>
-                </Form.Control>
-              </InputGroup>
+              <Form.Label>Thứ tự:</Form.Label>
+              <Form.Control
+                as="select"
+                name="sort"
+                value={sort}
+                onChange={handleSort}
+              >
+                <option value="asc">Cũ đến mới</option>
+                <option value="desc">Mới đến cũ</option>
+              </Form.Control>
             </Col>
             {role === "manager" && (
               <Col xs={2} className="button-container">
@@ -165,71 +163,74 @@ const ManageCustomer = () => {
               </Col>
             )}
           </Row>
-        </Card>
-        <Card body className="content-container">
-          {isFetching ? (
-            <div className="loading">
-              <Spinner animation="border" />
-              <div className="loading-text">Đang tải dữ liệu...</div>
-            </div>
-          ) : (
-            <div className="table-container">
-              <Table bordered hover size="sm">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tên khách hàng</th>
-                    <th>Số điện thoại</th>
-                    <th>Vai trò</th>
-                    <th style={{ width: "200px" }}>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {customers
-                    .slice(10 * (active - 1), 10 * active)
-                    .map((customer, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>{customer.user_id?.name}</td>
-                          <td>{customer.user_id?.phonenum}</td>
-                          <td>{customer.role}</td>
-                          <td>
-                            <div className="action-button-container">
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 200, hide: 100 }}
-                                overlay={
-                                  <Tooltip
-                                    className="customer-edit-button"
-                                    id="edit-button-tooltip"
-                                  >
-                                    Chi tiết
-                                  </Tooltip>
-                                }
-                              >
-                                <Button
-                                  variant="primary"
-                                  onClick={() => {
-                                    // setShowCustomerDetail(true);
-                                    // setCustomerDetail({
-                                    //   _id: customer._id,
-                                    //   username: customer.username,
-                                    //   role: customer.role,
-                                    //   bookings: [...customer.booking],
-                                    // });
-                                    navigate(
-                                      "/customer-detail/" + customer._id
-                                    );
-                                  }}
+          <Row className="mt-2">
+            <Col className="table-container">
+              {isFetching ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Table bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tên khách hàng</th>
+                      <th>Số điện thoại</th>
+                      <th>Email</th>
+                      <th>Ngày tạo</th>
+                      <th style={{ width: "200px" }}>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {customers
+                      .slice(10 * (active - 1), 10 * active)
+                      .map((customer, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{customer.user_id?.name}</td>
+                            <td>{customer.user_id?.phonenum}</td>
+                            <td>{customer.user_id?.email}</td>
+                            <td>
+                              {moment(customer.createdAt).format("MM/DD/YYYY")}
+                            </td>
+                            <td>
+                              <div className="action-button-container">
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 200, hide: 100 }}
+                                  overlay={
+                                    <Tooltip
+                                      className="customer-edit-button"
+                                      id="edit-button-tooltip"
+                                    >
+                                      Chi tiết
+                                    </Tooltip>
+                                  }
                                 >
-                                  <FontAwesomeIcon
-                                    icon={faPenToSquare}
-                                    color="#ffffff"
-                                  />
-                                </Button>
-                              </OverlayTrigger>
-                              {/* <OverlayTrigger
+                                  <Button
+                                    variant="primary"
+                                    onClick={() => {
+                                      // setShowCustomerDetail(true);
+                                      // setCustomerDetail({
+                                      //   _id: customer._id,
+                                      //   username: customer.username,
+                                      //   role: customer.role,
+                                      //   bookings: [...customer.booking],
+                                      // });
+                                      navigate(
+                                        "/customer-detail/" + customer._id
+                                      );
+                                    }}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faPenToSquare}
+                                      color="#ffffff"
+                                    />
+                                  </Button>
+                                </OverlayTrigger>
+                                {/* <OverlayTrigger
                               placement="bottom"
                               delay={{ show: 200, hide: 100 }}
                               overlay={
@@ -248,22 +249,27 @@ const ManageCustomer = () => {
                                 />
                               </Button>
                             </OverlayTrigger> */}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </div>
-          )}
-          <CustomPagination
-            count={Math.ceil(customers.length / 10)}
-            handlePaginationClick={handlePaginationClick}
-            page={active}
-          />
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              )}
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <CustomPagination
+                count={Math.ceil(customers.length / 10)}
+                handlePaginationClick={handlePaginationClick}
+                page={active}
+              />
+            </Col>
+          </Row>
         </Card>
-      </div>
+      </Container>
       {/* <CustomerDetail
         showCustomerDetail={showCustomerDetail}
         setShowCustomerDetail={setShowCustomerDetail}

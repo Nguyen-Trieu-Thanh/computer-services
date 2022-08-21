@@ -90,28 +90,44 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
   const handleCreateStaffChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
+
     if (name === "username") {
-      if (value.length > 10) {
+      const phonenumRegex = /^(?:\d+|)$/;
+      if (!phonenumRegex.test(value)) {
         setStaff({ ...staff, [name]: value });
         setValidation({
           ...validation,
           username: {
-            message: "Tên đăng nhập không được vượt quá 10 chữ số",
+            message: "Tên đăng nhập/Số điện thoại chỉ được chứa số",
             isInvalid: true,
             isValid: false,
           },
         });
         return;
       } else {
-        setStaff({ ...staff, [name]: value });
-        setValidation({
-          ...validation,
-          username: {
-            message: "",
-            isInvalid: false,
-            isValid: false,
-          },
-        });
+        if (value.length > 10) {
+          setStaff({ ...staff, [name]: value });
+          setValidation({
+            ...validation,
+            username: {
+              message:
+                "Tên đăng nhập/Số điện thoại không được vượt quá 10 chữ số",
+              isInvalid: true,
+              isValid: false,
+            },
+          });
+          return;
+        } else {
+          setStaff({ ...staff, [name]: value });
+          setValidation({
+            ...validation,
+            username: {
+              message: "",
+              isInvalid: false,
+              isValid: false,
+            },
+          });
+        }
       }
       return;
     }
@@ -153,7 +169,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
               setValidation({
                 ...validation,
                 username: {
-                  message: "Tài khoản đã tồn tại",
+                  message: "Tên đăng nhập/Số điện thoại đã được sử dụng",
                   isInvalid: true,
                   isValid: false,
                 },
@@ -169,7 +185,29 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
               });
             }
           });
-      } catch (error) {}
+      } catch (error) {
+        if (error) {
+          if (error.data) {
+            setValidation({
+              ...validation,
+              username: {
+                message: error.data,
+                isInvalid: true,
+                isValid: false,
+              },
+            });
+          } else {
+            setValidation({
+              ...validation,
+              username: {
+                message: "Đã xảy ra lỗi. Xin thử lại sau",
+                isInvalid: true,
+                isValid: false,
+              },
+            });
+          }
+        }
+      }
     }
   };
 
@@ -249,7 +287,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                   show: true,
                   title: "Tạo nhân viên",
                   time: "just now",
-                  content: "Nhân viên được tạo thành công!",
+                  content: "Nhân viên được tạo thành công",
                   color: {
                     header: "#dbf0dc",
                     body: "#41a446",
@@ -282,7 +320,85 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
               setShowCreateStaff(false);
             }
           });
-      } catch (error) {}
+      } catch (error) {
+        if (error) {
+          if (error.data) {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Tạo nhân viên",
+                time: "just now",
+                content: error.data,
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+            setStaff({
+              username: "",
+              password: "",
+              confirmPassword: "",
+              role: "staff",
+              agency_id: "62d11bfdee51782c70fe0736",
+            });
+            setValidation({
+              username: {
+                message: "",
+                isInvalid: false,
+                isValid: false,
+              },
+              password: {
+                message: "",
+                isInvalid: false,
+              },
+              confirmPassword: {
+                message: "",
+                isInvalid: false,
+              },
+            });
+            refetch();
+            setShowCreateStaff(false);
+          } else {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Tạo nhân viên",
+                time: "just now",
+                content: "Đã xảy ra lỗi. Xin thử lại sau",
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+            setStaff({
+              username: "",
+              password: "",
+              confirmPassword: "",
+              role: "staff",
+              agency_id: "62d11bfdee51782c70fe0736",
+            });
+            setValidation({
+              username: {
+                message: "",
+                isInvalid: false,
+                isValid: false,
+              },
+              password: {
+                message: "",
+                isInvalid: false,
+              },
+              confirmPassword: {
+                message: "",
+                isInvalid: false,
+              },
+            });
+            refetch();
+            setShowCreateStaff(false);
+          }
+        }
+      }
       return;
     }
   };
@@ -305,7 +421,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
             <Row>
               <Col>
                 <Form.Group controlId="formCreateStaffUsername">
-                  <Form.Label>Tên đăng nhập:</Form.Label>
+                  <Form.Label>Tên đăng nhập/Số điện thoại:</Form.Label>
                   <InputGroup>
                     <Form.Control
                       isInvalid={validation.username.isInvalid}
@@ -414,14 +530,19 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
         <Modal.Body>Dữ liệu bạn nhập sẽ không được lưu</Modal.Body>
         <Modal.Footer>
           <Button
-            variant="secondary"
+            style={{ width: "100px" }}
+            variant="danger"
             onClick={() => {
               setShowConfirmClose(false);
             }}
           >
             Hủy
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={handleClose}
+          >
             Xác nhận
           </Button>
         </Modal.Footer>

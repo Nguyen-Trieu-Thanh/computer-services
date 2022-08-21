@@ -3,78 +3,44 @@
   max-width: none !important;
 }
 
-.add-accessory-to-service .modal-content-container {
-  /* height: 90vh; */
+.add-accessory-to-service .pagination {
+  margin-bottom: 0;
 }
 
-.add-accessory-to-service .modal-content-container .modal-body-container {
-  /* height: 80%; */
+.add-accessory-to-service .table-container {
 }
 
-.add-accessory-to-service
-  .modal-content-container
-  .modal-body-container
-  .loading {
+.add-accessory-to-service .table-container .loading {
+  height: 100%;
   width: 100%;
   padding: 10px 0 0 0;
   text-align: center;
 }
 
-.add-accessory-to-service
-  .modal-content-container
-  .modal-body-container
-  .loading
-  .loading-text {
+.add-accessory-to-service .table-container .loading .loading-text {
   font-size: 30px;
 }
 
-.add-accessory-to-service
-  .modal-content-container
-  .modal-body-container
-  .form-label {
-  font-size: 18px;
-  font-weight: 700;
+.add-accessory-to-service .table-container .table {
+  margin: 0;
 }
 
-.add-accessory-to-service .modal-content-container button {
-  width: 15%;
-}
-
-.add-accessory-to-service .modal-content-container button .spinner-border {
-  width: 20px;
-  height: 20px;
-  border: 3px solid currentColor;
-  border-right-color: transparent;
-}
-
-/*Table*/
-.add-accessory-to-service
-  .modal-content-container
-  .modal-body-container
-  .table-container {
-}
-
-.add-accessory-to-service
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  thead {
+.add-accessory-to-service .table-container thead {
   background-color: var(--main-color);
 }
 
-.add-accessory-to-service
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  th {
+.add-accessory-to-service .table-container th {
   text-align: center;
 }
-
-.add-accessory-to-service
-  .modal-content-container
-  .modal-body-container
-  .table-container
-  td {
+.add-accessory-to-service .table-container td {
   text-align: center;
   vertical-align: middle;
+}
+
+.add-accessory-to-service .table-container .td-accessory-name {
+  cursor: pointer;
+}
+
+.add-accessory-to-service .table-container .td-accessory-name:hover {
+  background-color: #d9d9d9;
 }

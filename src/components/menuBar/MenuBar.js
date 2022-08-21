@@ -37,10 +37,12 @@ import {
 } from "../../redux/slices/account/accountApiSlice";
 
 import { Avatar } from "@mui/material";
+import { setToast } from "../../redux/slices/toast/toastSlice";
 
 const MenuBar = () => {
   //Global state
   const isAdmin = useSelector(selectCurrentRole) === "admin";
+  const isManager = useSelector(selectCurrentRole) === "manager";
   const username = useSelector(selectCurrentUsername);
 
   //Local state
@@ -59,14 +61,44 @@ const MenuBar = () => {
     try {
       await logout()
         .unwrap()
-        .then(async (res) => {
-          await dispatch(
+        .then((res) => {
+          dispatch(
             setCredentials({ username: null, accessToken: null, role: "" })
           );
-          await dispatch(setRememberMe({ rememberMe: false }));
-          await localStorage.setItem("rememberMe", false);
+          dispatch(setRememberMe({ rememberMe: false }));
+          localStorage.setItem("rememberMe", false);
         });
-    } catch (error) {}
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Đăng xuất",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Đăng xuất",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        }
+      }
+    }
   };
 
   return (
@@ -80,7 +112,7 @@ const MenuBar = () => {
                   src={
                     !data?.img || imgLoading
                       ? defaultUserAvatar
-                      : `http://localhost:5500/account/avatar/${data.img}`
+                      : `https://computer-services-api.herokuapp.com/account/avatar/${data.img}`
                   }
                   onLoad={() => setImgLoading(false)}
                   sx={{
@@ -96,7 +128,7 @@ const MenuBar = () => {
                 Dashboard
               </Nav.Link>
             </Nav.Item>
-            {!isAdmin && (
+            {isManager && (
               <Nav.Item className="menu-button">
                 <Nav.Link as={Link} to="/booking" eventKey="/booking">
                   Lịch hẹn
@@ -104,7 +136,29 @@ const MenuBar = () => {
               </Nav.Item>
             )}
 
-            <Accordion>
+            <Nav.Item className="menu-button">
+              <Nav.Link as={Link} to="/customer" eventKey="/customer">
+                Khách hàng
+              </Nav.Link>
+            </Nav.Item>
+
+            {isAdmin && (
+              <Nav.Item className="menu-button">
+                <Nav.Link as={Link} to="/manager" eventKey="/staff">
+                  Quản lí
+                </Nav.Link>
+              </Nav.Item>
+            )}
+
+            {isManager && (
+              <Nav.Item className="menu-button">
+                <Nav.Link as={Link} to="/staff" eventKey="/staff">
+                  Nhân viên
+                </Nav.Link>
+              </Nav.Item>
+            )}
+
+            {/* <Accordion>
               <Accordion.Toggle
                 className="menu-button"
                 as={Nav.Item}
@@ -146,25 +200,23 @@ const MenuBar = () => {
                   </Nav.Item>
                 </Accordion.Collapse>
               )}
-            </Accordion>
+            </Accordion> */}
 
-            <Nav.Item className="menu-button">
-              <Nav.Link as={Link} to="/service" eventKey="/service">
-                Dịch vụ
-              </Nav.Link>
-            </Nav.Item>
+            {isManager && (
+              <>
+                <Nav.Item className="menu-button">
+                  <Nav.Link as={Link} to="/service" eventKey="/service">
+                    Dịch vụ
+                  </Nav.Link>
+                </Nav.Item>
 
-            <Nav.Item className="menu-button">
-              <Nav.Link as={Link} to="/accessory" eventKey="/accessory">
-                Phụ kiện
-              </Nav.Link>
-            </Nav.Item>
-
-            {/* <Nav.Item className="menu-button">
-              <Nav.Link as={Link} to="/schedule" eventKey="/schedule">
-                Lịch làm việc
-              </Nav.Link>
-            </Nav.Item> */}
+                <Nav.Item className="menu-button">
+                  <Nav.Link as={Link} to="/accessory" eventKey="/accessory">
+                    Linh kiện
+                  </Nav.Link>
+                </Nav.Item>
+              </>
+            )}
 
             <Nav.Item className="log-out-button menu-button">
               <Nav.Link onClick={handleLogout} eventKey="/logout">

@@ -150,7 +150,38 @@ const ProfileSetting = () => {
                       refetch();
                     }
                   });
-              } catch (error) {}
+              } catch (error) {
+                if (error) {
+                  if (error.data) {
+                    dispatch(
+                      setToast({
+                        show: true,
+                        title: "Cập nhật hồ sơ",
+                        time: "just now",
+                        content: error.data,
+                        color: {
+                          header: "#ffcccc",
+                          body: "#e60000",
+                        },
+                      })
+                    );
+                    refetch();
+                  } else {
+                    dispatch(
+                      setToast({
+                        show: true,
+                        title: "Cập nhật hồ sơ",
+                        time: "just now",
+                        content: "Đã xảy ra lỗi. Xin thử lại sau",
+                        color: {
+                          header: "#ffcccc",
+                          body: "#e60000",
+                        },
+                      })
+                    );
+                  }
+                }
+              }
             } else {
               dispatch(
                 setToast({
@@ -168,7 +199,38 @@ const ProfileSetting = () => {
             }
           }
         });
-    } catch (error) {}
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Cập nhật hồ sơ",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          refetch();
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Cập nhật hồ sơ",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        }
+      }
+    }
   };
 
   const handleImageChange = (e) => {
@@ -180,16 +242,6 @@ const ProfileSetting = () => {
       });
       reader.readAsDataURL(e.target.files[0]);
     }
-  };
-
-  const handleUpdateImage = async (e) => {
-    const formData = new FormData();
-    formData.append("img", file);
-    try {
-      await updateImage(formData)
-        .unwrap()
-        .then((res) => {});
-    } catch (error) {}
   };
 
   useEffect(() => {
@@ -315,24 +367,13 @@ const ProfileSetting = () => {
                         }
                       >
                         <Form.Label>
-                          {/* <Image
-                            src={
-                              imgData
-                                ? imgData
-                                : !profile.img || imgLoading
-                                ? defaultUserAvatar
-                                : `https://computer-services-api.herokuapp.com/account/avatar/${profile.img}`
-                            }
-                            onLoad={() => setImgLoading(false)}
-                            roundedCircle
-                          /> */}
                           <Avatar
                             src={
                               imgData
                                 ? imgData
                                 : !profile.img || imgLoading
                                 ? defaultUserAvatar
-                                : `http://localhost:5500/account/avatar/${profile.img}`
+                                : `https://computer-services-api.herokuapp.com/account/avatar/${profile.img}`
                             }
                             onLoad={() => setImgLoading(false)}
                             sx={{

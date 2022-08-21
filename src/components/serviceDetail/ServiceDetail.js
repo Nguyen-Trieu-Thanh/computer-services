@@ -35,16 +35,19 @@ import AddAccessoryToService from "../addAccessoryToService/AddAccessoryToServic
 
 //CSS
 import "./ServiceDetail.css";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams, Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
 const ServiceDetail = () => {
+  const location = useLocation();
+
   const { service_id } = useParams();
 
   const {
     data: serviceDetailData,
     refetch,
     isFetching,
+    error,
   } = useGetServiceDetailQuery(service_id);
 
   const [updateService, { isLoading }] = useUpdateServiceMutation();
@@ -84,6 +87,8 @@ const ServiceDetail = () => {
     serHasAcc: [],
     hasAccessory: false,
   });
+
+  const [addAccessories, setAddAccessories] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -186,6 +191,17 @@ const ServiceDetail = () => {
       return;
     }
 
+    if (serviceDetail.description === "") {
+      setValidation({
+        ...validation,
+        description: {
+          message: "Mô tả dịch vụ không được để trống",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
     if (
       !validation.name.isInvalid &&
       !validation.price.isInvalid &&
@@ -194,14 +210,14 @@ const ServiceDetail = () => {
       try {
         await updateService(serviceDetail)
           .unwrap()
-          .then(async (res) => {
+          .then((res) => {
             if (res) {
-              await dispatch(
+              dispatch(
                 setToast({
                   show: true,
-                  title: "Tạo lịch hẹn",
+                  title: "Tạo dịch vụ",
                   time: "just now",
-                  content: "Lịch hẹn được tạo thành công!",
+                  content: "Dịch vụ được cập nhật thành công",
                   color: {
                     header: "#dbf0dc",
                     body: "#41a446",
@@ -211,18 +227,47 @@ const ServiceDetail = () => {
               refetch();
             }
           });
-      } catch (error) {}
+      } catch (error) {
+        if (error) {
+          if (error.data) {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Tạo dịch vụ",
+                time: "just now",
+                content: error.data,
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+            refetch();
+          } else {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Tạo dịch vụ",
+                time: "just now",
+                content: "Đã xảy ra lỗi. Xin thử lại sau",
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+          }
+        }
+      }
     }
   };
 
-  // console.log(serviceDetail);
-
   const isChange = () => {
-    return JSON.stringify(initServiceDetail) === JSON.stringify(serviceDetail);
+    return JSON.stringify(initServiceDetail) !== JSON.stringify(serviceDetail);
   };
 
   useEffect(() => {
-    if (!isFetching) {
+    if (!isFetching && !error) {
       setServiceDetail({
         ...serviceDetailData,
         accessories_id: serviceDetailData?.serHasAcc.map((x) => {
@@ -230,6 +275,7 @@ const ServiceDetail = () => {
             ...x.accessory_id,
           };
         }),
+        price: String(serviceDetailData.price),
       });
       setInitServiceDetail({
         ...serviceDetailData,
@@ -238,9 +284,14 @@ const ServiceDetail = () => {
             ...x.accessory_id,
           };
         }),
+        price: String(serviceDetailData.price),
       });
     }
   }, [isFetching]);
+
+  if (error) {
+    return <Navigate to="/error" state={{ from: location }} replace />;
+  }
 
   return (
     <>
@@ -345,71 +396,80 @@ const ServiceDetail = () => {
               </>
             )}
           </Card>
-          <Card body className="service-table-container">
-            <Row>
-              <Col>
-                <Card.Title>Dịch vụ bao gồm phụ kiện</Card.Title>
-              </Col>
-            </Row>
-            {isFetching ? (
-              <div className="loading">
-                <Spinner animation="border" />
-                <div className="loading-text">Đang tải dữ liệu...</div>
-              </div>
-            ) : (
+          <Card className="service-table-container">
+            <Card.Body>
               <Row>
                 <Col>
-                  <div className="table-container">
-                    <Table bordered size="sm">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>TÊN PHỤ KIỆN</th>
-                          <th>GIÁ PHỤ KIỆN</th>
-                          <th>NHÀ CUNG CẤP</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {serviceDetail.accessories_id?.map(
-                          (accessory, index) => {
-                            return (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>{accessory.name}</td>
-                                <td>{accessory.price}</td>
-                                <td>{accessory.supplier_id?.name}</td>
-                              </tr>
-                            );
-                          }
-                        )}
-                        <tr>
-                          <td colSpan={4}>
-                            <Button
-                              variant="link"
-                              size="sm"
-                              onClick={() => {
-                                setShowAddAccessoryToService(true);
-                              }}
-                            >
-                              Thêm / Xóa phụ kiện
-                            </Button>
-                          </td>
-                        </tr>
-                      </tbody>
-                    </Table>
-                  </div>
+                  <Card.Title>Dịch vụ bao gồm linh kiện</Card.Title>
                 </Col>
               </Row>
-            )}
-          </Card>
-          <Card body className="service-button-container">
-            <Row>
-              <Col className="button-container">
-                <Button type="submit" variant="primary">
-                  Cập nhật
-                </Button>
-              </Col>
-            </Row>
+              {isFetching ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Row>
+                  <Col>
+                    <div className="table-container">
+                      <Table bordered size="sm">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Tên linh kiện</th>
+                            <th>Giá linh kiện</th>
+                            <th>Nhà cung cấp</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td colSpan={4}>
+                              <Button
+                                variant="link"
+                                size="sm"
+                                onClick={() => {
+                                  setAddAccessories([
+                                    ...serviceDetail.accessories_id,
+                                  ]);
+                                  setShowAddAccessoryToService(true);
+                                }}
+                              >
+                                Thêm / Xóa linh kiện
+                              </Button>
+                            </td>
+                          </tr>
+                          {serviceDetail.accessories_id?.map(
+                            (accessory, index) => {
+                              return (
+                                <tr key={index}>
+                                  <td>{index + 1}</td>
+                                  <td>{accessory.name}</td>
+                                  <td>{accessory.price}</td>
+                                  <td>{accessory.supplier_id?.name}</td>
+                                </tr>
+                              );
+                            }
+                          )}
+                        </tbody>
+                      </Table>
+                    </div>
+                  </Col>
+                </Row>
+              )}
+            </Card.Body>
+            <Card.Footer>
+              <Row>
+                <Col className="button-container">
+                  <Button
+                    disabled={isLoading || !isChange()}
+                    type="submit"
+                    variant="primary"
+                  >
+                    {isLoading ? <Spinner animation="border" /> : "Cập nhật"}
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
           </Card>
         </Form>
       </Container>
@@ -418,6 +478,8 @@ const ServiceDetail = () => {
         setShowAddAccessoryToService={setShowAddAccessoryToService}
         serviceDetail={serviceDetail}
         setServiceDetail={setServiceDetail}
+        addAccessories={addAccessories}
+        setAddAccessories={setAddAccessories}
       />
     </>
   );

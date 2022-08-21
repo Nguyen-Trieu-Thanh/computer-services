@@ -14,11 +14,11 @@
   border-right-color: transparent;
 }
 
-.create-customer-container .confirm-button {
-  width: 15%;
+.create-customer-container button {
+  width: 100px;
 }
 
-.create-customer-container .confirm-button .spinner-border {
+.create-customer-container button .spinner-border {
   width: 20px;
   height: 20px;
   border: 3px solid currentColor;

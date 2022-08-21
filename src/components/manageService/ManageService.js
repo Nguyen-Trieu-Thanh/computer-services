@@ -13,6 +13,7 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   InputGroup,
   OverlayTrigger,
@@ -114,19 +115,17 @@ const ManageService = () => {
 
   return (
     <>
-      <div className="manage-service-container">
-        <Card body className="filter-container">
+      <Container fluid className="manage-service-container">
+        <Card body className="content-container">
           <Row>
             <Col>
-              <h4>Danh sách dịch vụ</h4>
+              <Card.Title>Danh sách dịch vụ</Card.Title>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className="d-flex align-items-end">
             <Col>
+              <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
-                </InputGroup.Prepend>
                 <Form.Control
                   type="text"
                   name="search"
@@ -148,20 +147,16 @@ const ManageService = () => {
               </InputGroup>
             </Col>
             <Col>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  as="select"
-                  name="sort"
-                  value={sort}
-                  onChange={handleSort}
-                >
-                  <option value="asc">Cũ đến mới</option>
-                  <option value="desc">Mới đến cũ</option>
-                </Form.Control>
-              </InputGroup>
+              <Form.Label>Thứ tự:</Form.Label>
+              <Form.Control
+                as="select"
+                name="sort"
+                value={sort}
+                onChange={handleSort}
+              >
+                <option value="asc">Cũ đến mới</option>
+                <option value="desc">Mới đến cũ</option>
+              </Form.Control>
             </Col>
             <Col xs={2} className="button-container">
               <Button
@@ -174,78 +169,81 @@ const ManageService = () => {
               </Button>
             </Col>
           </Row>
-        </Card>
-
-        <Card body className="content-container">
-          {isFetching ? (
-            <div className="loading">
-              <Spinner animation="border" />
-              <div className="loading-text">Đang tải dữ liệu...</div>
-            </div>
-          ) : (
-            <div className="table-container">
-              <Table bordered hover size="sm">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tên dịch vụ</th>
-                    <th>Giá dịch vụ</th>
-                    <th>Ngày tạo (MM/DD/YYYY)</th>
-                    <th style={{ width: "200px" }}>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {services
-                    .slice(10 * (active - 1), 10 * active)
-                    .map((service, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>{service.name}</td>
-                          <td>{service.price}</td>
-                          <td>
-                            {moment(service.createdAt).format("MM/DD/YYYY")}
-                          </td>
-                          <td>
-                            <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 200, hide: 100 }}
-                              overlay={
-                                <Tooltip
-                                  className="service-edit-button"
-                                  id="edit-button-tooltip"
-                                >
-                                  CHI TIẾT
-                                </Tooltip>
-                              }
-                            >
-                              <Button
-                                variant="primary"
-                                onClick={() => {
-                                  navigate("/service-detail/" + service._id);
-                                }}
+          <Row className="mt-2">
+            <Col className="table-container">
+              {isFetching ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Table bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tên dịch vụ</th>
+                      <th>Giá dịch vụ</th>
+                      <th>Ngày tạo</th>
+                      <th style={{ width: "200px" }}>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {services
+                      .slice(10 * (active - 1), 10 * active)
+                      .map((service, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{service.name}</td>
+                            <td>{service.price}</td>
+                            <td>
+                              {moment(service.createdAt).format("MM/DD/YYYY")}
+                            </td>
+                            <td>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 200, hide: 100 }}
+                                overlay={
+                                  <Tooltip
+                                    className="service-edit-button"
+                                    id="edit-button-tooltip"
+                                  >
+                                    Chi tiết
+                                  </Tooltip>
+                                }
                               >
-                                <FontAwesomeIcon
-                                  icon={faPenToSquare}
-                                  color="#ffffff"
-                                />
-                              </Button>
-                            </OverlayTrigger>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </div>
-          )}
-          <CustomPagination
-            count={Math.ceil(services.length / 10)}
-            handlePaginationClick={handlePaginationClick}
-            page={active}
-          />
+                                <Button
+                                  variant="primary"
+                                  onClick={() => {
+                                    navigate("/service-detail/" + service._id);
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faPenToSquare}
+                                    color="#ffffff"
+                                  />
+                                </Button>
+                              </OverlayTrigger>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              )}
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <CustomPagination
+                count={Math.ceil(services.length / 10)}
+                handlePaginationClick={handlePaginationClick}
+                page={active}
+              />
+            </Col>
+          </Row>
         </Card>
-      </div>
+      </Container>
       {/* <ServiceDetail
         showServiceDetail={showServiceDetail}
         setShowServiceDetail={setShowServiceDetail}

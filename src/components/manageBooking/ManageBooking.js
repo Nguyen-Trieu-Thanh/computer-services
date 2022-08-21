@@ -14,6 +14,7 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   InputGroup,
   OverlayTrigger,
@@ -82,7 +83,9 @@ const ManageBooking = () => {
     status: "",
     sort: "desc",
     page: 1,
+    cus_name: "",
   });
+  const [search, setSearch] = useState("");
 
   //Utilities
   const navigate = useNavigate();
@@ -109,6 +112,10 @@ const ManageBooking = () => {
     setFilterBooking({ ...filterBooking, [name]: value, page: 1 });
   };
 
+  const handleSearch = () => {
+    setFilterBooking({ ...filterBooking, cus_name: search, page: 1 });
+  };
+
   const checkBookingStatus = (status) => {
     if (status === "Đã tiếp nhận") {
       return "accept";
@@ -116,6 +123,42 @@ const ManageBooking = () => {
 
     if (status === "Đang xử lí") {
       return "pending";
+    }
+
+    if (status === "Hủy") {
+      return "cancel";
+    }
+
+    return "";
+  };
+
+  const checkOrderStatus = (status) => {
+    if (status === "Chưa có") {
+      return "not-available";
+    }
+
+    if (status === "Đang chờ") {
+      return "pending";
+    }
+
+    if (status === "Đang xử lí") {
+      return "pending";
+    }
+
+    if (status === "Chờ xác nhận") {
+      return "processing";
+    }
+
+    if (status === "Quản lí xác nhận") {
+      return "processing";
+    }
+
+    if (status === "Khách hàng xác nhận") {
+      return "processing";
+    }
+
+    if (status === "Hoàn thành") {
+      return "accept";
     }
 
     if (status === "Hủy") {
@@ -133,19 +176,40 @@ const ManageBooking = () => {
 
   return (
     <>
-      <div className="manage-booking-container">
-        <Card body className="filter-container">
-          <Row>
-            <Col>
-              <h4>Quản lý lịch hẹn</h4>
-            </Col>
-          </Row>
-          <Row className="mt-2">
-            <Col>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Trạng thái:</InputGroup.Text>
-                </InputGroup.Prepend>
+      <Container fluid className="manage-booking-container">
+        <Card className="content-container">
+          <Card.Body>
+            <Row>
+              <Col>
+                <Card.Title>Quản lý lịch hẹn</Card.Title>
+              </Col>
+            </Row>
+            <Row className="d-flex align-items-end">
+              <Col>
+                <Form.Label>Tìm kiếm theo tên:</Form.Label>
+                <InputGroup>
+                  <Form.Control
+                    type="text"
+                    name="search"
+                    value={search}
+                    onChange={(e) => {
+                      setSearch(e.target.value);
+                    }}
+                  />
+                  <InputGroup.Append>
+                    <Button
+                      disabled={isFetching}
+                      variant="primary"
+                      onClick={handleSearch}
+                      className="search-button"
+                    >
+                      Tìm kiếm
+                    </Button>
+                  </InputGroup.Append>
+                </InputGroup>
+              </Col>
+              <Col>
+                <Form.Label>Trạng thái:</Form.Label>
                 <Form.Control
                   as="select"
                   name="status"
@@ -157,13 +221,9 @@ const ManageBooking = () => {
                   <option value="Đang xử lí">Đang xử lí</option>
                   <option value="Hủy">Hủy</option>
                 </Form.Control>
-              </InputGroup>
-            </Col>
-            <Col>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
-                </InputGroup.Prepend>
+              </Col>
+              <Col>
+                <Form.Label>Thứ tự:</Form.Label>
                 <Form.Control
                   as="select"
                   name="sort"
@@ -173,133 +233,143 @@ const ManageBooking = () => {
                   <option value="asc">Cũ đến mới</option>
                   <option value="desc">Mới đến cũ</option>
                 </Form.Control>
-              </InputGroup>
-            </Col>
-            <Col xs={2} className="button-container">
-              <Button
-                variant="primary"
-                onClick={() => {
-                  navigate("/create-booking");
-                }}
-              >
-                Tạo lịch hẹn <FontAwesomeIcon icon={faPlus} color="" />
-              </Button>
-            </Col>
-          </Row>
-        </Card>
-        <Card body className="content-container">
-          {isFetching ? (
-            <div className="loading">
-              <Spinner animation="border" />
-              <div className="loading-text">Đang tải dữ liệu...</div>
-            </div>
-          ) : (
-            <div className="table-container">
-              <Table bordered hover size="sm">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>TÊN KHÁCH HÀNG</th>
-                    <th>SỐ ĐIỆN THOẠI</th>
-                    <th>LOẠI LỊCH HẸN</th>
-                    <th>NGÀY HẸN (MM/DD/YYYY)</th>
-                    <th>TRẠNG THÁI LỊCH HẸN</th>
-                    <th>TRẠNG THÁI ĐƠN HÀNG</th>
-                    <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bookings.map((booking, index) => {
-                    return (
-                      <tr key={index}>
-                        <td>{index + 1}</td>
-                        <td>{booking.cus_name}</td>
-                        <td>{booking.phonenum}</td>
-                        <td>{booking.type}</td>
-                        <td>{moment(booking.time).format("MM/DD/YYYY")}</td>
-                        <td className={checkBookingStatus(booking.status)}>
-                          {booking.status}
-                        </td>
-                        {/* {booking.status === "pending" ? (
+              </Col>
+              <Col xs={2} className="button-container">
+                <Button
+                  variant="primary"
+                  onClick={() => {
+                    navigate("/create-booking");
+                  }}
+                >
+                  Tạo lịch hẹn <FontAwesomeIcon icon={faPlus} color="" />
+                </Button>
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col className="table-container">
+                {isFetching ? (
+                  <div className="loading">
+                    <Spinner animation="border" />
+                    <div className="loading-text">Đang tải dữ liệu...</div>
+                  </div>
+                ) : (
+                  <Table bordered hover size="sm">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Tên khách hàng</th>
+                        <th>Số điện thoại</th>
+                        <th>Loại lịch hẹn</th>
+                        <th>Ngày hẹn</th>
+                        <th>Trạng thái lịch hẹn</th>
+                        <th>Trạng thái đơn hàng</th>
+                        <th style={{ width: "200px" }}>Hành động</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookings.map((booking, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{booking.cus_name}</td>
+                            <td>{booking.phonenum}</td>
+                            <td>{booking.type}</td>
+                            <td>{moment(booking.time).format("MM/DD/YYYY")}</td>
+                            <td className={checkBookingStatus(booking.status)}>
+                              {booking.status}
+                            </td>
+                            {/* {booking.status === "pending" ? (
                         <td>Đang chờ</td>
                       ) : booking.status === "accept" ? (
                         <td>Chấp nhận</td>
                       ) : (
                         <td>Từ chối</td>
                       )} */}
-                        <td>
-                          {booking.order_id
-                            ? booking.order_id.status
-                            : "Chưa có"}
-                        </td>
-                        <td>
-                          <div className="action-button-container">
-                            <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 200, hide: 100 }}
-                              overlay={
-                                <Tooltip
-                                  className="booking-edit-button"
-                                  id="edit-button-tooltip"
-                                >
-                                  XEM CHI TIẾT
-                                </Tooltip>
-                              }
+                            <td
+                              className={checkOrderStatus(
+                                booking.order_id
+                                  ? booking.order_id.status
+                                  : "Chưa có"
+                              )}
                             >
-                              <Button
-                                variant="primary"
-                                onClick={() => {
-                                  setShowBookingDetail(true);
-                                  setBookingDetail({
-                                    _id: booking._id,
-                                    cus_name: booking.cus_name,
-                                    services: booking.services,
-                                    description: booking.description,
-                                    type: booking.type,
-                                    cus_address: booking.cus_address,
-                                    time: booking.time,
-                                    status: booking.status,
-                                    phonenum: booking.phonenum,
-                                    order_id: booking.order_id,
-                                  });
-                                  setInitBookingDetail({
-                                    _id: booking._id,
-                                    cus_name: booking.cus_name,
-                                    services: booking.services,
-                                    description: booking.description,
-                                    type: booking.type,
-                                    cus_address: booking.cus_address,
-                                    time: booking.time,
-                                    status: booking.status,
-                                    phonenum: booking.phonenum,
-                                    order_id: booking.order_id,
-                                  });
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faPenToSquare}
-                                  color="#ffffff"
-                                />
-                              </Button>
-                            </OverlayTrigger>
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </Table>
-            </div>
-          )}
-          <CustomPagination
-            count={bookingsData.count}
-            handlePaginationClick={(number) => {
-              setFilterBooking({ ...filterBooking, page: number });
-            }}
-            page={filterBooking.page}
-          />
+                              {booking.order_id
+                                ? booking.order_id.status
+                                : "Chưa có"}
+                            </td>
+                            <td>
+                              <div className="action-button-container">
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 200, hide: 100 }}
+                                  overlay={
+                                    <Tooltip
+                                      className="booking-edit-button"
+                                      id="edit-button-tooltip"
+                                    >
+                                      Chi tiết
+                                    </Tooltip>
+                                  }
+                                >
+                                  <Button
+                                    variant="primary"
+                                    onClick={() => {
+                                      setShowBookingDetail(true);
+                                      setBookingDetail({
+                                        _id: booking._id,
+                                        cus_name: booking.cus_name,
+                                        services: booking.services,
+                                        description: booking.description,
+                                        type: booking.type,
+                                        cus_address: booking.cus_address,
+                                        time: booking.time,
+                                        status: booking.status,
+                                        phonenum: booking.phonenum,
+                                        order_id: booking.order_id,
+                                      });
+                                      setInitBookingDetail({
+                                        _id: booking._id,
+                                        cus_name: booking.cus_name,
+                                        services: booking.services,
+                                        description: booking.description,
+                                        type: booking.type,
+                                        cus_address: booking.cus_address,
+                                        time: booking.time,
+                                        status: booking.status,
+                                        phonenum: booking.phonenum,
+                                        order_id: booking.order_id,
+                                      });
+                                    }}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faPenToSquare}
+                                      color="#ffffff"
+                                    />
+                                  </Button>
+                                </OverlayTrigger>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                )}
+              </Col>
+            </Row>
+            <Row className="mt-2">
+              <Col>
+                <CustomPagination
+                  count={bookingsData.count}
+                  handlePaginationClick={(number) => {
+                    setFilterBooking({ ...filterBooking, page: number });
+                  }}
+                  page={filterBooking.page}
+                />
+              </Col>
+            </Row>
+          </Card.Body>
         </Card>
-      </div>
+      </Container>
       <BookingDetail
         showBookingDetail={showBookingDetail}
         setShowBookingDetail={setShowBookingDetail}

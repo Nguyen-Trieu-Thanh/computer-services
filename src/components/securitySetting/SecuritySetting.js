@@ -166,12 +166,12 @@ const SecuritySetting = () => {
       try {
         await updatePassword(security)
           .unwrap()
-          .then(async (res) => {
+          .then((res) => {
             if (res) {
-              await dispatch(
+              dispatch(
                 setToast({
                   show: true,
-                  title: "Mật khẩu",
+                  title: "Cập nhật mật khẩu",
                   time: "just now",
                   content: "Mật khẩu đã được thay đổi",
                   color: {
@@ -188,20 +188,56 @@ const SecuritySetting = () => {
           });
       } catch (error) {
         if (error) {
-          if (error.data === "Sai mật khẩu") {
-            setValidation({
-              ...validation,
-              oldPassword: {
-                message: "Mật khẩu cũ không chính xác",
-                isInvalid: true,
-              },
-            });
+          if (error.data) {
+            if (error.data === "Sai mật khẩu") {
+              setValidation({
+                ...validation,
+                oldPassword: {
+                  message: "Mật khẩu cũ không chính xác",
+                  isInvalid: true,
+                },
+              });
+              setSecurity({
+                ...security,
+                newPassword: "",
+                confirmNewPassword: "",
+              });
+              return;
+            } else {
+              dispatch(
+                setToast({
+                  show: true,
+                  title: "Cập nhật mật khẩu",
+                  time: "just now",
+                  content: error.data,
+                  color: {
+                    header: "#ffcccc",
+                    body: "#e60000",
+                  },
+                })
+              );
+              setSecurity({
+                newPassword: "",
+                confirmNewPassword: "",
+              });
+            }
+          } else {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Cập nhật mật khẩu",
+                time: "just now",
+                content: "Đã xảy ra lỗi. Xin thử lại sau",
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
             setSecurity({
-              ...security,
               newPassword: "",
               confirmNewPassword: "",
             });
-            return;
           }
         }
       }

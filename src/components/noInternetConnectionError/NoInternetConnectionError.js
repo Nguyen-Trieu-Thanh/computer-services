@@ -3,18 +3,17 @@ import { Card, Col, Container, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
 //CSS
-import "./Error.css";
+import "./NoInternetConnectionError.css";
 
-const Error = () => {
+const NoInternetConnectionError = () => {
   return (
-    <Container fluid className="error-detail-container">
+    <Container fluid className="no-internet-connection-error-detail-container">
       <Card body className="error-info-container">
         <Row>
           <Col>
-            <Card.Title>Không tìm thấy trang</Card.Title>
+            <Card.Title>Không có kết nối mạng</Card.Title>
             <Card.Text>
-              Đường link bạn nhập vào đã bị lỗi hoặc không tồn tại. Xin hãy thử
-              lại sau.
+              Mạng internet của bạn hiện không có kết nối. Xin hãy thử lại sau.
             </Card.Text>
             <Card.Link as={Link} to="/dashboard">
               Quay lại trang Dashboard
@@ -26,4 +25,4 @@ const Error = () => {
   );
 };
 
-export default Error;
+export default NoInternetConnectionError;

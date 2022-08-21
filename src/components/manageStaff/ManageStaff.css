@@ -1,52 +1,53 @@
 .manage-staff-container {
-  margin: 5px 0 0 0;
-}
-
-.manage-staff-container .filter-container {
-  box-shadow: 0px 3px 8px #a6a6a6;
-}
-
-.manage-staff-container .button-container {
-  display: flex;
-  flex-direction: row-reverse;
+  padding: 5px 0 0 0;
 }
 
 .manage-staff-container .content-container {
   box-shadow: 0px 3px 8px #a6a6a6;
 }
 
+.manage-staff-container .content-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .manage-staff-container .content-container .pagination {
   margin-bottom: 0;
 }
 
-.manage-staff-container .table-container {
-  height: 70vh;
+.manage-staff-container .content-container .table-container {
 }
 
-.manage-staff-container .table-container thead {
+.manage-staff-container .content-container .table-container .loading {
+  height: 100%;
+}
+
+.manage-staff-container .content-container .table-container .table {
+  margin: 0;
+}
+
+.manage-staff-container .content-container .table-container thead {
   background-color: var(--main-color);
 }
 
-.manage-staff-container .table-container th {
+.manage-staff-container .content-container .table-container th {
   text-align: center;
 }
 
-.manage-staff-container .table-container td {
+.manage-staff-container .content-container .table-container td {
   text-align: center;
   vertical-align: middle;
 }
 
-.manage-staff-container .table-container .action-button-container {
+.manage-staff-container
+  .content-container
+  .table-container
+  .action-button-container {
   display: flex;
   justify-content: space-evenly;
 }
 
-.manage-staff-container .pagination-container {
-  float: right;
-}
-
 /*Tooltip CSS*/
-
 .staff-edit-button {
   font-size: 10px;
   letter-spacing: 1px;

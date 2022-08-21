@@ -14,11 +14,11 @@
   border-right-color: transparent;
 }
 
-.create-manager-container .confirm-button {
-  width: 15%;
+.create-manager-container button {
+  width: 100px;
 }
 
-.create-manager-container .confirm-button .spinner-border {
+.create-manager-container button .spinner-border {
   width: 20px;
   height: 20px;
   border: 3px solid currentColor;

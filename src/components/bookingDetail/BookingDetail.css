@@ -3,24 +3,36 @@
   max-width: none !important;
 }
 
-.booking-detail .modal-content-container {
-  /* height: 90vh; */
-}
-
-.booking-detail .modal-content-container .modal-body-container {
-  /* height: 80%; */
-}
-
-.booking-detail .modal-content-container .modal-body-container .form-label {
+.booking-detail .form-label {
   font-size: 18px;
   font-weight: 700;
 }
 
-.booking-detail .modal-content-container button {
-  width: 15%;
+.booking-detail .table-container {
 }
 
-.booking-detail .modal-content-container button .spinner-border {
+.booking-detail .table-container .table {
+  /* margin: 0; */
+}
+
+.booking-detail .table-container thead {
+  background-color: var(--main-color);
+}
+
+.booking-detail .table-container th {
+  text-align: center;
+}
+
+.booking-detail .table-container td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.booking-detail button {
+  width: 100px;
+}
+
+.booking-detail button .spinner-border {
   width: 20px;
   height: 20px;
   border: 3px solid currentColor;

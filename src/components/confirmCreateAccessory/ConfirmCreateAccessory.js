@@ -11,17 +11,16 @@ import { useCreateAccessoryMutation } from "../../redux/slices/accessory/accesso
 import { useDispatch } from "react-redux";
 
 //React-bootstrap
-import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Form, Image, Modal, Row, Spinner } from "react-bootstrap";
 
 //CSS
 import "./ConfirmCreateAccessory.css";
 
 const ConfirmCreateAccessory = ({
-  setShowCreateAccessory,
   accessory,
-  setIsRefetch,
   setShowConfirmCreateAccessory,
   showConfirmCreateAccessory,
+  imgData,
 }) => {
   const [createAccessory, { isLoading }] = useCreateAccessoryMutation();
 
@@ -29,7 +28,6 @@ const ConfirmCreateAccessory = ({
 
   const handleClose = () => {
     setShowConfirmCreateAccessory(false);
-    setShowCreateAccessory(true);
   };
 
   const handleConfirmAccessorySubmit = async (e) => {
@@ -38,25 +36,56 @@ const ConfirmCreateAccessory = ({
     try {
       await createAccessory(accessory)
         .unwrap()
-        .then(async (res) => {
+        .then((res) => {
           if (res) {
-            await dispatch(
+            dispatch(
               setToast({
                 show: true,
                 title: "Tạo phụ kiện",
                 time: "just now",
-                content: "Phụ kiện được tạo thành công!",
+                content: "Phụ kiện được tạo thành công",
                 color: {
                   header: "#dbf0dc",
                   body: "#41a446",
                 },
               })
             );
-            await setIsRefetch(true);
             setShowConfirmCreateAccessory(false);
           }
         });
-    } catch (error) {}
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Tạo phụ kiện",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          setShowConfirmCreateAccessory(false);
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Tạo phụ kiện",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          setShowConfirmCreateAccessory(false);
+        }
+      }
+    }
   };
 
   return (
@@ -142,6 +171,14 @@ const ConfirmCreateAccessory = ({
                   </Form.Group>
                 </Col>
               </Row>
+              <Row className="text-center">
+                <Col>
+                  <h3>Ảnh linh kiện</h3>
+                </Col>
+                <Col>
+                  <Image src={imgData} />
+                </Col>
+              </Row>
             </Form>
           </Modal.Body>
           <Modal.Footer>
@@ -152,7 +189,6 @@ const ConfirmCreateAccessory = ({
               type="submit"
               variant="primary"
               onClick={handleConfirmAccessorySubmit}
-              className="confirm-button"
             >
               {isLoading ? <Spinner animation="border" /> : "Xác nhận"}
             </Button>

@@ -9,7 +9,7 @@
 
 .dashboard-container .dashboard-user-welcome {
   width: 30vw;
-  margin: 0 0 50px 0;
+  margin: 0 0 30px 0;
 
   box-shadow: 0px 3px 8px #a6a6a6;
 }
@@ -80,53 +80,61 @@
 
 /*Schedule container*/
 .dashboard-container .dashboard-schedule-container {
-  margin: 50px 0 0 0;
+  padding: 30px 0 0 0;
+}
 
+.dashboard-container .dashboard-schedule-container .schedule-container {
   box-shadow: 0px 3px 8px #a6a6a6;
 }
 
-.dashboard-container .dashboard-schedule-container .box-container {
+.dashboard-container
+  .dashboard-schedule-container
+  .schedule-container
+  .box-container {
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-.dashboard-container .dashboard-schedule-container .box {
+.dashboard-container .dashboard-schedule-container .schedule-container .box {
   width: 50px;
   height: 100%;
   border: 1px solid #000000;
   margin: 0 10px 0 0;
 }
 
-.dashboard-container .dashboard-schedule-container .box-disabled {
+.dashboard-container
+  .dashboard-schedule-container
+  .schedule-container
+  .box-disabled {
   background-color: #cccccc;
 }
 
-.dashboard-container .dashboard-schedule-container .box-almost-full {
+.dashboard-container
+  .dashboard-schedule-container
+  .schedule-container
+  .box-almost-full {
   background-color: #ffff4d;
 }
 
-.dashboard-container .dashboard-schedule-container .box-is-full {
+.dashboard-container
+  .dashboard-schedule-container
+  .schedule-container
+  .box-is-full {
   background-color: #ff3333;
 }
 
-.dashboard-container .dashboard-schedule-container .filter-container {
-  width: 100%;
-  display: flex;
-  /* justify-content: space-evenly; */
-  /* text-align: center; */
-}
-
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container {
   overflow-y: scroll;
-  max-height: 80vh;
-  height: 109px;
+  max-height: 75vh;
 }
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .loading {
   height: 100%;
@@ -137,6 +145,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .loading-text {
   font-size: 30px;
@@ -144,6 +153,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .table {
   margin: 0px;
@@ -151,6 +161,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   thead {
   background-color: var(--main-color);
@@ -158,6 +169,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   th {
   text-align: center;
@@ -165,6 +177,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .date-th {
   width: 11%;
@@ -172,6 +185,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .slot-th {
   width: 11.125%;
@@ -179,6 +193,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   td {
   text-align: center;
@@ -187,6 +202,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .td-text {
   font-size: 11px;
@@ -194,6 +210,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .td-clickable {
   cursor: pointer;
@@ -201,6 +218,15 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
+  .dashboard-schedule-table-container
+  .td-clickable:hover {
+  background-color: #d9d9d9;
+}
+
+.dashboard-container
+  .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .almost-full {
   background-color: #ffff4d;
@@ -208,6 +234,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .is-full {
   background-color: #ff3333;
@@ -215,6 +242,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .tr-disabled {
   background-color: #cccccc;
@@ -222,6 +250,7 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .td-disabled {
   background-color: #cccccc;
@@ -229,11 +258,13 @@
 
 .dashboard-container
   .dashboard-schedule-container
+  .schedule-container
   .dashboard-schedule-table-container
   .tr-disabled
   td {
   color: #808080;
 }
+
 /*Recent container*/
 .dashboard-container .dashboard-recent-container {
   display: flex;

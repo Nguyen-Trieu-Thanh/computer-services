@@ -14,7 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 
 //React-bootstrap
-import { Button, Col, Form, Modal, Row, Spinner } from "react-bootstrap";
+import { Button, Col, Form, Modal, Row, Spinner, Table } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 //Momentjs
@@ -107,46 +107,59 @@ const ConfirmCreateBooking = ({
     try {
       await createBooking(booking)
         .unwrap()
-        .then(async (res) => {
+        .then((res) => {
           if (res) {
-            await dispatch(
+            dispatch(
               setToast({
                 show: true,
                 title: "Tạo lịch hẹn",
                 time: "just now",
-                content: "Lịch hẹn được tạo thành công!",
+                content: "Lịch hẹn được tạo thành công",
                 color: {
                   header: "#dbf0dc",
                   body: "#41a446",
                 },
               })
             );
-            // await setIsRefetch(true);
-            await setShowConfirmCreateBooking(false);
-            // await setBooking({
-            //   ...booking,
-            //   acc_id: "",
-            //   cus_name: "",
-            //   services: [],
-            //   description: "",
-            //   cus_address: {
-            //     city: "Thành phố Hồ Chí Minh",
-            //     district: "Quận 1",
-            //     ward: "Phường Tân Định",
-            //     street: "",
-            //   },
-            //   phonenum: "",
-            // });
-            navigate("/order-detail", {
-              state: {
-                order_id: res._id,
-                bookingDetail: booking,
-              },
-            });
+            setShowConfirmCreateBooking(false);
+            navigate("/order-detail/" + res._id);
           }
         });
-    } catch (error) {}
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Tạo lịch hẹn",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          setShowConfirmCreateBooking(false);
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Tạo lịch hẹn",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          setShowConfirmCreateBooking(false);
+        }
+      }
+    }
   };
+
   return (
     <>
       <Modal
@@ -155,17 +168,16 @@ const ConfirmCreateBooking = ({
         dialogClassName="confirm-create-booking-container"
         centered
       >
-        <div className="modal-content-container">
-          <Modal.Header>
-            <Modal.Title>Xác nhận thông tin lịch hẹn</Modal.Title>
-          </Modal.Header>
-          <Modal.Body className="modal-body-container">
-            <Form>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formConfirmCreateBookingPhoneNumber">
-                    <Form.Label>Số điện thoại:</Form.Label>
-                    {/* <Form.Control
+        <Modal.Header>
+          <Modal.Title>Xác nhận thông tin lịch hẹn</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Row>
+              <Col>
+                <Form.Group controlId="formConfirmCreateBookingPhoneNumber">
+                  <Form.Label>Số điện thoại:</Form.Label>
+                  {/* <Form.Control
                       plaintext
                       readOnly
                       disabled
@@ -173,13 +185,13 @@ const ConfirmCreateBooking = ({
                       name="phonenum"
                       defaultValue={booking.phonenum}
                     /> */}
-                    <p>{booking.phonenum}</p>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formConfirmCreateBookingCustomerName">
-                    <Form.Label>Họ và tên khách hàng:</Form.Label>
-                    {/* <Form.Control
+                  <p>{booking.phonenum}</p>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="formConfirmCreateBookingCustomerName">
+                  <Form.Label>Họ và tên khách hàng:</Form.Label>
+                  {/* <Form.Control
                       plaintext
                       readOnly
                       disabled
@@ -187,90 +199,85 @@ const ConfirmCreateBooking = ({
                       name="cus_name"
                       defaultValue={booking.cus_name}
                     /> */}
-                    <p>{booking.cus_name}</p>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formConfirmCreateBookingCustomerTime">
-                    <Form.Label>Ngày hẹn (MM/DD/YYYY):</Form.Label>
-                    <p>{moment(booking.time).format("MM/DD/YYYY")}</p>
-                  </Form.Group>
-                </Col>
-              </Row>
+                  <p>{booking.cus_name}</p>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="formConfirmCreateBookingCustomerTime">
+                  <Form.Label>Ngày hẹn:</Form.Label>
+                  <p>{moment(booking.time).format("MM/DD/YYYY")}</p>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group controlId="formConfirmCreateBookingDescription">
+                  <Form.Label>Mô tả lịch hẹn:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    readOnly
+                    disabled
+                    name="description"
+                    defaultValue={booking.description}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group controlId="formConfirmCreateBookingType">
+                  <Form.Label>Loại lịch hẹn:</Form.Label>
+                  <p>{booking.type}</p>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="formConfirmCreateBookingAddress">
+                  <Form.Label>Địa chỉ khách hàng:</Form.Label>
+                  <p>{address}</p>
+                </Form.Group>
+              </Col>
+            </Row>
+            {booking.services.length !== 0 && (
               <Row>
-                <Col>
-                  <Form.Group controlId="formConfirmCreateBookingDescription">
-                    <Form.Label>Mô tả lịch hẹn:</Form.Label>
-                    <Form.Control
-                      as="textarea"
-                      rows={3}
-                      readOnly
-                      disabled
-                      name="description"
-                      defaultValue={booking.description}
-                    />
-                  </Form.Group>
+                <Col className="table-container">
+                  <Form.Label>Danh sách dịch vụ:</Form.Label>
+                  <Table bordered size="sm">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Tên dịch vụ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {booking.services.map((service, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{service}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
                 </Col>
               </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formConfirmCreateBookingServices">
-                    <Form.Label>Danh sách dịch vụ:</Form.Label>
-                    {/* <Form.Control
-                      plaintext
-                      readOnly
-                      disabled
-                      type="text"
-                      name="services"
-                      defaultValue={servicesData
-                        .filter((x) => booking.services.includes(x._id))
-                        .map((service) => {
-                          return service.name;
-                        })
-                        .join(", ")}
-                    /> */}
-                    <p>
-                      {/* {servicesData
-                        .filter((x) => booking.services.includes(x._id))
-                        .map((service) => {
-                          return service.name;
-                        })
-                        .join(", ")} */}
-                      {booking.services.join(", ")}
-                    </p>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formConfirmCreateBookingAddress">
-                    <Form.Label>Địa chỉ khách hàng:</Form.Label>
-                    {/* <Form.Control
-                      plaintext
-                      readOnly
-                      disabled
-                      type="text"
-                      name="address"
-                      defaultValue={address}
-                    /> */}
-                    <p>{address}</p>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </Form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Quay lại
-            </Button>
-            <Button
-              type="submit"
-              variant="primary"
-              onClick={handleConfirmBookingSubmit}
-              className="confirm-button"
-            >
-              {isLoading ? <Spinner animation="border" /> : "Xác nhận"}
-            </Button>
-          </Modal.Footer>
-        </div>
+            )}
+          </Form>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Quay lại
+          </Button>
+          <Button
+            type="submit"
+            variant="primary"
+            onClick={handleConfirmBookingSubmit}
+            className="confirm-button"
+          >
+            {isLoading ? <Spinner animation="border" /> : "Xác nhận"}
+          </Button>
+        </Modal.Footer>
       </Modal>
     </>
   );

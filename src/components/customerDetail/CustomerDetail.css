@@ -1,9 +1,8 @@
 .customer-detail-container {
-  margin: 5px 0 0 0;
+  padding: 5px 0 0 0;
 }
 
 .customer-detail-container .customer-info-container {
-  height: 20vh;
   box-shadow: 0px 3px 8px #a6a6a6;
 }
 
@@ -16,10 +15,6 @@
   font-size: 30px;
 }
 
-.customer-detail-container .table-filter-container {
-  box-shadow: 0px 3px 8px #a6a6a6;
-}
-
 .customer-detail-container .customer-bookings-container {
   box-shadow: 0px 3px 8px #a6a6a6;
 }
@@ -29,7 +24,6 @@
 }
 
 .customer-detail-container .customer-bookings-container .table-container {
-  height: 383px;
 }
 
 .customer-detail-container
@@ -44,6 +38,46 @@
   .table-container
   .table {
   margin: 0;
+}
+
+.customer-detail-container
+  .customer-bookings-container
+  .table-container
+  .not-available {
+  font-weight: 600;
+  color: black;
+}
+
+.customer-detail-container
+  .customer-bookings-container
+  .table-container
+  .accept {
+  font-weight: 600;
+  color: green;
+}
+
+.customer-detail-container
+  .customer-bookings-container
+  .table-container
+  .pending {
+  font-weight: 600;
+  color: blue;
+}
+
+.customer-detail-container
+  .customer-bookings-container
+  .table-container
+  .processing {
+  font-weight: 600;
+  color: orange;
+}
+
+.customer-detail-container
+  .customer-bookings-container
+  .table-container
+  .cancel {
+  font-weight: 600;
+  color: red;
 }
 
 .customer-detail-container .customer-bookings-container .table-container thead {

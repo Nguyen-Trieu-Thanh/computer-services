@@ -13,6 +13,7 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   InputGroup,
   OverlayTrigger,
@@ -37,6 +38,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 //momentjs
 import moment from "moment";
 import CustomPagination from "../customPagination/CustomPagination";
+import { useNavigate } from "react-router-dom";
 
 const ManageAccessory = () => {
   const {
@@ -61,6 +63,8 @@ const ManageAccessory = () => {
   const [isRefetch, setIsRefetch] = useState(false);
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("desc");
+
+  const navigate = useNavigate();
 
   //Pagination
   let items = [];
@@ -123,19 +127,17 @@ const ManageAccessory = () => {
 
   return (
     <>
-      <div className="manage-accessory-container">
-        <Card body className="filter-container">
+      <Container fluid className="manage-accessory-container">
+        <Card body className="content-container">
           <Row>
             <Col>
-              <h4>Danh sách linh kiện</h4>
+              <Card.Title>Danh sách linh kiện</Card.Title>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className="d-flex align-items-end">
             <Col>
+              <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
-                </InputGroup.Prepend>
                 <Form.Control
                   type="text"
                   name="search"
@@ -157,116 +159,116 @@ const ManageAccessory = () => {
               </InputGroup>
             </Col>
             <Col>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  as="select"
-                  name="sort"
-                  value={sort}
-                  onChange={handleSort}
-                >
-                  <option value="asc">Cũ đến mới</option>
-                  <option value="desc">Mới đến cũ</option>
-                </Form.Control>
-              </InputGroup>
+              <Form.Label>Thứ tự:</Form.Label>
+              <Form.Control
+                as="select"
+                name="sort"
+                value={sort}
+                onChange={handleSort}
+              >
+                <option value="asc">Cũ đến mới</option>
+                <option value="desc">Mới đến cũ</option>
+              </Form.Control>
             </Col>
             <Col xs={2} className="button-container">
               <Button
                 variant="primary"
                 onClick={() => {
-                  setShowCreateAccessory(true);
+                  navigate("/create-accessory/");
                 }}
               >
-                Tạo phụ kiện <FontAwesomeIcon icon={faPlus} color="" />
+                Tạo linh kiện <FontAwesomeIcon icon={faPlus} color="" />
               </Button>
             </Col>
           </Row>
-        </Card>
-
-        <Card body className="content-container">
-          {isFetching ? (
-            <div className="loading">
-              <Spinner animation="border" />
-              <div className="loading-text">Đang tải dữ liệu...</div>
-            </div>
-          ) : (
-            <div className="table-container">
-              <Table bordered hover size="sm">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tên phụ kiện</th>
-                    <th>Giá phụ kiện (VNĐ)</th>
-                    <th>Thời hạn bảo hành</th>
-                    <th>Nhà cung cấp</th>
-                    <th>Ngày thêm mới (MM/DD/YYYY)</th>
-                    <th style={{ width: "200px" }}>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {accessories
-                    .slice(10 * (active - 1), 10 * active)
-                    .map((accessory, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>{accessory.name}</td>
-                          <td>{accessory.price}</td>
-                          <td>{accessory.insurance}</td>
-                          <td>{accessory.supplier_id?.name}</td>
-                          <td>
-                            {moment(accessory.updatedAt).format("MM/DD/YYYY")}
-                          </td>
-                          <td>
-                            <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 200, hide: 100 }}
-                              overlay={
-                                <Tooltip
-                                  className="accessory-edit-button"
-                                  id="edit-button-tooltip"
-                                >
-                                  CHI TIẾT
-                                </Tooltip>
-                              }
-                            >
-                              <Button
-                                variant="primary"
-                                onClick={() => {
-                                  // setShowAccessoryDetail(true);
-                                  // setAccessoryDetail({ ...accessory });
-                                }}
+          <Row className="mt-2">
+            <Col className="table-container">
+              {isFetching ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Table bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tên linh kiện</th>
+                      <th>Giá linh kiện (VNĐ)</th>
+                      <th>Thời hạn bảo hành</th>
+                      <th>Nhà cung cấp</th>
+                      <th>Ngày thêm mới</th>
+                      <th style={{ width: "200px" }}>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {accessories
+                      .slice(10 * (active - 1), 10 * active)
+                      .map((accessory, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{accessory.name}</td>
+                            <td>{accessory.price}</td>
+                            <td>{accessory.insurance}</td>
+                            <td>{accessory.supplier_id?.name}</td>
+                            <td>
+                              {moment(accessory.updatedAt).format("MM/DD/YYYY")}
+                            </td>
+                            <td>
+                              <OverlayTrigger
+                                placement="bottom"
+                                delay={{ show: 200, hide: 100 }}
+                                overlay={
+                                  <Tooltip
+                                    className="accessory-edit-button"
+                                    id="edit-button-tooltip"
+                                  >
+                                    Chi tiết
+                                  </Tooltip>
+                                }
                               >
-                                <FontAwesomeIcon
-                                  icon={faPenToSquare}
-                                  color="#ffffff"
-                                />
-                              </Button>
-                            </OverlayTrigger>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </div>
-          )}
-          <CustomPagination
-            count={Math.ceil(accessories.length / 10)}
-            handlePaginationClick={handlePaginationClick}
-            page={active}
-          />
+                                <Button
+                                  variant="primary"
+                                  onClick={() => {
+                                    navigate(
+                                      "/accessory-detail/" + accessory._id
+                                    );
+                                  }}
+                                >
+                                  <FontAwesomeIcon
+                                    icon={faPenToSquare}
+                                    color="#ffffff"
+                                  />
+                                </Button>
+                              </OverlayTrigger>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              )}
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <CustomPagination
+                count={Math.ceil(accessories.length / 10)}
+                handlePaginationClick={handlePaginationClick}
+                page={active}
+              />
+            </Col>
+          </Row>
         </Card>
-      </div>
-      <CreateAccessory
+      </Container>
+      {/* <CreateAccessory
         showCreateAccessory={showCreateAccessory}
         setShowCreateAccessory={setShowCreateAccessory}
         accessory={accessory}
         setAccessory={setAccessory}
         setShowConfirmCreateAccessory={setShowConfirmCreateAccessory}
-      />
+      /> */}
       <ConfirmCreateAccessory
         setShowCreateAccessory={setShowCreateAccessory}
         accessory={accessory}

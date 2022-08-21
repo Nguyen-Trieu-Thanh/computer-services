@@ -8,8 +8,10 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   InputGroup,
+  Modal,
   OverlayTrigger,
   Pagination,
   Row,
@@ -26,8 +28,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CustomPagination from "../customPagination/CustomPagination";
 import CreateManager from "../createManager/CreateManager";
 
+//momentjs
+import moment from "moment";
+
+//Images
+import defaultUserAvatar from "../../images/default-user-avatar.jpg";
+
 //CSS
 import "./ManageManager.css";
+import { useNavigate } from "react-router-dom";
+import { Avatar } from "@mui/material";
 
 const ManageManager = () => {
   const {
@@ -42,12 +52,19 @@ const ManageManager = () => {
   const [showCreateManager, setShowCreateManager] = useState(false);
   const [showManagerDetail, setShowManagerDetail] = useState(false);
   const [managerDetail, setManagerDetail] = useState({
-    _id: "",
-    username: "",
+    name: "",
     role: "",
+    birth: "",
+    email: "",
+    phonenum: "",
+    createdAt: "",
+    img: "",
   });
   const [search, setSearch] = useState("");
   const [sort, setSort] = useState("desc");
+  const [imgLoading, setImgLoading] = useState(true);
+
+  const navigate = useNavigate();
 
   //Pagination
   let items = [];
@@ -88,6 +105,8 @@ const ManageManager = () => {
     refetch();
   };
 
+  console.log(managers);
+
   useEffect(() => {
     if (!isFetching) {
       if (sort === "asc") {
@@ -104,19 +123,17 @@ const ManageManager = () => {
 
   return (
     <>
-      <div className="manage-manager-container">
-        <Card body className="filter-container">
+      <Container fluid className="manage-manager-container">
+        <Card body className="content-container">
           <Row>
             <Col>
-              <h4>Danh sách quản lí</h4>
+              <Card.Title>Danh sách quản lí</Card.Title>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className="d-flex align-items-end">
             <Col>
+              <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
-                </InputGroup.Prepend>
                 <Form.Control
                   type="text"
                   name="search"
@@ -138,20 +155,16 @@ const ManageManager = () => {
               </InputGroup>
             </Col>
             <Col>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  as="select"
-                  name="sort"
-                  value={sort}
-                  onChange={handleSort}
-                >
-                  <option value="asc">Cũ đến mới</option>
-                  <option value="desc">Mới đến cũ</option>
-                </Form.Control>
-              </InputGroup>
+              <Form.Label>Thứ tự:</Form.Label>
+              <Form.Control
+                as="select"
+                name="sort"
+                value={sort}
+                onChange={handleSort}
+              >
+                <option value="asc">Cũ đến mới</option>
+                <option value="desc">Mới đến cũ</option>
+              </Form.Control>
             </Col>
             <Col xs={2} className="button-container">
               <Button
@@ -164,87 +177,195 @@ const ManageManager = () => {
               </Button>
             </Col>
           </Row>
-        </Card>
-        <Card body className="content-container">
-          {isFetching ? (
-            <div className="loading">
-              <Spinner animation="border" />
-              <div className="loading-text">Đang tải dữ liệu...</div>
-            </div>
-          ) : (
-            <div className="table-container">
-              <Table bordered hover size="sm">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tên quản lí</th>
-                    <th>Số điện thoại</th>
-                    <th>Vai trò</th>
-                    <th style={{ width: "200px" }}>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {managers
-                    .slice(10 * (active - 1), 10 * active)
-                    .map((manager, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>{manager.user_id?.name}</td>
-                          <td>{manager.user_id?.phonenum}</td>
-                          <td>{manager.role}</td>
-                          <td>
-                            <div className="action-button-container">
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 200, hide: 100 }}
-                                overlay={
-                                  <Tooltip
-                                    className="manager-edit-button"
-                                    id="edit-button-tooltip"
-                                  >
-                                    Chi tiết
-                                  </Tooltip>
-                                }
-                              >
-                                <Button
-                                  variant="primary"
-                                  onClick={() => {
-                                    setShowManagerDetail(true);
-                                    setManagerDetail({
-                                      _id: manager._id,
-                                      username: manager.username,
-                                      role: manager.role,
-                                    });
-                                  }}
+          <Row className="mt-2">
+            <Col className="table-container">
+              {isFetching ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Table bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tên quản lí</th>
+                      <th>Số điện thoại</th>
+                      <th>Vai trò</th>
+                      <th style={{ width: "200px" }}>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {managers
+                      .slice(10 * (active - 1), 10 * active)
+                      .map((manager, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{manager.user_id?.name}</td>
+                            <td>{manager.user_id?.phonenum}</td>
+                            <td>{manager.role}</td>
+                            <td>
+                              <div className="action-button-container">
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 200, hide: 100 }}
+                                  overlay={
+                                    <Tooltip
+                                      className="manager-edit-button"
+                                      id="edit-button-tooltip"
+                                    >
+                                      Chi tiết
+                                    </Tooltip>
+                                  }
                                 >
-                                  <FontAwesomeIcon
-                                    icon={faPenToSquare}
-                                    color="#ffffff"
-                                  />
-                                </Button>
-                              </OverlayTrigger>
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </div>
-          )}
-          <CustomPagination
-            count={Math.ceil(managers.length / 10)}
-            handlePaginationClick={handlePaginationClick}
-            page={active}
-          />
+                                  <Button
+                                    variant="primary"
+                                    onClick={() => {
+                                      setManagerDetail({
+                                        name: manager.user_id?.name,
+                                        role: manager.role,
+                                        birth: moment(
+                                          manager.user_id?.birth
+                                        ).format("MM/DD/YYYY"),
+                                        email: manager.user_id?.email,
+                                        phonenum: manager.user_id?.phonenum,
+                                        createdAt: moment(
+                                          manager.createdAt
+                                        ).format("MM/DD/YYYY"),
+                                        img: manager.user_id?.img,
+                                      });
+                                      setShowManagerDetail(true);
+                                    }}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faPenToSquare}
+                                      color="#ffffff"
+                                    />
+                                  </Button>
+                                </OverlayTrigger>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              )}
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <CustomPagination
+                count={Math.ceil(managers.length / 10)}
+                handlePaginationClick={handlePaginationClick}
+                page={active}
+              />
+            </Col>
+          </Row>
         </Card>
-      </div>
-      {/* <CustomerDetail
-        showCustomerDetail={showCustomerDetail}
-        setShowCustomerDetail={setShowCustomerDetail}
-        customerDetail={customerDetail}
-      /> */}
+      </Container>
+      <Modal
+        show={showManagerDetail}
+        onHide={() => {
+          setShowManagerDetail(false);
+        }}
+        centered
+        dialogClassName="manager-detail-modal"
+      >
+        <Modal.Header>
+          <Modal.Title>Chi tiết quản lí</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Row>
+            <Col>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Tài khoản:</Form.Label>
+                    <Form.Control
+                      readOnly
+                      defaultValue={managerDetail.username}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Họ và tên:</Form.Label>
+                    <Form.Control readOnly defaultValue={managerDetail.name} />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Ngày sinh:</Form.Label>
+                    <Form.Control readOnly defaultValue={managerDetail.birth} />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Email:</Form.Label>
+                    <Form.Control readOnly defaultValue={managerDetail.email} />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Số điện thoại:</Form.Label>
+                    <Form.Control
+                      readOnly
+                      defaultValue={managerDetail.phonenum}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group>
+                    <Form.Label>Ngày tạo:</Form.Label>
+                    <Form.Control
+                      readOnly
+                      defaultValue={managerDetail.createdAt}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+            </Col>
+            <Col xs={4}>
+              <Row>
+                <Col>
+                  <Form.Label>Ảnh đại diện:</Form.Label>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex justify-content-center align-items-center">
+                  <Avatar
+                    src={
+                      !managerDetail.img || imgLoading
+                        ? defaultUserAvatar
+                        : `https://computer-services-api.herokuapp.com/account/avatar/${managerDetail.img}`
+                    }
+                    onLoad={() => setImgLoading(false)}
+                    sx={{
+                      width: "120px",
+                      height: "120px",
+                      border: "1px solid #000000",
+                    }}
+                  />
+                </Col>
+              </Row>
+            </Col>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowManagerDetail(false);
+            }}
+          >
+            Đóng
+          </Button>
+        </Modal.Footer>
+      </Modal>
       <CreateManager
         showCreateManager={showCreateManager}
         setShowCreateManager={setShowCreateManager}

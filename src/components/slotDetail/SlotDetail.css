@@ -30,7 +30,8 @@
 }
 
 .slot-detail .modal-content-container button {
-  width: 15%;
+  /* width: 15%; */
+  
 }
 
 .slot-detail .modal-content-container button .spinner-border {
@@ -38,4 +39,20 @@
   height: 20px;
   border: 3px solid currentColor;
   border-right-color: transparent;
+}
+
+/*Tooltip CSS*/
+.staff-edit-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.staff-edit-button .tooltip-inner {
+  background-color: blue;
+  color: #fff;
+}
+
+.staff-edit-button .arrow::before {
+  border-bottom-color: blue;
 }

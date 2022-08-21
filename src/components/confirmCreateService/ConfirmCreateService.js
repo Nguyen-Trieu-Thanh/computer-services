@@ -39,14 +39,14 @@ const ConfirmCreateService = ({
     try {
       await createService(service)
         .unwrap()
-        .then(async (res) => {
+        .then((res) => {
           if (res) {
-            await dispatch(
+            dispatch(
               setToast({
                 show: true,
-                title: "Tạo lịch hẹn",
+                title: "Tạo dịch vụ",
                 time: "just now",
-                content: "Lịch hẹn được tạo thành công!",
+                content: "Dịch vụ được tạo thành công",
                 color: {
                   header: "#dbf0dc",
                   body: "#41a446",
@@ -56,7 +56,39 @@ const ConfirmCreateService = ({
             navigate("/service-detail/" + res._id);
           }
         });
-    } catch (error) {}
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Tạo dịch vụ",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          setShowConfirmCreateService(false);
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Tạo dịch vụ",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          setShowConfirmCreateService(false);
+        }
+      }
+    }
   };
 
   return (
@@ -110,15 +142,15 @@ const ConfirmCreateService = ({
               </Row>
               <Row>
                 <Col>
-                  <Form.Label>Dịch vụ bao gồm phụ kiện:</Form.Label>
+                  <Form.Label>Dịch vụ bao gồm linh kiện:</Form.Label>
                   <div className="table-container">
                     <Table bordered size="sm">
                       <thead>
                         <tr>
                           <th>#</th>
-                          <th>TÊN PHỤ KIỆN</th>
-                          <th>GIÁ PHỤ KIỆN</th>
-                          <th>NHÀ CUNG CẤP</th>
+                          <th>Tên linh kiện</th>
+                          <th>Giá linh kiện</th>
+                          <th>Nhà cung cấp</th>
                         </tr>
                       </thead>
                       <tbody>

@@ -21,13 +21,13 @@
   font-weight: 700;
 }
 
-.confirm-create-service-container .modal-content-container .confirm-button {
-  width: 15%;
+.confirm-create-service-container .modal-content-container button {
+  width: 100px;
 }
 
 .confirm-create-service-container
   .modal-content-container
-  .confirm-button
+  button
   .spinner-border {
   width: 20px;
   height: 20px;

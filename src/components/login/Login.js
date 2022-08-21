@@ -30,6 +30,7 @@ import {
   Nav,
   Row,
   Spinner,
+  Toast,
 } from "react-bootstrap";
 
 import logo from "../../images/computer-services-logo.png";
@@ -55,6 +56,17 @@ const Login = () => {
       isInvalid: false,
     },
   });
+  const [toast, setToast] = useState({
+    show: false,
+    title: "",
+    time: "",
+    content: "",
+    color: {
+      header: "",
+      body: "",
+    },
+  });
+
   //API
   const [login, { isLoading }] = useLoginMutation();
   const [getAccountByUsername, { isLoading: isGetAccountByUserNameLoading }] =
@@ -95,43 +107,58 @@ const Login = () => {
       try {
         await login({ username, password })
           .unwrap()
-          .then(async (res) => {
-            await dispatch(setRememberMe({ rememberMe: true }));
-            await dispatch(setCredentials({ ...res, username }));
-            // await getAccountByUsername(username)
-            //   .unwrap()
-            //   .then(async (getAccountRes) => {
-            //     const userDetail = getAccountRes.user_id;
-            //     await dispatch(
-            //       setProfile({
-            //         name: userDetail.name,
-            //         phonenum: userDetail.phonenum,
-            //       })
-            //     );
-            //   });
-            navigate("/dashboard");
+          .then((res) => {
+            if (res) {
+              if (res.role === "manager" || res.role === "admin") {
+                dispatch(setRememberMe({ rememberMe: true }));
+                dispatch(setCredentials({ ...res, username }));
+                navigate("/dashboard");
+              } else {
+                setValidation({
+                  ...validation,
+                  username: {
+                    message: "Tài khoản không hợp lệ",
+                    isInvalid: true,
+                  },
+                });
+                return;
+              }
+            }
           });
       } catch (error) {
-        if (error.status === 404) {
-          if (error.data === "User not existed") {
-            setValidation({
-              ...validation,
-              username: {
-                message: "Người dùng không tồn tại",
-                isInvalid: true,
+        if (error) {
+          if (error.data) {
+            if (error.data === "Tài khoản không tồn tại") {
+              setValidation({
+                ...validation,
+                username: {
+                  message: "Tài khoản không tồn tại",
+                  isInvalid: true,
+                },
+              });
+              return;
+            }
+            if (error.data === "Sai mật khẩu") {
+              setValidation({
+                ...validation,
+                password: {
+                  message: "Mật khẩu không chính xác",
+                  isInvalid: true,
+                },
+              });
+              return;
+            }
+          } else {
+            setToast({
+              show: true,
+              title: "Đăng nhập",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
               },
             });
-            return;
-          }
-          if (error.data === "Wrong password") {
-            setValidation({
-              ...validation,
-              password: {
-                message: "Mật khẩu không chính xác",
-                isInvalid: true,
-              },
-            });
-            return;
           }
         }
       }
@@ -140,6 +167,10 @@ const Login = () => {
 
   const toogleRememberMe = () => {
     dispatch(setRememberMe({ rememberMe: !rememberMe }));
+  };
+
+  const handleToastClose = () => {
+    setToast({ ...toast, show: false });
   };
 
   useEffect(() => {
@@ -228,13 +259,13 @@ const Login = () => {
                       </Button>
                     </Col>
                   </Row>
-                  <Row className="text-center">
+                  {/* <Row className="text-center">
                     <Col>
                       <Nav.Link as={Link} to="/">
                         Forgot password?
                       </Nav.Link>
                     </Col>
-                  </Row>
+                  </Row> */}
                 </Form>
               </Card.Body>
             </Col>
@@ -244,6 +275,23 @@ const Login = () => {
           </Row>
         </Card>
       </div>
+      <Toast
+        show={toast.show}
+        onClose={handleToastClose}
+        delay={3000}
+        autohide
+        animation={false}
+      >
+        <Toast.Header style={{ backgroundColor: toast.color.header }}>
+          <strong className="mr-auto">{toast.title}</strong>
+          <small>{toast.time}</small>
+        </Toast.Header>
+        <Toast.Body
+          style={{ backgroundColor: toast.color.body, color: "#ffffff" }}
+        >
+          {toast.content}
+        </Toast.Body>
+      </Toast>
       {/* <Col>
           <div className="login-page">
             <Card style={{ width: "350px" }}>

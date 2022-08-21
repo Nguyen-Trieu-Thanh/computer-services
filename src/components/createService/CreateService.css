@@ -1,20 +1,14 @@
 .create-service-container {
-  margin: 5px 0 0 0;
+  padding: 5px 0 0 0;
 }
 
 .create-service-container .service-info-container {
-  height: 40vh;
   box-shadow: 0px 3px 8px #a6a6a6;
 }
 
 /*Table*/
 .create-service-container .service-table-container {
   box-shadow: 0px 3px 8px #a6a6a6;
-  height: 45vh;
-  overflow-y: scroll;
-}
-
-.create-service-container .service-table-container .table-container {
 }
 
 .create-service-container .service-table-container .table-container thead {
@@ -30,11 +24,7 @@
   vertical-align: middle;
 }
 
-.create-service-container .service-button-container {
-  box-shadow: 0px 3px 8px #a6a6a6;
-}
-
-.create-service-container .service-button-container .button-container {
+.create-service-container .service-table-container .button-container {
   display: flex;
   flex-direction: row-reverse;
 }

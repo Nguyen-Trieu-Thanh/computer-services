@@ -43,7 +43,7 @@ const ScheduleForOrder = ({
     moment(schedule.date).format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(
-    moment(schedule.date).format("YYYY-MM-DD")
+    moment(schedule.date).add("2", "days").format("YYYY-MM-DD")
   );
   const [datesInBetween, setDatesInBetween] = useState([]);
   const [selectedSchedule, setSelectedSchedule] = useState({
@@ -105,6 +105,44 @@ const ScheduleForOrder = ({
     return "td-clickable";
   };
 
+  const checkIsDateAndSlotSameOrAfter = (date, slot) => {
+    if (moment(date).isSame(moment(), "day")) {
+      if (slot === 1) {
+        return moment().format("Hmm") <= 800;
+      }
+
+      if (slot === 2) {
+        return moment().format("Hmm") <= 930;
+      }
+
+      if (slot === 3) {
+        return moment().format("Hmm") <= 1100;
+      }
+
+      if (slot === 4) {
+        return moment().format("Hmm") <= 1230;
+      }
+
+      if (slot === 5) {
+        return moment().format("Hmm") <= 1400;
+      }
+
+      if (slot === 6) {
+        return moment().format("Hmm") <= 1530;
+      }
+
+      if (slot === 7) {
+        return moment().format("Hmm") <= 1700;
+      }
+
+      if (slot === 8) {
+        return moment().format("Hmm") <= 1830;
+      }
+    }
+
+    return true;
+  };
+
   const handleClose = () => {
     setShowScheduleForOrder(false);
     if (!updateOrderSlot.workSlotId) {
@@ -114,7 +152,7 @@ const ScheduleForOrder = ({
         work_slots: [],
       });
       setSelectedWorkSlotId("");
-      setEndDate(moment(schedule.date).format("YYYY-MM-DD"));
+      setEndDate(moment(schedule.date).add("2", "days").format("YYYY-MM-DD"));
       setSelectedSlotDetail({
         totalStaff: 0,
         freeStaff: 0,
@@ -152,7 +190,7 @@ const ScheduleForOrder = ({
               <Col>
                 <InputGroup>
                   <InputGroup.Prepend>
-                    <InputGroup.Text>Từ ngày (MM/DD/YYYY):</InputGroup.Text>
+                    <InputGroup.Text>Từ ngày:</InputGroup.Text>
                   </InputGroup.Prepend>
                   <Form.Control
                     disabled
@@ -167,9 +205,10 @@ const ScheduleForOrder = ({
               <Col>
                 <InputGroup>
                   <InputGroup.Prepend>
-                    <InputGroup.Text>Đến ngày (MM/DD/YYYY):</InputGroup.Text>
+                    <InputGroup.Text>Đến ngày:</InputGroup.Text>
                   </InputGroup.Prepend>
                   <Form.Control
+                    disabled
                     type="date"
                     value={endDate}
                     onChange={(e) => {
@@ -230,10 +269,10 @@ const ScheduleForOrder = ({
                   <span>Đã đầy</span>
                 </div>
               </Col>
-              <Col>
+              <Col xs={3}>
                 <div className="box-container">
                   <div className="box box-disabled" />
-                  <span>Không có nhân viên</span>
+                  <span>Không có nhân viên/Quá thời gian</span>
                 </div>
               </Col>
             </Row>
@@ -260,12 +299,17 @@ const ScheduleForOrder = ({
                     </thead>
                     <tbody>
                       {datesInBetween.map((date, dateIndex) => {
-                        return date.status ? (
+                        return date.status &&
+                          moment(date.date).isSameOrAfter(moment(), "day") ? (
                           <tr key={dateIndex}>
                             <td>{moment(date.date).format("MM/DD/YYYY")}</td>
                             {slots.map((slot, slotIndex) => {
                               return date.slots.find((x) => x.slot === slot) !==
-                                undefined ? (
+                                undefined &&
+                                checkIsDateAndSlotSameOrAfter(
+                                  date.date,
+                                  slot
+                                ) ? (
                                 <td
                                   className={
                                     selectedSchedule.date === date.date &&
@@ -348,7 +392,7 @@ const ScheduleForOrder = ({
                                     />
                                   ) : (
                                     <>
-                                      <div className="td-text">
+                                      {/* <div className="td-text">
                                         Tổng số nhân viên:{" "}
                                         {
                                           date.slots[
@@ -368,7 +412,7 @@ const ScheduleForOrder = ({
                                           ].work_slot.filter((y) => !y.order_id)
                                             .length
                                         }
-                                      </div>
+                                      </div> */}
                                     </>
                                   )}
                                 </td>

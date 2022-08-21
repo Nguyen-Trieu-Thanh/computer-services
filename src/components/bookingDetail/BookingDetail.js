@@ -15,7 +15,7 @@ import {
 } from "../../redux/slices/booking/bookingApiSlice";
 
 //React-bootstrap
-import { Button, Modal, Form, Row, Col, Spinner } from "react-bootstrap";
+import { Button, Modal, Form, Row, Col, Spinner, Table } from "react-bootstrap";
 import GeneralSchedule from "../generalSchedule/GeneralSchedule";
 
 //Momentjs
@@ -84,24 +84,55 @@ const BookingDetail = ({
                   show: true,
                   title: "Cập nhật lịch hẹn",
                   time: "just now",
-                  content: "Lịch hẹn được cập nhật thành công!",
+                  content: "Lịch hẹn được cập nhật thành công",
                   color: {
                     header: "#dbf0dc",
                     body: "#41a446",
                   },
                 })
               );
-              // await setIsRefetch(true);
               setShowBookingDetail(false);
-              navigate("/order-detail", {
+              navigate("/order-detail/" + res._id, {
                 state: {
-                  order_id: res._id,
                   bookingDetail: bookingDetail,
                 },
               });
             }
           });
-      } catch (error) {}
+      } catch (error) {
+        if (error) {
+          if (error.data) {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Cập nhật lịch hẹn",
+                time: "just now",
+                content: error.data,
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+            refetch();
+            setShowBookingDetail(false);
+          }
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Cập nhật lịch hẹn",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+          setShowBookingDetail(false);
+        }
+      }
     } else {
       try {
         await updateBooking(bookingDetail)
@@ -113,7 +144,7 @@ const BookingDetail = ({
                   show: true,
                   title: "Cập nhật lịch hẹn",
                   time: "just now",
-                  content: "Lịch hẹn được cập nhật thành công!",
+                  content: "Lịch hẹn được cập nhật thành công",
                   color: {
                     header: "#dbf0dc",
                     body: "#41a446",
@@ -124,7 +155,40 @@ const BookingDetail = ({
               setShowBookingDetail(false);
             }
           });
-      } catch (error) {}
+      } catch (error) {
+        if (error) {
+          if (error.data) {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Cập nhật lịch hẹn",
+                time: "just now",
+                content: error.data,
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+            refetch();
+            setShowBookingDetail(false);
+          } else {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Cập nhật lịch hẹn",
+                time: "just now",
+                content: "Đã xảy ra lỗi. Xin thử lại sau",
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+            setShowBookingDetail(false);
+          }
+        }
+      }
     }
   };
 
@@ -133,9 +197,8 @@ const BookingDetail = ({
   };
 
   const handleViewOrder = () => {
-    navigate("/order-detail", {
+    navigate("/order-detail/" + bookingDetail.order_id._id, {
       state: {
-        order_id: bookingDetail.order_id._id,
         bookingDetail: bookingDetail,
       },
     });
@@ -149,145 +212,154 @@ const BookingDetail = ({
         dialogClassName="booking-detail"
         centered
       >
-        <div className="modal-content-container">
-          <Modal.Header>
-            <Modal.Title>Chi tiết lịch hẹn mã: {bookingDetail._id}</Modal.Title>
-          </Modal.Header>
-          <div className="modal-body-container">
-            <Modal.Body>
-              <Form>
-                <Row>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailPhoneNumber">
-                      <Form.Label>Số điện thoại:</Form.Label>
-                      <p>{bookingDetail.phonenum}</p>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailCustomerName">
-                      <Form.Label>Khách hàng:</Form.Label>
-                      <p>{bookingDetail.cus_name}</p>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailTime">
-                      <Form.Label>Ngày hẹn (MM/DD/YYYY):</Form.Label>
-                      <p>{moment(bookingDetail.time).format("MM/DD/YYYY")}</p>
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailDescription">
-                      <Form.Label>Mô tả lịch hẹn:</Form.Label>
-                      <Form.Control
-                        as="textarea"
-                        rows={3}
-                        readOnly
-                        disabled
-                        name="description"
-                        defaultValue={bookingDetail.description}
-                      />
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailType">
-                      <Form.Label>Loại lịch hẹn:</Form.Label>
-                      <p>{bookingDetail.type}</p>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailOrderStatus">
-                      <Form.Label>Trạng thái đơn hàng:</Form.Label>
-                      <p>
-                        {bookingDetail.order_id
-                          ? bookingDetail.order_id.status
-                          : "Chưa có"}
-                      </p>
-                    </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailAddress">
-                      <Form.Label>Địa chỉ khách hàng:</Form.Label>
-                      <p>{address}</p>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="formBookingDetailAddress">
-                      <Form.Label>Danh sách dịch vụ:</Form.Label>
-                      <p>
-                        {/* {servicesData
-                          .filter((x) => bookingDetail.services.includes(x._id))
-                          .map((service) => {
-                            return service.name;
-                          })
-                          .join(", ")} */}
-                        {bookingDetail.services.join(", ")}
-                      </p>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </Form>
+        <Modal.Header>
+          <Modal.Title>Chi tiết lịch hẹn mã: {bookingDetail._id}</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form>
+            <Row>
+              <Col>
+                <Form.Group controlId="formBookingDetailPhoneNumber">
+                  <Form.Label>Số điện thoại:</Form.Label>
+                  <p>{bookingDetail.phonenum}</p>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="formBookingDetailCustomerName">
+                  <Form.Label>Khách hàng:</Form.Label>
+                  <p>{bookingDetail.cus_name}</p>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group controlId="formBookingDetailTime">
+                  <Form.Label>Ngày hẹn:</Form.Label>
+                  <p>{moment(bookingDetail.time).format("MM/DD/YYYY")}</p>
+                </Form.Group>
+              </Col>
+
+              <Col>
+                <Form.Group controlId="formBookingDetailOrderStatus">
+                  <Form.Label>Trạng thái đơn hàng:</Form.Label>
+                  <p>
+                    {bookingDetail.order_id
+                      ? bookingDetail.order_id.status
+                      : "Chưa có"}
+                  </p>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group controlId="formBookingDetailDescription">
+                  <Form.Label>Mô tả lịch hẹn:</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={3}
+                    readOnly
+                    disabled
+                    name="description"
+                    defaultValue={bookingDetail.description}
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group controlId="formBookingDetailType">
+                  <Form.Label>Loại lịch hẹn:</Form.Label>
+                  <p>{bookingDetail.type}</p>
+                </Form.Group>
+              </Col>
+
+              <Col>
+                <Form.Group controlId="formBookingDetailAddress">
+                  <Form.Label>Địa chỉ khách hàng:</Form.Label>
+                  <p>{address}</p>
+                </Form.Group>
+              </Col>
+            </Row>
+            {bookingDetail.services.length !== 0 && (
               <Row>
-                <Col>
-                  <Form.Group controlId="formCreateBookingType">
-                    <Form.Label>Trạng thái:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="status"
-                      disabled={
-                        isAdmin ||
-                        initBookingDetail.order_id ||
-                        initBookingDetail.status === "Đã tiếp nhận" ||
-                        initBookingDetail.status === "Hủy"
-                      }
-                      value={bookingDetail.status}
-                      onChange={handleUpdateBookingChange}
-                    >
-                      <option value="Đã tiếp nhận">Đã tiếp nhận</option>
-                      <option value="Đang xử lí">Đang xử lí</option>
-                      <option value="Hủy">Hủy</option>
-                    </Form.Control>
-                  </Form.Group>
+                <Col className="table-container">
+                  <Form.Label>Danh sách dịch vụ:</Form.Label>
+                  {/* <p>{bookingDetail.services.join(", ")}</p> */}
+                  <Table bordered size="sm">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Tên dịch vụ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookingDetail.services.map((service, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{service}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
                 </Col>
               </Row>
-            </Modal.Body>
-          </div>
-          <Modal.Footer>
-            <Button
-              variant="primary"
-              disabled={!initBookingDetail.order_id}
-              onClick={handleViewOrder}
-            >
-              Xem đơn hàng
-            </Button>
-            <Button variant="secondary" onClick={handleClose}>
-              Đóng
-            </Button>
-            {!isAdmin && (
-              <Button
-                disabled={
-                  !isChange() ||
-                  (initBookingDetail.order_id &&
-                    initBookingDetail.status !== "Đã tiếp nhận")
-                }
-                type="submit"
-                variant="primary"
-                onClick={handleUpdateBookingSubmit}
-              >
-                {isLoading || acceptBookingLoading ? (
-                  <Spinner animation="border" />
-                ) : (
-                  "Cập nhật"
-                )}
-              </Button>
             )}
-          </Modal.Footer>
-        </div>
+          </Form>
+          <Row>
+            <Col>
+              <Form.Group controlId="formCreateBookingType">
+                <Form.Label>Trạng thái:</Form.Label>
+                <Form.Control
+                  as="select"
+                  name="status"
+                  disabled={
+                    isAdmin ||
+                    initBookingDetail.order_id ||
+                    initBookingDetail.status === "Đã tiếp nhận" ||
+                    initBookingDetail.status === "Hủy"
+                  }
+                  value={bookingDetail.status}
+                  onChange={handleUpdateBookingChange}
+                >
+                  <option value="Đã tiếp nhận">Đã tiếp nhận</option>
+                  <option value="Đang xử lí">Đang xử lí</option>
+                  <option value="Hủy">Hủy</option>
+                </Form.Control>
+              </Form.Group>
+            </Col>
+          </Row>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            style={{ width: "135px" }}
+            variant="info"
+            disabled={!initBookingDetail.order_id}
+            onClick={handleViewOrder}
+          >
+            Xem đơn hàng
+          </Button>
+          <Button variant="secondary" onClick={handleClose}>
+            Đóng
+          </Button>
+          {!isAdmin && (
+            <Button
+              disabled={
+                !isChange() ||
+                (initBookingDetail.order_id &&
+                  initBookingDetail.status !== "Đã tiếp nhận")
+              }
+              type="submit"
+              variant="primary"
+              onClick={handleUpdateBookingSubmit}
+            >
+              {isLoading || acceptBookingLoading ? (
+                <Spinner animation="border" />
+              ) : (
+                "Cập nhật"
+              )}
+            </Button>
+          )}
+        </Modal.Footer>
       </Modal>
       <GeneralSchedule
         showGeneralSchedule={showGeneralSchedule}

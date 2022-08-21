@@ -21,13 +21,21 @@
   font-weight: 700;
 }
 
-.confirm-create-accessory-container .modal-content-container .confirm-button {
-  width: 15%;
+.confirm-create-accessory-container
+  .modal-content-container
+  .modal-body-container
+  img {
+  height: 300px;
+  width: auto;
+}
+
+.confirm-create-accessory-container .modal-content-container button {
+  width: 100px;
 }
 
 .confirm-create-accessory-container
   .modal-content-container
-  .confirm-button
+  button
   .spinner-border {
   width: 20px;
   height: 20px;

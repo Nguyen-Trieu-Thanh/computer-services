@@ -11,6 +11,7 @@ import { useGetSchedulesWithStaffDetailQuery } from "../../redux/slices/schedule
 import {
   Card,
   Col,
+  Container,
   Form,
   InputGroup,
   ListGroup,
@@ -102,20 +103,6 @@ const Dashboard = () => {
   } = useDataForDashboardQuery(null, { pollingInterval: 5000 });
 
   const navigate = useNavigate();
-
-  const handleTableSeeAllClick = () => {
-    if (tableType === dashboardDynamicTableEnum.BOOKING) {
-      navigate("/booking");
-    }
-
-    if (tableType === dashboardDynamicTableEnum.ORDER) {
-      navigate("/order");
-    }
-
-    if (tableType === dashboardDynamicTableEnum.STAFF) {
-      navigate("/staff");
-    }
-  };
 
   const getDateInBetween = () => {
     let dates = [];
@@ -257,14 +244,21 @@ const Dashboard = () => {
         {role === "admin" && <CustomChart />}
 
         {role === "manager" && (
-          <div className="dashboard-schedule-container">
-            <ListGroup>
-              <ListGroup.Item>
+          <Container fluid className="dashboard-schedule-container">
+            <Card className="schedule-container">
+              <Card.Body>
+                <Row>
+                  <Col>
+                    <Card.Title>
+                      Thời gian biểu (nhấn vào slot để xem danh sách nhân viên)
+                    </Card.Title>
+                  </Col>
+                </Row>
                 <Row>
                   <Col>
                     <InputGroup>
                       <InputGroup.Prepend>
-                        <InputGroup.Text>Từ ngày (MM/DD/YYYY):</InputGroup.Text>
+                        <InputGroup.Text>Từ ngày:</InputGroup.Text>
                       </InputGroup.Prepend>
                       <Form.Control
                         type="date"
@@ -278,9 +272,7 @@ const Dashboard = () => {
                   <Col>
                     <InputGroup>
                       <InputGroup.Prepend>
-                        <InputGroup.Text>
-                          Đến ngày (MM/DD/YYYY):
-                        </InputGroup.Text>
+                        <InputGroup.Text>Đến ngày:</InputGroup.Text>
                       </InputGroup.Prepend>
                       <Form.Control
                         type="date"
@@ -292,7 +284,7 @@ const Dashboard = () => {
                     </InputGroup>
                   </Col>
                 </Row>
-                <Row className="mt-3">
+                <Row className="mt-2">
                   <Col>
                     <div className="box-container">
                       <div className="box" />
@@ -318,9 +310,7 @@ const Dashboard = () => {
                     </div>
                   </Col>
                 </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row className="dashboard-schedule-table-container">
+                <Row className="dashboard-schedule-table-container mt-2">
                   <Col>
                     {isFetching ? (
                       <div className="loading">
@@ -383,7 +373,7 @@ const Dashboard = () => {
                                         setShowSlotDetail(true);
                                       }}
                                     >
-                                      <div className="td-text">
+                                      {/* <div className="td-text">
                                         Tổng số nhân viên:{" "}
                                         {
                                           date.slots[
@@ -403,7 +393,7 @@ const Dashboard = () => {
                                           ].work_slot.filter((y) => !y.order_id)
                                             .length
                                         }
-                                      </div>
+                                      </div> */}
                                     </td>
                                   ) : (
                                     <td
@@ -427,9 +417,9 @@ const Dashboard = () => {
                     )}
                   </Col>
                 </Row>
-              </ListGroup.Item>
-            </ListGroup>
-          </div>
+              </Card.Body>
+            </Card>
+          </Container>
         )}
       </div>
       <SlotDetail

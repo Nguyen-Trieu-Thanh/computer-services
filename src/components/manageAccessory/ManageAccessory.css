@@ -1,52 +1,53 @@
 .manage-accessory-container {
-  margin: 5px 0 0 0;
-}
-
-.manage-accessory-container .filter-container {
-  box-shadow: 0px 3px 8px #a6a6a6;
-}
-
-.manage-accessory-container .button-container {
-  display: flex;
-  flex-direction: row-reverse;
+  padding: 5px 0 0 0;
 }
 
 .manage-accessory-container .content-container {
   box-shadow: 0px 3px 8px #a6a6a6;
 }
 
+.manage-accessory-container .content-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .manage-accessory-container .content-container .pagination {
   margin-bottom: 0;
 }
 
-.manage-accessory-container .table-container {
-  height: 70vh;
+.manage-accessory-container .content-container .table-container {
 }
 
-.manage-accessory-container .table-container thead {
+.manage-accessory-container .content-container .table-container .loading {
+  height: 100%;
+}
+
+.manage-accessory-container .content-container .table-container .table {
+  margin: 0;
+}
+
+.manage-accessory-container .content-container .table-container thead {
   background-color: var(--main-color);
 }
 
-.manage-accessory-container .table-container th {
+.manage-accessory-container .content-container .table-container th {
   text-align: center;
 }
 
-.manage-accessory-container .table-container td {
+.manage-accessory-container .content-container .table-container td {
   text-align: center;
   vertical-align: middle;
 }
 
-.manage-accessory-container .table-container .action-button-container {
+.manage-accessory-container
+  .content-container
+  .table-container
+  .action-button-container {
   display: flex;
   justify-content: space-evenly;
 }
 
-.manage-accessory-container .pagination-container {
-  float: right;
-}
-
 /*Tooltip CSS*/
-
 .accessory-edit-button {
   font-size: 10px;
   letter-spacing: 1px;
@@ -60,4 +61,34 @@
 
 .accessory-edit-button .arrow::before {
   border-bottom-color: blue;
+}
+
+.accessory-schedule-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.accessory-schedule-button .tooltip-inner {
+  background-color: green;
+  color: #fff;
+}
+
+.accessory-schedule-button .arrow::before {
+  border-bottom-color: green;
+}
+
+.accessory-delete-button {
+  font-size: 10px;
+  letter-spacing: 1px;
+  font-weight: bold;
+}
+
+.accessory-delete-button .tooltip-inner {
+  background-color: red;
+  color: #fff;
+}
+
+.accessory-delete-button .arrow::before {
+  border-bottom-color: red;
 }

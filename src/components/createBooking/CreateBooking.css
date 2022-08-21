@@ -1,23 +1,39 @@
 .create-booking-container {
+  padding: 5px 0 0 0;
 }
 
-.create-booking-container .form-label {
-  font-size: 18px;
-  font-weight: 700;
+.create-booking-container .booking-info-container {
+  box-shadow: 0px 3px 8px #a6a6a6;
 }
 
-.create-booking-container .check-phonenumber-button {
+.create-booking-container .booking-info-container .check-phonenumber-button {
   width: 100px;
 }
 
-.create-booking-container .spinner-border {
+.create-booking-container .booking-info-container .spinner-border {
   width: 20px;
   height: 20px;
   border: 3px solid currentColor;
   border-right-color: transparent;
 }
 
-.create-booking-container .button-container {
+.create-booking-container .booking-info-container .button-container {
   display: flex;
   flex-direction: row-reverse;
+}
+
+.create-booking-container .booking-info-container .service-checkbox-container {
+  width: 25%;
+}
+
+.create-booking-container .booking-info-container .service-checkbox label {
+  cursor: pointer;
+}
+
+.create-booking-container .booking-info-container .service-checkbox input {
+  cursor: pointer;
+}
+
+.create-booking-container .booking-info-container .service-checkbox:hover {
+  font-weight: 700;
 }

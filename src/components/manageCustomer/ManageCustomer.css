@@ -1,52 +1,53 @@
 .manage-customer-container {
-  margin: 5px 0 0 0;
-}
-
-.manage-customer-container .filter-container {
-  box-shadow: 0px 3px 8px #a6a6a6;
-}
-
-.manage-customer-container .button-container {
-  display: flex;
-  flex-direction: row-reverse;
+  padding: 5px 0 0 0;
 }
 
 .manage-customer-container .content-container {
   box-shadow: 0px 3px 8px #a6a6a6;
 }
 
+.manage-customer-container .content-container .button-container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
 .manage-customer-container .content-container .pagination {
   margin-bottom: 0;
 }
 
-.manage-customer-container .table-container {
-  height: 70vh;
+.manage-customer-container .content-container .table-container {
 }
 
-.manage-customer-container .table-container thead {
+.manage-customer-container .content-container .table-container .loading {
+  height: 100%;
+}
+
+.manage-customer-container .content-container .table-container .table {
+  margin: 0;
+}
+
+.manage-customer-container .content-container .table-container thead {
   background-color: var(--main-color);
 }
 
-.manage-customer-container .table-container th {
+.manage-customer-container .content-container .table-container th {
   text-align: center;
 }
 
-.manage-customer-container .table-container td {
+.manage-customer-container .content-container .table-container td {
   text-align: center;
   vertical-align: middle;
 }
 
-.manage-customer-container .table-container .action-button-container {
+.manage-customer-container
+  .content-container
+  .table-container
+  .action-button-container {
   display: flex;
   justify-content: space-evenly;
 }
 
-.manage-customer-container .pagination-container {
-  float: right;
-}
-
 /*Tooltip CSS*/
-
 .customer-edit-button {
   font-size: 10px;
   letter-spacing: 1px;

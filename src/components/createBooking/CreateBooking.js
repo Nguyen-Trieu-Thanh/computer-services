@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 import {
   Button,
+  Card,
   Col,
   Container,
   Form,
@@ -222,14 +223,14 @@ const CreateBooking = () => {
     try {
       await getAccountByUsername(booking.phonenum)
         .unwrap()
-        .then(async (res) => {
+        .then((res) => {
           if (res) {
-            await setBooking({
+            setBooking({
               ...booking,
               acc_id: res._id,
               cus_name: res.user_id?.name,
             });
-            await setValidation({
+            setValidation({
               ...validation,
               phonenum: {
                 message: "",
@@ -237,8 +238,8 @@ const CreateBooking = () => {
               },
             });
           } else {
-            await setBooking({ ...booking, acc_id: "", cus_name: "" });
-            await setValidation({
+            setBooking({ ...booking, acc_id: "", cus_name: "" });
+            setValidation({
               ...validation,
               phonenum: {
                 message: "Tài khoản không tồn tại",
@@ -247,8 +248,58 @@ const CreateBooking = () => {
             });
           }
         });
-    } catch (error) {}
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          setBooking({ ...booking, acc_id: "", cus_name: "" });
+          setValidation({
+            ...validation,
+            phonenum: {
+              message: error.data,
+              isInvalid: true,
+            },
+          });
+        } else {
+          setBooking({ ...booking, acc_id: "", cus_name: "" });
+          setValidation({
+            ...validation,
+            phonenum: {
+              message: "Đã xảy ra lỗi. Xin thử lại sau",
+              isInvalid: true,
+            },
+          });
+        }
+      }
+    }
   };
+
+  let items = [];
+  for (let i = 0; i < servicesData.length; i += 4) {
+    items.push(
+      <Row key={i}>
+        {servicesData.slice(i, i + 4).map((service, index) => {
+          return (
+            <Form.Group
+              className="service-checkbox-container"
+              key={index}
+              controlId={"formCreateBookingService-" + i + index}
+            >
+              <Col>
+                <Form.Check
+                  className="service-checkbox"
+                  inline
+                  label={service.name}
+                  value={service.name}
+                  checked={booking.services.includes(service.name)}
+                  onChange={handleCreateBookingServiceChange}
+                />
+              </Col>
+            </Form.Group>
+          );
+        })}
+      </Row>
+    );
+  }
 
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
@@ -324,194 +375,195 @@ const CreateBooking = () => {
   return (
     <>
       <Container fluid className="create-booking-container">
-        <Row>
-          <Col>
-            <h3>Tạo lịch hẹn</h3>
-          </Col>
-        </Row>
-        <Row className="mt-2">
-          <Col>
-            <h4>Thông tin lịch hẹn</h4>
-          </Col>
-        </Row>
         <Form onSubmit={handleConfirmBookingSubmit}>
-          <Row>
-            <Col>
-              <Form.Group controlId="formCreateBookingPhoneNumber">
-                <Form.Label>Số điện thoại:</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    isInvalid={validation.phonenum.isInvalid}
-                    type="text"
-                    name="phonenum"
-                    value={booking.phonenum}
-                    onChange={handleCreateBookingChange}
-                  />
-                  <InputGroup.Append>
-                    <Button
-                      variant="primary"
-                      onClick={handleGetAccountByUsername}
-                      className="check-phonenumber-button"
-                    >
-                      {isLoading ? <Spinner animation="border" /> : "Kiểm tra"}
-                    </Button>
-                  </InputGroup.Append>
-                  <Form.Control.Feedback type="invalid">
-                    {validation.phonenum.message}
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group controlId="formCreateBookingCustomerName">
-                <Form.Label>Họ và tên khách hàng:</Form.Label>
-                <Form.Control
-                  readOnly
-                  type="text"
-                  name="cus_name"
-                  value={booking.cus_name}
-                  onChange={handleCreateBookingChange}
-                />
-              </Form.Group>
-            </Col>
-            <Col>
-              <Form.Group controlId="formCreateBookingTime">
-                <Form.Label>Ngày hẹn (MM/DD/YYYY):</Form.Label>
-                <Form.Control
-                  disabled
-                  isInvalid={validation.time.isInvalid}
-                  type="date"
-                  name="time"
-                  value={moment(booking.time).format("YYYY-MM-DD")}
-                  onChange={handleCreateBookingChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {validation.time.message}
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Form.Group controlId="formCreateBookingAddress">
-                <Form.Label>Địa chỉ khách hàng:</Form.Label>
-                <InputGroup>
-                  <Form.Control
-                    isInvalid={validation.street.isInvalid}
-                    type="text"
-                    placeholder="Số nhà và tên đường"
-                    name="street"
-                    value={booking.cus_address.street}
-                    onChange={handleCreateBookingAddressChange}
-                  />
-
-                  <Form.Control
-                    as="select"
-                    name="ward"
-                    value={booking.cus_address.ward}
-                    onChange={handleCreateBookingAddressChange}
-                  >
-                    {districts
-                      .find(
-                        (district) =>
-                          district.name === booking.cus_address.district
-                      )
-                      .wards.map((ward, index) => {
-                        return (
-                          <option key={index} value={ward.name}>
-                            {ward.name}
-                          </option>
-                        );
-                      })}
-                  </Form.Control>
-                  <Form.Control
-                    as="select"
-                    name="district"
-                    value={booking.cus_address.district}
-                    onChange={handleCreateBookingAddressChange}
-                  >
-                    {districts.map((district, index) => {
-                      return (
-                        <option key={index} value={district.name}>
-                          {district.name}
-                        </option>
-                      );
-                    })}
-                  </Form.Control>
-                  <InputGroup.Prepend>
-                    <InputGroup.Text>Thành phố Hồ Chí Minh</InputGroup.Text>
-                  </InputGroup.Prepend>
-                  <Form.Control.Feedback type="invalid">
-                    {validation.street.message}
-                  </Form.Control.Feedback>
-                </InputGroup>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <Form.Group controlId="formCreateBookingDescription">
-                <Form.Label>
-                  Mô tả lịch hẹn ({booking.description.length}/100 từ) (không
-                  bắt buộc):
-                </Form.Label>
-                <Form.Control
-                  isInvalid={validation.description.isInvalid}
-                  as="textarea"
-                  rows={5}
-                  name="description"
-                  value={booking.description}
-                  onChange={handleCreateBookingChange}
-                />
-                <Form.Control.Feedback type="invalid">
-                  {validation.description.message}
-                </Form.Control.Feedback>
-              </Form.Group>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
+          <Card className="booking-info-container ">
+            <Card.Body>
               <Row>
                 <Col>
-                  <Form.Label>Dịch vụ:</Form.Label>
+                  <Card.Title>Thông tin lịch hẹn</Card.Title>
                 </Col>
               </Row>
               <Row>
-                {servicesData.map((service, index) => {
-                  return (
-                    <Form.Group
-                      key={index}
-                      controlId={"formCreateBookingService-" + index}
-                    >
-                      <Col>
-                        {/* <Form.Check
+                <Col>
+                  <Form.Group controlId="formCreateBookingPhoneNumber">
+                    <Form.Label>Số điện thoại:</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        isInvalid={validation.phonenum.isInvalid}
+                        type="text"
+                        name="phonenum"
+                        value={booking.phonenum}
+                        onChange={handleCreateBookingChange}
+                      />
+                      <InputGroup.Append>
+                        <Button
+                          variant="primary"
+                          onClick={handleGetAccountByUsername}
+                          className="check-phonenumber-button"
+                        >
+                          {isLoading ? (
+                            <Spinner animation="border" />
+                          ) : (
+                            "Kiểm tra"
+                          )}
+                        </Button>
+                      </InputGroup.Append>
+                      <Form.Control.Feedback type="invalid">
+                        {validation.phonenum.message}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="formCreateBookingCustomerName">
+                    <Form.Label>Họ và tên khách hàng:</Form.Label>
+                    <Form.Control
+                      readOnly
+                      type="text"
+                      name="cus_name"
+                      value={booking.cus_name}
+                      onChange={handleCreateBookingChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="formCreateBookingTime">
+                    <Form.Label>Ngày hẹn:</Form.Label>
+                    <Form.Control
+                      disabled
+                      isInvalid={validation.time.isInvalid}
+                      type="date"
+                      name="time"
+                      value={moment(booking.time).format("YYYY-MM-DD")}
+                      onChange={handleCreateBookingChange}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {validation.time.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group controlId="formCreateBookingAddress">
+                    <Form.Label>Địa chỉ khách hàng:</Form.Label>
+                    <InputGroup>
+                      <Form.Control
+                        isInvalid={validation.street.isInvalid}
+                        type="text"
+                        placeholder="Số nhà và tên đường"
+                        name="street"
+                        value={booking.cus_address.street}
+                        onChange={handleCreateBookingAddressChange}
+                      />
+
+                      <Form.Control
+                        as="select"
+                        name="ward"
+                        value={booking.cus_address.ward}
+                        onChange={handleCreateBookingAddressChange}
+                      >
+                        {districts
+                          .find(
+                            (district) =>
+                              district.name === booking.cus_address.district
+                          )
+                          .wards.map((ward, index) => {
+                            return (
+                              <option key={index} value={ward.name}>
+                                {ward.name}
+                              </option>
+                            );
+                          })}
+                      </Form.Control>
+                      <Form.Control
+                        as="select"
+                        name="district"
+                        value={booking.cus_address.district}
+                        onChange={handleCreateBookingAddressChange}
+                      >
+                        {districts.map((district, index) => {
+                          return (
+                            <option key={index} value={district.name}>
+                              {district.name}
+                            </option>
+                          );
+                        })}
+                      </Form.Control>
+                      <InputGroup.Prepend>
+                        <InputGroup.Text>Thành phố Hồ Chí Minh</InputGroup.Text>
+                      </InputGroup.Prepend>
+                      <Form.Control.Feedback type="invalid">
+                        {validation.street.message}
+                      </Form.Control.Feedback>
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Group controlId="formCreateBookingDescription">
+                    <Form.Label>
+                      Mô tả lịch hẹn ({booking.description.length}/100 từ)
+                      (không bắt buộc):
+                    </Form.Label>
+                    <Form.Control
+                      isInvalid={validation.description.isInvalid}
+                      as="textarea"
+                      rows={5}
+                      name="description"
+                      value={booking.description}
+                      onChange={handleCreateBookingChange}
+                    />
+                    <Form.Control.Feedback type="invalid">
+                      {validation.description.message}
+                    </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Row>
+                    <Col>
+                      <Form.Label>Dịch vụ:</Form.Label>
+                    </Col>
+                  </Row>
+                  {/* <Row>
+                    {servicesData.map((service, index) => {
+                      return (
+                        <Form.Group
+                          key={index}
+                          controlId={"formCreateBookingService-" + index}
+                        >
+                          <Col>
+                            <Form.Check
                               inline
                               label={service.name}
-                              value={service._id}
-                              checked={booking.services.includes(service._id)}
+                              value={service.name}
+                              checked={booking.services.includes(service.name)}
                               onChange={handleCreateBookingServiceChange}
-                            /> */}
-                        <Form.Check
-                          inline
-                          label={service.name}
-                          value={service.name}
-                          checked={booking.services.includes(service.name)}
-                          onChange={handleCreateBookingServiceChange}
-                        />
-                      </Col>
-                    </Form.Group>
-                  );
-                })}
+                            />
+                          </Col>
+                        </Form.Group>
+                      );
+                    })}
+                  </Row> */}
+                  {items.map((item, index) => {
+                    return item;
+                  })}
+                </Col>
               </Row>
-            </Col>
-          </Row>
-          <Row>
-            <Col className="button-container">
-              <Button disabled={isLoading} type="submit" variant="primary">
-                Tạo lịch hẹn
-              </Button>
-            </Col>
-          </Row>
+            </Card.Body>
+            <Card.Footer>
+              <Row>
+                <Col className="button-container">
+                  <Button disabled={isLoading} type="submit" variant="primary">
+                    Tạo lịch hẹn
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
+          </Card>
         </Form>
       </Container>
       <ConfirmCreateBooking

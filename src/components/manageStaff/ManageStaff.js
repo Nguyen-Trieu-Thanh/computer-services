@@ -17,6 +17,7 @@ import {
   Button,
   Card,
   Col,
+  Container,
   Form,
   InputGroup,
   OverlayTrigger,
@@ -112,19 +113,17 @@ const ManageStaff = () => {
 
   return (
     <>
-      <div className="manage-staff-container">
-        <Card body className="filter-container">
+      <Container fluid className="manage-staff-container">
+        <Card body className="content-container">
           <Row>
             <Col>
-              <h4>Danh sách nhân viên</h4>
+              <Card.Title>Danh sách nhân viên</Card.Title>
             </Col>
           </Row>
-          <Row className="mt-2">
+          <Row className="d-flex align-items-end">
             <Col>
+              <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Tìm kiếm theo tên:</InputGroup.Text>
-                </InputGroup.Prepend>
                 <Form.Control
                   type="text"
                   name="search"
@@ -146,20 +145,16 @@ const ManageStaff = () => {
               </InputGroup>
             </Col>
             <Col>
-              <InputGroup>
-                <InputGroup.Prepend>
-                  <InputGroup.Text>Thứ tự:</InputGroup.Text>
-                </InputGroup.Prepend>
-                <Form.Control
-                  as="select"
-                  name="sort"
-                  value={sort}
-                  onChange={handleSort}
-                >
-                  <option value="asc">Cũ đến mới</option>
-                  <option value="desc">Mới đến cũ</option>
-                </Form.Control>
-              </InputGroup>
+              <Form.Label>Thứ tự:</Form.Label>
+              <Form.Control
+                as="select"
+                name="sort"
+                value={sort}
+                onChange={handleSort}
+              >
+                <option value="asc">Cũ đến mới</option>
+                <option value="desc">Mới đến cũ</option>
+              </Form.Control>
             </Col>
             <Col xs={2} className="button-container">
               <Button
@@ -171,121 +166,81 @@ const ManageStaff = () => {
               </Button>
             </Col>
           </Row>
-        </Card>
-        <Card body className="content-container">
-          {isFetching ? (
-            <div className="loading">
-              <Spinner animation="border" />
-              <div className="loading-text">Đang tải dữ liệu...</div>
-            </div>
-          ) : (
-            <div className="table-container">
-              <Table bordered hover size="sm">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Tên nhân viên</th>
-                    <th>Số điện thoại</th>
-                    <th>Vai trò</th>
-                    <th style={{ width: "200px" }}>Hành động</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {staffs
-                    .slice(10 * (active - 1), 10 * active)
-                    .map((staff, index) => {
-                      return (
-                        <tr key={index}>
-                          <td>{index + 1}</td>
-                          <td>{staff.user_id?.name}</td>
-                          <td>{staff.user_id?.phonenum}</td>
-                          <td>{staff.role}</td>
-                          <td>
-                            <div className="action-button-container">
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 200, hide: 100 }}
-                                overlay={
-                                  <Tooltip
-                                    className="staff-edit-button"
-                                    id="edit-button-tooltip"
+          <Row className="mt-2">
+            <Col className="table-container">
+              {isFetching ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Table bordered hover size="sm">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Tên nhân viên</th>
+                      <th>Số điện thoại</th>
+                      <th>Vai trò</th>
+                      <th style={{ width: "200px" }}>Hành động</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {staffs
+                      .slice(10 * (active - 1), 10 * active)
+                      .map((staff, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{staff.user_id?.name}</td>
+                            <td>{staff.user_id?.phonenum}</td>
+                            <td>{staff.role}</td>
+                            <td>
+                              <div className="action-button-container">
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 200, hide: 100 }}
+                                  overlay={
+                                    <Tooltip
+                                      className="staff-edit-button"
+                                      id="edit-button-tooltip"
+                                    >
+                                      Chi tiết
+                                    </Tooltip>
+                                  }
+                                >
+                                  <Button
+                                    variant="primary"
+                                    onClick={() => {
+                                      navigate("/staff-detail/" + staff._id);
+                                    }}
                                   >
-                                    Chi tiết
-                                  </Tooltip>
-                                }
-                              >
-                                <Button
-                                  variant="primary"
-                                  onClick={() => {
-                                    navigate("/staff-detail/" + staff._id);
-                                  }}
-                                >
-                                  <FontAwesomeIcon
-                                    icon={faPenToSquare}
-                                    color="#ffffff"
-                                  />
-                                </Button>
-                              </OverlayTrigger>
-                              {/* <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 200, hide: 100 }}
-                              overlay={
-                                <Tooltip
-                                  className="staff-schedule-button"
-                                  id="schedule-button-tooltip"
-                                >
-                                  SCHEDULE
-                                </Tooltip>
-                              }
-                            >
-                              <Button
-                                variant="success"
-                                onClick={() => {
-                                  setShowStaffSchedule(true);
-                                  setStaffScheduleId(staff.scheduleId);
-                                }}
-                              >
-                                <FontAwesomeIcon
-                                  icon={faCalendarCheck}
-                                  color="#ffffff"
-                                />
-                              </Button>
-                            </OverlayTrigger>
-                            <OverlayTrigger
-                              placement="bottom"
-                              delay={{ show: 200, hide: 100 }}
-                              overlay={
-                                <Tooltip
-                                  className="staff-delete-button"
-                                  id="delete-button-tooltip"
-                                >
-                                  DELETE
-                                </Tooltip>
-                              }
-                            >
-                              <Button variant="danger">
-                                <FontAwesomeIcon
-                                  icon={faTrash}
-                                  color="#ffffff"
-                                />
-                              </Button>
-                            </OverlayTrigger> */}
-                            </div>
-                          </td>
-                        </tr>
-                      );
-                    })}
-                </tbody>
-              </Table>
-            </div>
-          )}
-          <CustomPagination
-            count={Math.ceil(staffs.length / 10)}
-            handlePaginationClick={handlePaginationClick}
-            page={active}
-          />
+                                    <FontAwesomeIcon
+                                      icon={faPenToSquare}
+                                      color="#ffffff"
+                                    />
+                                  </Button>
+                                </OverlayTrigger>
+                              </div>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                  </tbody>
+                </Table>
+              )}
+            </Col>
+          </Row>
+          <Row className="mt-2">
+            <Col>
+              <CustomPagination
+                count={Math.ceil(staffs.length / 10)}
+                handlePaginationClick={handlePaginationClick}
+                page={active}
+              />
+            </Col>
+          </Row>
         </Card>
-      </div>
+      </Container>
       <CreateStaff
         showCreateStaff={showCreateStaff}
         setShowCreateStaff={setShowCreateStaff}

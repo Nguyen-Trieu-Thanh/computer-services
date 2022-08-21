@@ -51,9 +51,10 @@ const CreateService = () => {
     accessories_id: [],
     hasAccessory: false,
   });
-
   const [showConfirmCreateService, setShowConfirmCreateService] =
     useState(false);
+
+  const [addAccessories, setAddAccessories] = useState([]);
 
   const handleCreateServiceChange = (e) => {
     const name = e.target.name;
@@ -148,6 +149,17 @@ const CreateService = () => {
         ...validation,
         price: {
           message: "Giá dịch vụ không được để trống",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
+    if (service.description === "") {
+      setValidation({
+        ...validation,
+        description: {
+          message: "Mô tả dịch vụ không được để trống",
           isInvalid: true,
         },
       });
@@ -257,62 +269,65 @@ const CreateService = () => {
               </Col>
             </Row>
           </Card>
-          <Card body className="service-table-container">
-            <Row>
-              <Col>
-                <Card.Title>Dịch vụ bao gồm phụ kiện</Card.Title>
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <div className="table-container">
-                  <Table bordered size="sm">
-                    <thead>
-                      <tr>
-                        <th>#</th>
-                        <th>TÊN PHỤ KIỆN</th>
-                        <th>GIÁ PHỤ KIỆN</th>
-                        <th>NHÀ CUNG CẤP</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td colSpan={4}>
-                          <Button
-                            variant="link"
-                            size="sm"
-                            onClick={() => {
-                              setShowAddAccessoryToService(true);
-                            }}
-                          >
-                            Thêm / Xóa phụ kiện
-                          </Button>
-                        </td>
-                      </tr>
-                      {service.accessories_id?.map((accessory, index) => {
-                        return (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td>{accessory.name}</td>
-                            <td>{accessory.price}</td>
-                            <td>{accessory.supplier_id?.name}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </Table>
-                </div>
-              </Col>
-            </Row>
-          </Card>
-          <Card body className="service-button-container">
-            <Row>
-              <Col className="button-container">
-                <Button type="submit" variant="primary">
-                  Tạo dịch vụ
-                </Button>
-              </Col>
-            </Row>
+          <Card className="service-table-container">
+            <Card.Body>
+              <Row>
+                <Col>
+                  <Card.Title>Dịch vụ bao gồm linh kiện</Card.Title>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <div className="table-container">
+                    <Table bordered size="sm">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Tên linh kiện</th>
+                          <th>Giá linh kiện</th>
+                          <th>Nhà cung cấp</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td colSpan={4}>
+                            <Button
+                              variant="link"
+                              size="sm"
+                              onClick={() => {
+                                setAddAccessories([...service.accessories_id]);
+                                setShowAddAccessoryToService(true);
+                              }}
+                            >
+                              Thêm / Xóa linh kiện
+                            </Button>
+                          </td>
+                        </tr>
+                        {service.accessories_id?.map((accessory, index) => {
+                          return (
+                            <tr key={index}>
+                              <td>{index + 1}</td>
+                              <td>{accessory.name}</td>
+                              <td>{accessory.price}</td>
+                              <td>{accessory.supplier_id?.name}</td>
+                            </tr>
+                          );
+                        })}
+                      </tbody>
+                    </Table>
+                  </div>
+                </Col>
+              </Row>
+            </Card.Body>
+            <Card.Footer>
+              <Row>
+                <Col className="button-container">
+                  <Button type="submit" variant="primary">
+                    Tạo dịch vụ
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
           </Card>
         </Form>
       </Container>
@@ -321,6 +336,8 @@ const CreateService = () => {
         setShowAddAccessoryToService={setShowAddAccessoryToService}
         serviceDetail={service}
         setServiceDetail={setService}
+        addAccessories={addAccessories}
+        setAddAccessories={setAddAccessories}
       />
       <ConfirmCreateService
         service={service}

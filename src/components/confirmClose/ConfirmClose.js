@@ -26,14 +26,19 @@ const ConfirmClose = ({
         </Modal.Body>
         <Modal.Footer>
           <Button
-            variant="secondary"
+            style={{ width: "100px" }}
+            variant="danger"
             onClick={() => {
               setShowConfirmClose(false);
             }}
           >
             Hủy
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={handleClose}
+          >
             Xác nhận
           </Button>
         </Modal.Footer>
