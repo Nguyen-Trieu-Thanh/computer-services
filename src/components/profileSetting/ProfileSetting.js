@@ -235,12 +235,32 @@ const ProfileSetting = () => {
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      setFile(e.target.files[0]);
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        setImgData(reader.result);
-      });
-      reader.readAsDataURL(e.target.files[0]);
+      if (
+        e.target.files[0].type === "image/png" ||
+        e.target.files[0].type === "image/jpeg" ||
+        e.target.files[0].type === "image/jpg"
+      ) {
+        setFile(e.target.files[0]);
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          setImgData(reader.result);
+        });
+        reader.readAsDataURL(e.target.files[0]);
+      } else {
+        dispatch(
+          setToast({
+            show: true,
+            title: "Tải lên ảnh đại diện",
+            time: "just now",
+            content:
+              "Ảnh chỉ nhận định dạng .png, .jpg hoặc .jpeg. Xin hãy thử lại",
+            color: {
+              header: "#ffcccc",
+              body: "#e60000",
+            },
+          })
+        );
+      }
     }
   };
 
@@ -371,9 +391,9 @@ const ProfileSetting = () => {
                             src={
                               imgData
                                 ? imgData
-                                : !profile.img || imgLoading
+                                : !profile.imgURL || imgLoading
                                 ? defaultUserAvatar
-                                : `https://computer-services-api.herokuapp.com/account/avatar/${profile.img}`
+                                : profile.imgURL
                             }
                             onLoad={() => setImgLoading(false)}
                             sx={{

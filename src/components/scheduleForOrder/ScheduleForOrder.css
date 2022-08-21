@@ -11,8 +11,8 @@
   .modal-content-container
   .modal-body-container
   .table-container {
-  max-height: 50vh;
-  overflow-y: scroll;
+  /* max-height: 50vh; */
+  /* overflow-y: scroll; */
 }
 
 .schedule-for-order

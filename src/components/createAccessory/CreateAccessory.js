@@ -98,7 +98,7 @@ const CreateAccessory = () => {
         setValidation({
           ...validation,
           price: {
-            message: "Giá linh kiện chỉ được chứa chữ số",
+            message: "Giá linh kiện chỉ được chứa số",
             isInvalid: true,
           },
         });
@@ -168,12 +168,32 @@ const CreateAccessory = () => {
 
   const handleImageChange = (e) => {
     if (e.target.files[0]) {
-      setFile(e.target.files[0]);
-      const reader = new FileReader();
-      reader.addEventListener("load", () => {
-        setImgData(reader.result);
-      });
-      reader.readAsDataURL(e.target.files[0]);
+      if (
+        e.target.files[0].type === "image/png" ||
+        e.target.files[0].type === "image/jpeg" ||
+        e.target.files[0].type === "image/jpg"
+      ) {
+        setFile(e.target.files[0]);
+        const reader = new FileReader();
+        reader.addEventListener("load", () => {
+          setImgData(reader.result);
+        });
+        reader.readAsDataURL(e.target.files[0]);
+      } else {
+        dispatch(
+          setToast({
+            show: true,
+            title: "Tải lên ảnh linh kiện",
+            time: "just now",
+            content:
+              "Ảnh chỉ nhận định dạng .png, .jpg hoặc .jpeg. Xin hãy thử lại",
+            color: {
+              header: "#ffcccc",
+              body: "#e60000",
+            },
+          })
+        );
+      }
     }
   };
 

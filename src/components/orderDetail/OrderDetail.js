@@ -60,7 +60,7 @@ const steps = [
   "Đang xử lí",
   "Chờ xác nhận",
   "Quản lí xác nhận",
-  "Khách hàng xác nhận",
+  "Hoàn tất hóa đơn",
   "Hoàn thành",
 ];
 
@@ -315,6 +315,44 @@ const OrderDetail = () => {
     }
   };
 
+  const getOrderSlotFromBooking = () => {
+    if (moment(bookingDetail.time).isSameOrAfter(moment(), "day")) {
+      const time = moment(bookingDetail.time).format("Hmm");
+      if (time < 930) {
+        return 1;
+      }
+
+      if (time < 1100) {
+        return 2;
+      }
+
+      if (time < 1230) {
+        return 3;
+      }
+
+      if (time < 1400) {
+        return 4;
+      }
+
+      if (time < 1530) {
+        return 5;
+      }
+
+      if (time < 1700) {
+        return 6;
+      }
+
+      if (time < 1830) {
+        return 7;
+      }
+
+      if (time < 2000) {
+        return 8;
+      }
+    }
+    return 0;
+  };
+
   useEffect(() => {
     if (!isFetching) {
       if (!error) {
@@ -333,30 +371,40 @@ const OrderDetail = () => {
 
   useEffect(() => {
     if (!isFetching && !schedulesIsFetching && schedules.length !== 0) {
-      schedules.map((scheduleData, scheduleIndex) =>
-        scheduleData.slots.map((slot, slotIndex) =>
-          slot.work_slot.map((work_slot, index) => {
-            if (work_slot._id === orderDetail.work_slot) {
-              setSchedule({
-                ...schedule,
-                date: scheduleData.date,
-                slot: slot.slot,
-                work_slots: slot.work_slot,
-              });
-              setUpdateOrderSlot({
-                ...updateOrderSlot,
-                workSlotId: orderDetail.work_slot,
-              });
-              setInitUpdateOrderSlot({
-                ...updateOrderSlot,
-                workSlotId: orderDetail.work_slot,
-              });
-            }
-          })
-        )
-      );
+      if (orderDetail.status === "Đang chờ") {
+        setSchedule({
+          ...schedule,
+          date: moment(bookingDetail.time).format(),
+          slot: getOrderSlotFromBooking(),
+        });
+      } else {
+        schedules.map((scheduleData, scheduleIndex) =>
+          scheduleData.slots.map((slot, slotIndex) =>
+            slot.work_slot.map((work_slot, index) => {
+              if (work_slot._id === orderDetail.work_slot) {
+                setSchedule({
+                  ...schedule,
+                  date: scheduleData.date,
+                  slot: slot.slot,
+                  work_slots: slot.work_slot,
+                });
+                setUpdateOrderSlot({
+                  ...updateOrderSlot,
+                  workSlotId: orderDetail.work_slot,
+                });
+                setInitUpdateOrderSlot({
+                  ...updateOrderSlot,
+                  workSlotId: orderDetail.work_slot,
+                });
+              }
+            })
+          )
+        );
+      }
     }
   }, [isFetching, schedulesIsFetching, schedules]);
+
+  console.log(orderDetail);
 
   if (error) {
     return <Navigate to="/error" state={{ from: location }} replace />;
@@ -391,17 +439,24 @@ const OrderDetail = () => {
             <Row>
               <Col>
                 <Form.Label>Khách hàng:</Form.Label>
-                <Form.Control readOnly defaultValue={bookingDetail.cus_name} />
+                <Form.Control readOnly value={bookingDetail.cus_name} />
               </Col>
               <Col>
                 <Form.Label>Số điện thoại:</Form.Label>
-                <Form.Control readOnly defaultValue={bookingDetail.phonenum} />
+                <Form.Control readOnly value={bookingDetail.phonenum} />
               </Col>
               <Col>
                 <Form.Label>Ngày hẹn :</Form.Label>
                 <Form.Control
                   readOnly
-                  defaultValue={moment(bookingDetail.time).format("MM/DD/YYYY")}
+                  value={moment(bookingDetail.time).format("MM/DD/YYYY")}
+                />
+              </Col>
+              <Col>
+                <Form.Label>Giờ hẹn:</Form.Label>
+                <Form.Control
+                  readOnly
+                  value={moment(bookingDetail.time).format("HH:mm")}
                 />
               </Col>
             </Row>
@@ -722,6 +777,7 @@ const OrderDetail = () => {
                       <th>#</th>
                       <th>Tên linh kiện</th>
                       <th>Giá linh kiện (VNĐ)</th>
+                      <th>Số lượng</th>
                       <th>Thời hạn bảo hành</th>
                       <th>Nhà cung cấp</th>
                       <th>Hành động</th>
@@ -735,6 +791,7 @@ const OrderDetail = () => {
                             <td>{index + 1}</td>
                             <td>{accessory.accessory_id.name}</td>
                             <td>{accessory.accessory_id.price}</td>
+                            <td>{accessory.amount_acc}</td>
                             <td>{accessory.accessory_id.insurance}</td>
                             <td>{accessory.accessory_id.supplier_id.name}</td>
                             <td>
@@ -799,6 +856,9 @@ const OrderDetail = () => {
         setUpdateOrderSlot={setUpdateOrderSlot}
         schedulesRefetch={schedulesRefetch}
         schedulesIsFetching={schedulesIsFetching}
+        orderDetail={orderDetail}
+        isGetBookingByIdLoading={isGetBookingByIdLoading}
+        bookingDetail={bookingDetail}
       />
     </>
   );

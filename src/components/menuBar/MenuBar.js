@@ -110,9 +110,9 @@ const MenuBar = () => {
               <Nav.Link as={Link} to="/userProfile">
                 <Avatar
                   src={
-                    !data?.img || imgLoading
+                    !data?.imgURL || imgLoading
                       ? defaultUserAvatar
-                      : `https://computer-services-api.herokuapp.com/account/avatar/${data.img}`
+                      : data.imgURL
                   }
                   onLoad={() => setImgLoading(false)}
                   sx={{

@@ -80,7 +80,7 @@ const CreateService = () => {
         setValidation({
           ...validation,
           price: {
-            message: "Giá dịch vụ chỉ được chứa chữ số",
+            message: "Giá dịch vụ chỉ được chứa số",
             isInvalid: true,
           },
         });

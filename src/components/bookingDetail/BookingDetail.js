@@ -214,7 +214,9 @@ const BookingDetail = ({
       >
         <Modal.Header>
           {/* <Modal.Title>Chi tiết lịch hẹn mã: {bookingDetail._id}</Modal.Title> */}
-          <Modal.Title>Chi tiết lịch hẹn</Modal.Title>
+          <Modal.Title>
+            Chi tiết lịch hẹn của khách hàng {bookingDetail.cus_name}
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form>
@@ -225,16 +227,22 @@ const BookingDetail = ({
                   <p>{bookingDetail.phonenum}</p>
                 </Form.Group>
               </Col>
-              <Col>
+              {/* <Col>
                 <Form.Group controlId="formBookingDetailCustomerName">
                   <Form.Label>Khách hàng:</Form.Label>
                   <p>{bookingDetail.cus_name}</p>
                 </Form.Group>
+              </Col> */}
+              <Col>
+                <Form.Group controlId="formBookingDetailDate">
+                  <Form.Label>Ngày hẹn:</Form.Label>
+                  <p>{moment(bookingDetail.time).format("MM/DD/YYYY")}</p>
+                </Form.Group>
               </Col>
               <Col>
                 <Form.Group controlId="formBookingDetailTime">
-                  <Form.Label>Ngày hẹn:</Form.Label>
-                  <p>{moment(bookingDetail.time).format("MM/DD/YYYY")}</p>
+                  <Form.Label>Giờ hẹn:</Form.Label>
+                  <p>{moment(bookingDetail.time).format("HH:mm")}</p>
                 </Form.Group>
               </Col>
 

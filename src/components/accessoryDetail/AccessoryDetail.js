@@ -96,7 +96,7 @@ const AccessoryDetail = () => {
         setValidation({
           ...validation,
           price: {
-            message: "Giá linh kiện chỉ được chứa chữ số",
+            message: "Giá linh kiện chỉ được chứa số",
             isInvalid: true,
           },
         });
@@ -239,9 +239,9 @@ const AccessoryDetail = () => {
                 dispatch(
                   setToast({
                     show: true,
-                    title: "Cập nhập linh kiện",
+                    title: "Cập nhật linh kiện",
                     time: "just now",
-                    content: "Linh kiện được cập nhập thành công",
+                    content: "Linh kiện được cập nhật thành công",
                     color: {
                       header: "#dbf0dc",
                       body: "#41a446",
@@ -259,7 +259,7 @@ const AccessoryDetail = () => {
               dispatch(
                 setToast({
                   show: true,
-                  title: "Cập nhập linh kiện",
+                  title: "Cập nhật linh kiện",
                   time: "just now",
                   content: error.data,
                   color: {
@@ -272,7 +272,7 @@ const AccessoryDetail = () => {
               dispatch(
                 setToast({
                   show: true,
-                  title: "Cập nhập linh kiện",
+                  title: "Cập nhật linh kiện",
                   time: "just now",
                   content: "Đã xảy ra lỗi. Xin thử lại sau",
                   color: {
@@ -306,9 +306,9 @@ const AccessoryDetail = () => {
                         dispatch(
                           setToast({
                             show: true,
-                            title: "Cập nhập linh kiện",
+                            title: "Cập nhật linh kiện",
                             time: "just now",
-                            content: "Linh kiện được cập nhập thành công",
+                            content: "Linh kiện được cập nhật thành công",
                             color: {
                               header: "#dbf0dc",
                               body: "#41a446",
@@ -326,7 +326,7 @@ const AccessoryDetail = () => {
                       dispatch(
                         setToast({
                           show: true,
-                          title: "Cập nhập linh kiện",
+                          title: "Cập nhật linh kiện",
                           time: "just now",
                           content: error.data,
                           color: {
@@ -340,7 +340,7 @@ const AccessoryDetail = () => {
                       dispatch(
                         setToast({
                           show: true,
-                          title: "Cập nhập linh kiện",
+                          title: "Cập nhật linh kiện",
                           time: "just now",
                           content: "Đã xảy ra lỗi. Xin thử lại sau",
                           color: {
@@ -356,9 +356,9 @@ const AccessoryDetail = () => {
                 dispatch(
                   setToast({
                     show: true,
-                    title: "Cập nhập linh kiện",
+                    title: "Cập nhật linh kiện",
                     time: "just now",
-                    content: "Linh kiện được cập nhập thành công",
+                    content: "Linh kiện được cập nhật thành công",
                     color: {
                       header: "#dbf0dc",
                       body: "#41a446",
@@ -375,7 +375,7 @@ const AccessoryDetail = () => {
             dispatch(
               setToast({
                 show: true,
-                title: "Cập nhập linh kiện",
+                title: "Cập nhật linh kiện",
                 time: "just now",
                 content: error.data,
                 color: {
@@ -388,7 +388,7 @@ const AccessoryDetail = () => {
             dispatch(
               setToast({
                 show: true,
-                title: "Cập nhập linh kiện",
+                title: "Cập nhật linh kiện",
                 time: "just now",
                 content: "Đã xảy ra lỗi. Xin thử lại sau",
                 color: {

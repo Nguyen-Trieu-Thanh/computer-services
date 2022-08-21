@@ -110,8 +110,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
           setValidation({
             ...validation,
             username: {
-              message:
-                "Tên đăng nhập/Số điện thoại không được vượt quá 10 chữ số",
+              message: "Tên đăng nhập/Số điện thoại không được vượt quá 10 số",
               isInvalid: true,
               isValid: false,
             },
@@ -160,38 +159,61 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
   };
 
   const handleGetAccountByUsername = async () => {
-    if (staff.username.length <= 10) {
-      try {
-        await getAccountByUsername(staff.username)
-          .unwrap()
-          .then(async (res) => {
-            if (res) {
-              setValidation({
-                ...validation,
-                username: {
-                  message: "Tên đăng nhập/Số điện thoại đã được sử dụng",
-                  isInvalid: true,
-                  isValid: false,
-                },
-              });
-            } else {
-              setValidation({
-                ...validation,
-                username: {
-                  message: "",
-                  isInvalid: false,
-                  isValid: true,
-                },
-              });
-            }
-          });
-      } catch (error) {
-        if (error) {
-          if (error.data) {
+    if (staff.username === "") {
+      setValidation({
+        ...validation,
+        username: {
+          message: "Tên đăng nhập/Số điện thoại không được để trống",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    }
+
+    const phonenumRegex = /^(?:\d+|)$/;
+    if (!phonenumRegex.test(staff.username)) {
+      setValidation({
+        ...validation,
+        username: {
+          message: "Tên đăng nhập/Số điện thoại chỉ được chứa số",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    } else {
+      if (staff.username.length > 10) {
+        setValidation({
+          ...validation,
+          username: {
+            message: "Tên đăng nhập/Số điện thoại không được vượt quá 10 số",
+            isInvalid: true,
+            isValid: false,
+          },
+        });
+        return;
+      } else {
+        setValidation({
+          ...validation,
+          username: {
+            message: "",
+            isInvalid: false,
+            isValid: false,
+          },
+        });
+      }
+    }
+
+    try {
+      await getAccountByUsername(staff.username)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
             setValidation({
               ...validation,
               username: {
-                message: error.data,
+                message: "Tên đăng nhập/Số điện thoại đã được sử dụng",
                 isInvalid: true,
                 isValid: false,
               },
@@ -200,12 +222,33 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
             setValidation({
               ...validation,
               username: {
-                message: "Đã xảy ra lỗi. Xin thử lại sau",
-                isInvalid: true,
-                isValid: false,
+                message: "",
+                isInvalid: false,
+                isValid: true,
               },
             });
           }
+        });
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          setValidation({
+            ...validation,
+            username: {
+              message: error.data.message ? error.data.message : error.data,
+              isInvalid: true,
+              isValid: false,
+            },
+          });
+        } else {
+          setValidation({
+            ...validation,
+            username: {
+              message: "Đã xảy ra lỗi. Xin thử lại sau",
+              isInvalid: true,
+              isValid: false,
+            },
+          });
         }
       }
     }
@@ -218,7 +261,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
       setValidation({
         ...validation,
         username: {
-          message: "Tên đăng nhập không được để trống",
+          message: "Tên đăng nhập/Số điện thoại không được để trống",
           isInvalid: true,
           isValid: false,
         },
@@ -227,7 +270,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
     }
 
     if (!validation.username.isValid) {
-      if (validation.username.message !== "Tài khoản đã tồn tại") {
+      if (!validation.username.isInvalid) {
         setValidation({
           ...validation,
           username: {
@@ -285,9 +328,9 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
               dispatch(
                 setToast({
                   show: true,
-                  title: "Tạo nhân viên",
+                  title: "Đăng kí tài khoản nhân viên",
                   time: "just now",
-                  content: "Nhân viên được tạo thành công",
+                  content: "Tài khoản nhân viên được đăng kí thành công",
                   color: {
                     header: "#dbf0dc",
                     body: "#41a446",

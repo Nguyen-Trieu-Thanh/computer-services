@@ -37,13 +37,14 @@ const ScheduleForOrder = ({
   setUpdateOrderSlot,
   schedulesRefetch,
   schedulesIsFetching,
+  orderDetail,
+  isGetBookingByIdLoading,
+  bookingDetail,
 }) => {
   //Local state
-  const [startDate, setStartDate] = useState(
-    moment(schedule.date).format("YYYY-MM-DD")
-  );
+  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
   const [endDate, setEndDate] = useState(
-    moment(schedule.date).add("2", "days").format("YYYY-MM-DD")
+    moment().add("2", "days").format("YYYY-MM-DD")
   );
   const [datesInBetween, setDatesInBetween] = useState([]);
   const [selectedSchedule, setSelectedSchedule] = useState({
@@ -152,7 +153,7 @@ const ScheduleForOrder = ({
         work_slots: [],
       });
       setSelectedWorkSlotId("");
-      setEndDate(moment(schedule.date).add("2", "days").format("YYYY-MM-DD"));
+      // setEndDate(moment(schedule.date).add("2", "days").format("YYYY-MM-DD"));
       setSelectedSlotDetail({
         totalStaff: 0,
         freeStaff: 0,
@@ -170,8 +171,49 @@ const ScheduleForOrder = ({
   };
 
   useEffect(() => {
+    if (
+      orderDetail.status === "Đang chờ" &&
+      schedule.slot !== 0 &&
+      datesInBetween.find((x) =>
+        moment(x.date).isSameOrAfter(moment(schedule.date), "day")
+      )
+    ) {
+      if (
+        datesInBetween
+          .find((x) =>
+            moment(x.date).isSameOrAfter(moment(schedule.date), "day")
+          )
+          .slots.find((y) => y.slot === schedule.slot)
+          .work_slot.filter((y) => !y.order_id).length !== 0
+      ) {
+        setSchedule({
+          ...schedule,
+          work_slots: datesInBetween
+            .find((x) =>
+              moment(x.date).isSameOrAfter(moment(schedule.date), "day")
+            )
+            .slots.find((y) => y.slot === schedule.slot).work_slot,
+        });
+        setUpdateOrderSlot({
+          ...updateOrderSlot,
+          workSlotId: datesInBetween
+            .find((x) =>
+              moment(x.date).isSameOrAfter(moment(schedule.date), "day")
+            )
+            .slots.find((y) => y.slot === schedule.slot).work_slot[0]._id,
+        });
+      }
+    }
+  }, [schedule.slot]);
+
+  useEffect(() => {
     getDateInBetween();
   }, [startDate, endDate]);
+
+  useEffect(() => {
+    setStartDate(moment(schedule.date).format("YYYY-MM-DD"));
+    setEndDate(moment(schedule.date).add("2", "days").format("YYYY-MM-DD"));
+  }, [schedule.date]);
 
   return (
     <>

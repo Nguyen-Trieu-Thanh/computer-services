@@ -161,38 +161,61 @@ const CreateCustomer = ({
   };
 
   const handleGetAccountByUsername = async () => {
-    if (customer.username.length <= 10) {
-      try {
-        await getAccountByUsername(customer.username)
-          .unwrap()
-          .then(async (res) => {
-            if (res) {
-              setValidation({
-                ...validation,
-                username: {
-                  message: "Tên đăng nhập/Số điện thoại đã được sử dụng",
-                  isInvalid: true,
-                  isValid: false,
-                },
-              });
-            } else {
-              setValidation({
-                ...validation,
-                username: {
-                  message: "",
-                  isInvalid: false,
-                  isValid: true,
-                },
-              });
-            }
-          });
-      } catch (error) {
-        if (error) {
-          if (error.data) {
+    if (customer.username === "") {
+      setValidation({
+        ...validation,
+        username: {
+          message: "Tên đăng nhập/Số điện thoại không được để trống",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    }
+
+    const phonenumRegex = /^(?:\d+|)$/;
+    if (!phonenumRegex.test(customer.username)) {
+      setValidation({
+        ...validation,
+        username: {
+          message: "Tên đăng nhập/Số điện thoại chỉ được chứa số",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    } else {
+      if (customer.username.length > 10) {
+        setValidation({
+          ...validation,
+          username: {
+            message: "Tên đăng nhập/Số điện thoại không được vượt quá 10 số",
+            isInvalid: true,
+            isValid: false,
+          },
+        });
+        return;
+      } else {
+        setValidation({
+          ...validation,
+          username: {
+            message: "",
+            isInvalid: false,
+            isValid: false,
+          },
+        });
+      }
+    }
+
+    try {
+      await getAccountByUsername(customer.username)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
             setValidation({
               ...validation,
               username: {
-                message: error.data,
+                message: "Tên đăng nhập/Số điện thoại đã được sử dụng",
                 isInvalid: true,
                 isValid: false,
               },
@@ -201,12 +224,33 @@ const CreateCustomer = ({
             setValidation({
               ...validation,
               username: {
-                message: "Đã xảy ra lỗi. Xin thử lại sau",
-                isInvalid: true,
-                isValid: false,
+                message: "",
+                isInvalid: false,
+                isValid: true,
               },
             });
           }
+        });
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          setValidation({
+            ...validation,
+            username: {
+              message: error.data.message ? error.data.message : error.data,
+              isInvalid: true,
+              isValid: false,
+            },
+          });
+        } else {
+          setValidation({
+            ...validation,
+            username: {
+              message: "Đã xảy ra lỗi. Xin thử lại sau",
+              isInvalid: true,
+              isValid: false,
+            },
+          });
         }
       }
     }
@@ -219,7 +263,7 @@ const CreateCustomer = ({
       setValidation({
         ...validation,
         username: {
-          message: "Tên đăng nhập không được để trống",
+          message: "Tên đăng nhập/Số điện thoại không được để trống",
           isInvalid: true,
           isValid: false,
         },
@@ -228,7 +272,7 @@ const CreateCustomer = ({
     }
 
     if (!validation.username.isValid) {
-      if (validation.username.message !== "Tài khoản đã tồn tại") {
+      if (!validation.username.isInvalid) {
         setValidation({
           ...validation,
           username: {
@@ -286,9 +330,9 @@ const CreateCustomer = ({
               dispatch(
                 setToast({
                   show: true,
-                  title: "Tạo khách hàng",
+                  title: "Đăng kí tài khoản khách hàng",
                   time: "just now",
-                  content: "Khách hàng được tạo thành công",
+                  content: "Tài khoản khách hàng được đăng kí thành công",
                   color: {
                     header: "#dbf0dc",
                     body: "#41a446",

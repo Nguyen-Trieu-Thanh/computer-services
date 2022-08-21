@@ -113,8 +113,7 @@ const CreateManager = ({
           setValidation({
             ...validation,
             username: {
-              message:
-                "Tên đăng nhập/Số điện thoại không được vượt quá 10 chữ số",
+              message: "Tên đăng nhập/Số điện thoại không được vượt quá 10 số",
               isInvalid: true,
               isValid: false,
             },
@@ -149,38 +148,61 @@ const CreateManager = ({
   };
 
   const handleGetAccountByUsername = async () => {
-    if (manager.username.length <= 10) {
-      try {
-        await getAccountByUsername(manager.username)
-          .unwrap()
-          .then(async (res) => {
-            if (res) {
-              setValidation({
-                ...validation,
-                username: {
-                  message: "Tên đăng nhập/Số điện thoại đã được sử dụng",
-                  isInvalid: true,
-                  isValid: false,
-                },
-              });
-            } else {
-              setValidation({
-                ...validation,
-                username: {
-                  message: "",
-                  isInvalid: false,
-                  isValid: true,
-                },
-              });
-            }
-          });
-      } catch (error) {
-        if (error) {
-          if (error.data) {
+    if (manager.username === "") {
+      setValidation({
+        ...validation,
+        username: {
+          message: "Tên đăng nhập/Số điện thoại không được để trống",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    }
+
+    const phonenumRegex = /^(?:\d+|)$/;
+    if (!phonenumRegex.test(manager.username)) {
+      setValidation({
+        ...validation,
+        username: {
+          message: "Tên đăng nhập/Số điện thoại chỉ được chứa số",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    } else {
+      if (manager.username.length > 10) {
+        setValidation({
+          ...validation,
+          username: {
+            message: "Tên đăng nhập/Số điện thoại không được vượt quá 10 số",
+            isInvalid: true,
+            isValid: false,
+          },
+        });
+        return;
+      } else {
+        setValidation({
+          ...validation,
+          username: {
+            message: "",
+            isInvalid: false,
+            isValid: false,
+          },
+        });
+      }
+    }
+
+    try {
+      await getAccountByUsername(manager.username)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
             setValidation({
               ...validation,
               username: {
-                message: error.data,
+                message: "Tên đăng nhập/Số điện thoại đã được sử dụng",
                 isInvalid: true,
                 isValid: false,
               },
@@ -189,12 +211,33 @@ const CreateManager = ({
             setValidation({
               ...validation,
               username: {
-                message: "Đã xảy ra lỗi. Xin thử lại sau",
-                isInvalid: true,
-                isValid: false,
+                message: "",
+                isInvalid: false,
+                isValid: true,
               },
             });
           }
+        });
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          setValidation({
+            ...validation,
+            username: {
+              message: error.data.message ? error.data.message : error.data,
+              isInvalid: true,
+              isValid: false,
+            },
+          });
+        } else {
+          setValidation({
+            ...validation,
+            username: {
+              message: "Đã xảy ra lỗi. Xin thử lại sau",
+              isInvalid: true,
+              isValid: false,
+            },
+          });
         }
       }
     }
@@ -207,7 +250,7 @@ const CreateManager = ({
       setValidation({
         ...validation,
         username: {
-          message: "Tên đăng nhập không được để trống",
+          message: "Tên đăng nhập/Số điện thoại không được để trống",
           isInvalid: true,
           isValid: false,
         },
@@ -216,7 +259,7 @@ const CreateManager = ({
     }
 
     if (!validation.username.isValid) {
-      if (validation.username.message !== "Tài khoản đã tồn tại") {
+      if (!validation.username.isInvalid) {
         setValidation({
           ...validation,
           username: {
@@ -274,9 +317,9 @@ const CreateManager = ({
               dispatch(
                 setToast({
                   show: true,
-                  title: "Tạo quản lí",
+                  title: "Đăng kí tài khoản quản lí",
                   time: "just now",
-                  content: "Quản lí được tạo thành công",
+                  content: "Tài khoản quản lí được đăng kí thành công",
                   color: {
                     header: "#dbf0dc",
                     body: "#41a446",

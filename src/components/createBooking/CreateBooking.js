@@ -220,6 +220,17 @@ const CreateBooking = () => {
   };
 
   const handleGetAccountByUsername = async () => {
+    if (booking.phonenum === "") {
+      setValidation({
+        ...validation,
+        phonenum: {
+          message: "Số điện thoại không được để trống",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
     try {
       await getAccountByUsername(booking.phonenum)
         .unwrap()
@@ -255,7 +266,7 @@ const CreateBooking = () => {
           setValidation({
             ...validation,
             phonenum: {
-              message: error.data,
+              message: error.data.message ? error.data.message : error.data,
               isInvalid: true,
             },
           });
