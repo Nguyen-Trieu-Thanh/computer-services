@@ -25,6 +25,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "./ScheduleForOrder.css";
 
 const slots = [1, 2, 3, 4, 5, 6, 7, 8];
+const slotTimes = [
+  "08:00 - 09:30",
+  "09:30 - 11:00",
+  "11:00 - 12:30",
+  "12:30 - 14:00",
+  "14:00 - 15:30",
+  "15:30 - 17:00",
+  "17:00 - 18:30",
+  "18:30 - 20:00",
+];
 
 const ScheduleForOrder = ({
   showScheduleForOrder,
@@ -37,14 +47,13 @@ const ScheduleForOrder = ({
   setUpdateOrderSlot,
   schedulesRefetch,
   schedulesIsFetching,
-  orderDetail,
-  isGetBookingByIdLoading,
-  bookingDetail,
 }) => {
   //Local state
-  const [startDate, setStartDate] = useState(moment().format("YYYY-MM-DD"));
+  const [startDate, setStartDate] = useState(
+    moment(schedule.date).format("YYYY-MM-DD")
+  );
   const [endDate, setEndDate] = useState(
-    moment().add("2", "days").format("YYYY-MM-DD")
+    moment(schedule.date).add("2", "days").format("YYYY-MM-DD")
   );
   const [datesInBetween, setDatesInBetween] = useState([]);
   const [selectedSchedule, setSelectedSchedule] = useState({
@@ -171,42 +180,6 @@ const ScheduleForOrder = ({
   };
 
   useEffect(() => {
-    if (
-      orderDetail.status === "Đang chờ" &&
-      schedule.slot !== 0 &&
-      datesInBetween.find((x) =>
-        moment(x.date).isSameOrAfter(moment(schedule.date), "day")
-      )
-    ) {
-      if (
-        datesInBetween
-          .find((x) =>
-            moment(x.date).isSameOrAfter(moment(schedule.date), "day")
-          )
-          .slots.find((y) => y.slot === schedule.slot)
-          .work_slot.filter((y) => !y.order_id).length !== 0
-      ) {
-        setSchedule({
-          ...schedule,
-          work_slots: datesInBetween
-            .find((x) =>
-              moment(x.date).isSameOrAfter(moment(schedule.date), "day")
-            )
-            .slots.find((y) => y.slot === schedule.slot).work_slot,
-        });
-        setUpdateOrderSlot({
-          ...updateOrderSlot,
-          workSlotId: datesInBetween
-            .find((x) =>
-              moment(x.date).isSameOrAfter(moment(schedule.date), "day")
-            )
-            .slots.find((y) => y.slot === schedule.slot).work_slot[0]._id,
-        });
-      }
-    }
-  }, [schedule.slot]);
-
-  useEffect(() => {
     getDateInBetween();
   }, [startDate, endDate]);
 
@@ -330,10 +303,11 @@ const ScheduleForOrder = ({
                     <thead>
                       <tr>
                         <th className="date-th">Thời gian biểu</th>
-                        {slots.map((slot) => {
+                        {slots.map((slot, index) => {
                           return (
                             <th key={slot} className="slot-th">
-                              Slot {slot}
+                              Slot {slot} <br />
+                              {slotTimes[index]}
                             </th>
                           );
                         })}

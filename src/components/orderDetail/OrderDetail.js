@@ -36,7 +36,7 @@ import {
 } from "react-bootstrap";
 
 //Stepper
-import { Step, StepLabel, Stepper } from "@mui/material";
+import { Step, StepLabel, Stepper, Typography } from "@mui/material";
 
 //Momentjs
 import moment from "moment";
@@ -125,6 +125,7 @@ const OrderDetail = () => {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
@@ -315,42 +316,8 @@ const OrderDetail = () => {
     }
   };
 
-  const getOrderSlotFromBooking = () => {
-    if (moment(bookingDetail.time).isSameOrAfter(moment(), "day")) {
-      const time = moment(bookingDetail.time).format("Hmm");
-      if (time < 930) {
-        return 1;
-      }
-
-      if (time < 1100) {
-        return 2;
-      }
-
-      if (time < 1230) {
-        return 3;
-      }
-
-      if (time < 1400) {
-        return 4;
-      }
-
-      if (time < 1530) {
-        return 5;
-      }
-
-      if (time < 1700) {
-        return 6;
-      }
-
-      if (time < 1830) {
-        return 7;
-      }
-
-      if (time < 2000) {
-        return 8;
-      }
-    }
-    return 0;
+  const isStepFailed = (step) => {
+    return step === 5 && orderDetail.status === "Hủy";
   };
 
   useEffect(() => {
@@ -375,7 +342,6 @@ const OrderDetail = () => {
         setSchedule({
           ...schedule,
           date: moment(bookingDetail.time).format(),
-          slot: getOrderSlotFromBooking(),
         });
       } else {
         schedules.map((scheduleData, scheduleIndex) =>
@@ -402,7 +368,7 @@ const OrderDetail = () => {
         );
       }
     }
-  }, [isFetching, schedulesIsFetching, schedules]);
+  }, [isFetching, schedulesIsFetching, schedules, isGetBookingByIdLoading]);
 
   if (error) {
     return <Navigate to="/error" state={{ from: location }} replace />;
@@ -545,70 +511,6 @@ const OrderDetail = () => {
                   )}
                 </Row>
               </>
-              // <Row className="d-flex align-items-end">
-              //   <Col>
-              //     <Form.Label>Ngày thực hiện:</Form.Label>
-              //     <Form.Control
-              //       readOnly
-              //       value={moment(schedule.date).format("MM/DD/YYYY")}
-              //     />
-              //   </Col>
-              //   <Col>
-              //     <Form.Label>Slot:</Form.Label>
-              //     <Form.Control
-              //       readOnly
-              //       value={
-              //         schedule.slot === 0 ? "Xin hãy chọn slot" : schedule.slot
-              //       }
-              //     />
-              //   </Col>
-              //   <Col>
-              //     <Form.Label>Nhân viên:</Form.Label>
-              //     <Form.Control
-              //       disabled={
-              //         schedule.slot === 0 || orderDetail.status !== "Đang chờ"
-              //       }
-              //       as="select"
-              //       name="work_slot"
-              //       value={updateOrderSlot.workSlotId}
-              //       onChange={(e) => {
-              //         setUpdateOrderSlot({
-              //           ...updateOrderSlot,
-              //           workSlotId: e.target.value,
-              //         });
-              //       }}
-              //     >
-              //       {schedule.work_slots.map((work_slot, index) => {
-              //         return (
-              //           <option key={index} value={work_slot._id}>
-              //             {work_slot.staff_id.user_id.name}
-              //           </option>
-              //         );
-              //       })}
-              //     </Form.Control>
-              //   </Col>
-              //   <Col>
-              //     <Form.Label>Số điện thoại:</Form.Label>
-              //     <Form.Control
-              //       readOnly
-              //       defaultValue={
-              //         schedule.work_slots.find(
-              //           (y) => y._id === updateOrderSlot.workSlotId
-              //         )?.staff_id.user_id.phonenum
-              //       }
-              //     />
-              //   </Col>
-              //   {role === "manager" && (
-              //     <Col xs={1.5} className="d-flex flex-row-reverse">
-              //       <Button
-              //         disabled={orderDetail.work_slot}
-              //         onClick={() => setShowScheduleForOrder(true)}
-              //       >
-              //         Chọn ngày hẹn
-              //       </Button>
-              //     </Col>
-              //   )}
-              // </Row>
             )}
           </Card.Body>
           <Card.Body>
@@ -661,22 +563,24 @@ const OrderDetail = () => {
                                 : 0}
                             </td>
                             <td> {orderDetailData.service_id.price} VNĐ</td>
-                            <td>
-                              <div className="action-button-container">
-                                <Form.Check
-                                  disabled={
-                                    orderDetail.status !== "Chờ xác nhận" ||
-                                    role === "admin"
-                                  }
-                                  inline
-                                  value={orderDetailData._id}
-                                  checked={orderDetail.orderDetails_id
-                                    .map((x) => x._id)
-                                    .includes(orderDetailData._id)}
-                                  onChange={handleOrderDetails_idChange}
-                                />
-                              </div>
-                            </td>
+                            {role === "manager" && (
+                              <td>
+                                <div className="action-button-container">
+                                  <Form.Check
+                                    disabled={
+                                      orderDetail.status !== "Chờ xác nhận" ||
+                                      role === "admin"
+                                    }
+                                    inline
+                                    value={orderDetailData._id}
+                                    checked={orderDetail.orderDetails_id
+                                      .map((x) => x._id)
+                                      .includes(orderDetailData._id)}
+                                    onChange={handleOrderDetails_idChange}
+                                  />
+                                </div>
+                              </td>
+                            )}
                           </tr>
                         );
                       }
@@ -698,7 +602,7 @@ const OrderDetail = () => {
             </Row>
             <Row className="mt-2">
               <Col>
-                <Stepper
+                {/* <Stepper
                   activeStep={steps.findIndex(
                     (step) => step === orderDetail.status
                   )}
@@ -711,6 +615,54 @@ const OrderDetail = () => {
                       </Step>
                     );
                   })}
+                </Stepper> */}
+                <Stepper
+                  activeStep={
+                    orderDetail.status === "Hủy"
+                      ? 5
+                      : steps.findIndex((step) => step === orderDetail.status)
+                  }
+                  alternativeLabel
+                >
+                  {steps.map((step, index) => {
+                    const labelProps = {};
+                    if (isStepFailed(index)) {
+                      labelProps.error = true;
+                    }
+                    return orderDetail.status === "Hoàn thành" ||
+                      orderDetail.status === "Hủy" ? (
+                      <Step
+                        key={index}
+                        completed={
+                          orderDetail.status === "Hoàn thành" ||
+                          orderDetail.status === "Hủy"
+                        }
+                      >
+                        <StepLabel {...labelProps}>
+                          {index === 5 && orderDetail.status === "Hủy"
+                            ? "Hủy"
+                            : step}
+                        </StepLabel>
+                      </Step>
+                    ) : (
+                      <Step key={index}>
+                        <StepLabel {...labelProps}>{step}</StepLabel>
+                      </Step>
+                    );
+                    // <Step
+                    //   key={index}
+                    //   completed={
+                    //     orderDetail.status === "Hoàn thành" ||
+                    //     orderDetail.status === "Hủy"
+                    //   }
+                    // >
+                    //   <StepLabel {...labelProps}>
+                    //     {index === 5 && orderDetail.status === "Hủy"
+                    //       ? "Hủy"
+                    //       : step}
+                    //   </StepLabel>
+                    // </Step>
+                  })}
                 </Stepper>
               </Col>
             </Row>
@@ -719,17 +671,32 @@ const OrderDetail = () => {
             <Card.Footer>
               <Row>
                 <Col className="d-flex flex-row-reverse">
-                  <Button
-                    disabled={checkIsUpdateDisabled()}
-                    className="confirm-button"
-                    onClick={handleUpdateOrder}
-                  >
-                    {isLoading || isUpdateOrderByIdLoading ? (
-                      <Spinner animation="border" />
-                    ) : (
-                      "Cập nhật"
-                    )}
-                  </Button>
+                  {orderDetail.status === "Hủy" ? (
+                    <Button
+                      disabled={isFetching || isGetBookingByIdLoading}
+                      onClick={() => {
+                        navigate("/create-booking", {
+                          state: {
+                            bookingDetailFromOrder: bookingDetail,
+                          },
+                        });
+                      }}
+                    >
+                      Tạo lịch hẹn mới
+                    </Button>
+                  ) : (
+                    <Button
+                      disabled={checkIsUpdateDisabled()}
+                      className="confirm-button"
+                      onClick={handleUpdateOrder}
+                    >
+                      {isLoading || isUpdateOrderByIdLoading ? (
+                        <Spinner animation="border" />
+                      ) : (
+                        "Cập nhật"
+                      )}
+                    </Button>
+                  )}
                 </Col>
               </Row>
             </Card.Footer>
@@ -779,7 +746,7 @@ const OrderDetail = () => {
                       <th>Số lượng</th>
                       <th>Thời hạn bảo hành</th>
                       <th>Nhà cung cấp</th>
-                      <th>Hành động</th>
+                      {role === "manager" && <th>Hành động</th>}
                     </tr>
                   </thead>
                   <tbody>
@@ -793,36 +760,38 @@ const OrderDetail = () => {
                             <td>{accessory.amount_acc}</td>
                             <td>{accessory.accessory_id.insurance}</td>
                             <td>{accessory.accessory_id.supplier_id.name}</td>
-                            <td>
-                              <OverlayTrigger
-                                placement="bottom"
-                                delay={{ show: 200, hide: 100 }}
-                                overlay={
-                                  <Tooltip
-                                    className="accessory-edit-button"
-                                    id="edit-button-tooltip"
-                                  >
-                                    Chi tiết
-                                  </Tooltip>
-                                }
-                              >
-                                <Button
-                                  variant="primary"
-                                  onClick={() => {
-                                    window.open(
-                                      "/accessory-detail/" +
-                                        accessory.accessory_id._id,
-                                      "_blank"
-                                    );
-                                  }}
+                            {role === "manager" && (
+                              <td>
+                                <OverlayTrigger
+                                  placement="bottom"
+                                  delay={{ show: 200, hide: 100 }}
+                                  overlay={
+                                    <Tooltip
+                                      className="accessory-edit-button"
+                                      id="edit-button-tooltip"
+                                    >
+                                      Xem chi tiết
+                                    </Tooltip>
+                                  }
                                 >
-                                  <FontAwesomeIcon
-                                    icon={faPenToSquare}
-                                    color="#ffffff"
-                                  />
-                                </Button>
-                              </OverlayTrigger>
-                            </td>
+                                  <Button
+                                    variant="primary"
+                                    onClick={() => {
+                                      window.open(
+                                        "/accessory-detail/" +
+                                          accessory.accessory_id._id,
+                                        "_blank"
+                                      );
+                                    }}
+                                  >
+                                    <FontAwesomeIcon
+                                      icon={faPenToSquare}
+                                      color="#ffffff"
+                                    />
+                                  </Button>
+                                </OverlayTrigger>
+                              </td>
+                            )}
                           </tr>
                         );
                       }
@@ -855,9 +824,6 @@ const OrderDetail = () => {
         setUpdateOrderSlot={setUpdateOrderSlot}
         schedulesRefetch={schedulesRefetch}
         schedulesIsFetching={schedulesIsFetching}
-        orderDetail={orderDetail}
-        isGetBookingByIdLoading={isGetBookingByIdLoading}
-        bookingDetail={bookingDetail}
       />
     </>
   );

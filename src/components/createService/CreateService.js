@@ -144,6 +144,17 @@ const CreateService = () => {
       return;
     }
 
+    if (service.name.trim() !== service.name) {
+      setValidation({
+        ...validation,
+        name: {
+          message: "Tên dịch vụ không hợp lệ",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
     if (service.price === "") {
       setValidation({
         ...validation,

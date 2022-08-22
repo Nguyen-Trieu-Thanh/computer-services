@@ -24,7 +24,6 @@ import moment from "moment";
 import "./ConfirmCreateBooking.css";
 
 const ConfirmCreateBooking = ({
-  setShowCreateBooking,
   booking,
   setBooking,
   setIsRefetch,
@@ -40,7 +39,6 @@ const ConfirmCreateBooking = ({
 
   const handleClose = () => {
     setShowConfirmCreateBooking(false);
-    setShowCreateBooking(true);
   };
 
   // const address =
@@ -208,6 +206,12 @@ const ConfirmCreateBooking = ({
                   <p>{moment(booking.time).format("MM/DD/YYYY")}</p>
                 </Form.Group>
               </Col>
+              <Col>
+                <Form.Group controlId="formConfirmCreateBookingCustomerSlot">
+                  <Form.Label>Giờ hẹn:</Form.Label>
+                  <p>{moment(booking.time).format("HH:mm")}</p>
+                </Form.Group>
+              </Col>
             </Row>
             <Row>
               <Col>
@@ -270,6 +274,7 @@ const ConfirmCreateBooking = ({
             Quay lại
           </Button>
           <Button
+            disabled={isLoading}
             type="submit"
             variant="primary"
             onClick={handleConfirmBookingSubmit}

@@ -21,7 +21,11 @@ import {
 } from "react-bootstrap";
 
 //Icons
-import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faPlus,
+  faArrowRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Components
@@ -52,6 +56,7 @@ const ManageManager = () => {
   const [showCreateManager, setShowCreateManager] = useState(false);
   const [showManagerDetail, setShowManagerDetail] = useState(false);
   const [managerDetail, setManagerDetail] = useState({
+    username: "",
     name: "",
     role: "",
     birth: "",
@@ -105,8 +110,6 @@ const ManageManager = () => {
     refetch();
   };
 
-  console.log(managers);
-
   useEffect(() => {
     if (!isFetching) {
       if (sort === "asc") {
@@ -131,7 +134,7 @@ const ManageManager = () => {
             </Col>
           </Row>
           <Row className="d-flex align-items-end">
-            <Col>
+            <Col xs={6}>
               <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
                 <Form.Control
@@ -166,8 +169,24 @@ const ManageManager = () => {
                 <option value="desc">Mới đến cũ</option>
               </Form.Control>
             </Col>
+            <Col xs={2}>
+              <Button
+                disabled={isFetching}
+                style={{ width: "100%" }}
+                variant="dark"
+                onClick={() => {
+                  refetch();
+                }}
+              >
+                Tải lại dữ liệu{" "}
+                <FontAwesomeIcon icon={faArrowRotateRight} color="" />
+              </Button>
+            </Col>
+          </Row>
+          <Row className="d-flex justify-content-end mt-2">
             <Col xs={2} className="button-container">
               <Button
+                style={{ width: "100%" }}
                 variant="primary"
                 onClick={() => {
                   setShowCreateManager(true);
@@ -219,7 +238,7 @@ const ManageManager = () => {
                                       className="manager-edit-button"
                                       id="edit-button-tooltip"
                                     >
-                                      Chi tiết
+                                      Xem chi tiết
                                     </Tooltip>
                                   }
                                 >
@@ -227,6 +246,7 @@ const ManageManager = () => {
                                     variant="primary"
                                     onClick={() => {
                                       setManagerDetail({
+                                        username: manager.username,
                                         name: manager.user_id?.name,
                                         role: manager.role,
                                         birth: moment(

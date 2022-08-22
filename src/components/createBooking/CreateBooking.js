@@ -24,8 +24,11 @@ import districts from "../../datas/HoChiMinhCityDistricts";
 //Components
 import ConfirmCreateBooking from "../confirmCreateBooking/ConfirmCreateBooking";
 
+import { useLocation } from "react-router-dom";
+
 //CSS
 import "./CreateBooking.css";
+import { useEffect } from "react";
 
 const CreateBooking = () => {
   const [getAccountByUsername, { isLoading }] =
@@ -50,12 +53,24 @@ const CreateBooking = () => {
       ward: "Phường Tân Định",
       street: "",
     },
-    time: moment().format(),
+    time: moment()
+      .set({
+        hour: 8,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      })
+      .format(),
     status: "Đã tiếp nhận",
     phonenum: "",
   });
   const [validation, setValidation] = useState({
     phonenum: {
+      message: "",
+      isInvalid: false,
+      isValid: false,
+    },
+    cus_name: {
       message: "",
       isInvalid: false,
     },
@@ -74,50 +89,93 @@ const CreateBooking = () => {
   });
   const [showConfirmCreateBooking, setShowConfirmCreateBooking] =
     useState(false);
+  const [slot, setSlot] = useState(1);
+
+  const { state } = useLocation();
 
   const handleCreateBookingChange = (e) => {
     const name = e.target.name;
     const value = e.target.value;
 
     if (name === "phonenum") {
-      const phonenumRegex = /^(?:\d+|)$/;
-
-      if (!phonenumRegex.test(value)) {
+      if (value === "") {
         setBooking({ ...booking, [name]: value });
         setValidation({
           ...validation,
           phonenum: {
-            message: "Số điện thoại chỉ được chứa số",
+            message: "Số điện thoại không được để trống",
+            isInvalid: true,
+            isValid: false,
+          },
+        });
+        return;
+      } else {
+        const phonenumRegex = /^(?:\d+|)$/;
+        if (!phonenumRegex.test(value)) {
+          setBooking({ ...booking, [name]: value });
+          setValidation({
+            ...validation,
+            phonenum: {
+              message: "Số điện thoại chỉ được chứa số",
+              isInvalid: true,
+              isValid: false,
+            },
+          });
+          return;
+        } else {
+          if (value.length > 10) {
+            setBooking({ ...booking, [name]: value });
+            setValidation({
+              ...validation,
+              phonenum: {
+                message: "Số điện thoại không được vượt quá 10 số",
+                isInvalid: true,
+                isValid: false,
+              },
+            });
+            return;
+          } else {
+            setBooking({
+              ...booking,
+              [name]: value,
+            });
+            setValidation({
+              ...validation,
+              phonenum: {
+                message: "",
+                isInvalid: false,
+                isValid: false,
+              },
+            });
+          }
+        }
+      }
+      return;
+    }
+
+    if (name === "cus_name") {
+      const nameRegex =
+        /^[A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*(?:[ ][A-ZÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ][a-zàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđ]*)*$/;
+      if (value !== "" && !nameRegex.test(value)) {
+        setBooking({ ...booking, [name]: value });
+        setValidation({
+          ...validation,
+          cus_name: {
+            message: "Họ và tên khách hàng không hợp lệ",
             isInvalid: true,
           },
         });
         return;
       } else {
-        if (value.length > 10) {
-          setBooking({ ...booking, [name]: value });
-          setValidation({
-            ...validation,
-            phonenum: {
-              message: "Số điện thoại không được vượt quá 10 số",
-              isInvalid: true,
-            },
-          });
-          return;
-        } else {
-          setBooking({
-            ...booking,
-            [name]: value,
-          });
-          setValidation({
-            ...validation,
-            phonenum: {
-              message: "",
-              isInvalid: false,
-            },
-          });
-        }
+        setBooking({ ...booking, [name]: value });
+        setValidation({
+          ...validation,
+          cus_name: {
+            message: "",
+            isInvalid: false,
+          },
+        });
       }
-      return;
     }
 
     if (name === "description") {
@@ -145,24 +203,366 @@ const CreateBooking = () => {
 
     if (name === "time") {
       if (moment(value).isBefore(moment().format("YYYY-MM-DD"))) {
-        setBooking({ ...booking, [name]: moment(value).format() });
-        setValidation({
-          ...validation,
-          time: {
-            message: "Ngày không được nhỏ hơn ngày hôm nay",
-            isInvalid: true,
-          },
-        });
+        if (slot == 1) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 8,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (slot == 2) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 9,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (slot == 3) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 11,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (slot == 4) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 12,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (slot == 5) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 14,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (slot == 6) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 15,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (slot == 7) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 17,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (slot == 8) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 18,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
         return;
       } else {
-        setBooking({ ...booking, [name]: moment(value).format() });
-        setValidation({
-          ...validation,
-          time: {
-            message: "",
-            isInvalid: false,
-          },
-        });
+        if (slot == 1) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 8,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
+
+        if (slot == 2) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 9,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
+
+        if (slot == 3) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 11,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
+
+        if (slot == 4) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 12,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
+
+        if (slot == 5) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 14,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
+
+        if (slot == 6) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 15,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
+
+        if (slot == 7) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 17,
+                minute: 0,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
+
+        if (slot == 8) {
+          setBooking({
+            ...booking,
+            time: moment(value)
+              .set({
+                hour: 18,
+                minute: 30,
+                second: 0,
+                millisecond: 0,
+              })
+              .format(),
+          });
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+          });
+          return;
+        }
       }
     }
   };
@@ -226,9 +626,44 @@ const CreateBooking = () => {
         phonenum: {
           message: "Số điện thoại không được để trống",
           isInvalid: true,
+          isValid: false,
         },
       });
       return;
+    }
+
+    const phonenumRegex = /^(?:\d+|)$/;
+    if (!phonenumRegex.test(booking.phonenum)) {
+      setValidation({
+        ...validation,
+        phonenum: {
+          message: "Số điện thoại chỉ được chứa số",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    } else {
+      if (booking.phonenum.length > 10) {
+        setValidation({
+          ...validation,
+          phonenum: {
+            message: "Số điện thoại không được vượt quá 10 số",
+            isInvalid: true,
+            isValid: false,
+          },
+        });
+        return;
+      } else {
+        setValidation({
+          ...validation,
+          phonenum: {
+            message: "",
+            isInvalid: false,
+            isValid: false,
+          },
+        });
+      }
     }
 
     try {
@@ -239,11 +674,17 @@ const CreateBooking = () => {
             setBooking({
               ...booking,
               acc_id: res._id,
-              cus_name: res.user_id?.name,
+              cus_name:
+                booking.cus_name === "" ? res.user_id?.name : booking.cus_name,
             });
             setValidation({
               ...validation,
               phonenum: {
+                message: "",
+                isInvalid: false,
+                isValid: true,
+              },
+              cus_name: {
                 message: "",
                 isInvalid: false,
               },
@@ -255,6 +696,7 @@ const CreateBooking = () => {
               phonenum: {
                 message: "Tài khoản không tồn tại",
                 isInvalid: true,
+                isValid: false,
               },
             });
           }
@@ -268,6 +710,7 @@ const CreateBooking = () => {
             phonenum: {
               message: error.data.message ? error.data.message : error.data,
               isInvalid: true,
+              isValid: false,
             },
           });
         } else {
@@ -277,6 +720,7 @@ const CreateBooking = () => {
             phonenum: {
               message: "Đã xảy ra lỗi. Xin thử lại sau",
               isInvalid: true,
+              isValid: false,
             },
           });
         }
@@ -320,33 +764,46 @@ const CreateBooking = () => {
         phonenum: {
           message: "Số điện thoại không được để trống",
           isInvalid: true,
+          isValid: false,
         },
       });
       return;
     }
 
-    if (booking.cus_name === "") {
-      if (
-        validation.phonenum.isInvalid &&
-        validation.phonenum.message === "Tài khoản không tồn tại"
-      ) {
-        setValidation({
-          ...validation,
-          phonenum: {
-            message: "Xin hãy nhập số điện thoại đúng",
-            isInvalid: true,
-          },
-        });
-        return;
-      } else {
+    if (!validation.phonenum.isValid) {
+      if (!validation.phonenum.isInvalid) {
         setValidation({
           ...validation,
           phonenum: {
             message: "Xin hãy kiểm tra số điện thoại",
             isInvalid: true,
+            isValid: false,
           },
         });
       }
+      return;
+    }
+
+    if (booking.cus_name === "") {
+      setValidation({
+        ...validation,
+        cus_name: {
+          message: "Họ và tên khách hàng không được để trống",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    }
+
+    if (booking.time === "Invalid date") {
+      setValidation({
+        ...validation,
+        time: {
+          message: "Xin hãy chọn ngày",
+          isInvalid: true,
+        },
+      });
       return;
     }
 
@@ -362,7 +819,9 @@ const CreateBooking = () => {
     }
 
     if (
+      validation.phonenum.isValid &&
       !validation.phonenum.isInvalid &&
+      !validation.cus_name.isInvalid &&
       !validation.description.isInvalid &&
       !validation.time.isInvalid &&
       !validation.street.isInvalid
@@ -371,6 +830,160 @@ const CreateBooking = () => {
       return;
     }
   };
+
+  const handleSlotChange = (e) => {
+    const value = e.target.value;
+
+    if (value == 1) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 8,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+
+    if (value == 2) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 9,
+            minute: 30,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+
+    if (value == 3) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 11,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+
+    if (value == 4) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 12,
+            minute: 30,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+
+    if (value == 5) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 14,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+
+    if (value == 6) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 15,
+            minute: 30,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+
+    if (value == 7) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 17,
+            minute: 0,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+
+    if (value == 8) {
+      setBooking({
+        ...booking,
+        time: moment(booking.time)
+          .set({
+            hour: 18,
+            minute: 30,
+            second: 0,
+            millisecond: 0,
+          })
+          .format(),
+      });
+      setSlot(value);
+      return;
+    }
+  };
+
+  useEffect(() => {
+    if (state) {
+      const { bookingDetailFromOrder } = state;
+      setBooking({
+        acc_id: bookingDetailFromOrder.acc_id._id,
+        cus_name: bookingDetailFromOrder.cus_name,
+        services: [...bookingDetailFromOrder.services],
+        description: bookingDetailFromOrder.description,
+        type: "Sửa tại nhà",
+        cus_address: {
+          city: "Thành phố Hồ Chí Minh",
+          district: bookingDetailFromOrder.cus_address.district,
+          ward: bookingDetailFromOrder.cus_address.ward,
+          street: bookingDetailFromOrder.cus_address.street,
+        },
+        time: moment().format(),
+        status: "Đã tiếp nhận",
+        phonenum: bookingDetailFromOrder.phonenum,
+      });
+    }
+  }, [state]);
 
   if (isServiceFetching) {
     return (
@@ -401,6 +1014,7 @@ const CreateBooking = () => {
                     <InputGroup>
                       <Form.Control
                         isInvalid={validation.phonenum.isInvalid}
+                        isValid={validation.phonenum.isValid}
                         type="text"
                         name="phonenum"
                         value={booking.phonenum}
@@ -419,9 +1033,16 @@ const CreateBooking = () => {
                           )}
                         </Button>
                       </InputGroup.Append>
-                      <Form.Control.Feedback type="invalid">
-                        {validation.phonenum.message}
-                      </Form.Control.Feedback>
+                      {validation.phonenum.isInvalid && (
+                        <Form.Control.Feedback type="invalid">
+                          {validation.phonenum.message}
+                        </Form.Control.Feedback>
+                      )}
+                      {validation.phonenum.isValid && (
+                        <Form.Control.Feedback>
+                          Kiểm tra thành công
+                        </Form.Control.Feedback>
+                      )}
                     </InputGroup>
                   </Form.Group>
                 </Col>
@@ -429,19 +1050,23 @@ const CreateBooking = () => {
                   <Form.Group controlId="formCreateBookingCustomerName">
                     <Form.Label>Họ và tên khách hàng:</Form.Label>
                     <Form.Control
-                      readOnly
+                      // readOnly
+                      isInvalid={validation.cus_name.isInvalid}
                       type="text"
                       name="cus_name"
                       value={booking.cus_name}
                       onChange={handleCreateBookingChange}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {validation.cus_name.message}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
                 <Col>
                   <Form.Group controlId="formCreateBookingTime">
                     <Form.Label>Ngày hẹn:</Form.Label>
                     <Form.Control
-                      disabled
+                      // disabled
                       isInvalid={validation.time.isInvalid}
                       type="date"
                       name="time"
@@ -451,6 +1076,25 @@ const CreateBooking = () => {
                     <Form.Control.Feedback type="invalid">
                       {validation.time.message}
                     </Form.Control.Feedback>
+                  </Form.Group>
+                </Col>
+                <Col>
+                  <Form.Group controlId="formCreateBookingSlot">
+                    <Form.Label>Slot hẹn:</Form.Label>
+                    <Form.Control
+                      as="select"
+                      value={slot}
+                      onChange={handleSlotChange}
+                    >
+                      <option>1</option>
+                      <option>2</option>
+                      <option>3</option>
+                      <option>4</option>
+                      <option>5</option>
+                      <option>6</option>
+                      <option>7</option>
+                      <option>8</option>
+                    </Form.Control>
                   </Form.Group>
                 </Col>
               </Row>

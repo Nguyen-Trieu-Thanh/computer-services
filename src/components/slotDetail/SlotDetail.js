@@ -51,6 +51,8 @@ const SlotDetail = ({ slotDetail, showSlotDetail, setShowSlotDetail }) => {
                 <th>#</th>
                 <th>Tên nhân viên</th>
                 <th>Số điện thoại</th>
+                <th>Email</th>
+                <th>Đơn hàng ở slot này</th>
                 <th>Hành động</th>
               </tr>
             </thead>
@@ -61,6 +63,23 @@ const SlotDetail = ({ slotDetail, showSlotDetail, setShowSlotDetail }) => {
                     <td>{index + 1}</td>
                     <td>{work_slot.staff_id.user_id.name}</td>
                     <td>{work_slot.staff_id.user_id.phonenum}</td>
+                    <td>{work_slot.staff_id.user_id.email}</td>
+                    {work_slot.order_id ? (
+                      <td
+                        className="td-have-order"
+                        onClick={() => {
+                          window.open(
+                            "/order-detail/" + work_slot.order_id,
+                            "_blank"
+                          );
+                        }}
+                      >
+                        Xem đơn hàng
+                      </td>
+                    ) : (
+                      <td className="td-dont-have-order">Không có</td>
+                    )}
+
                     <td>
                       <div className="action-button-container">
                         <OverlayTrigger
@@ -71,7 +90,7 @@ const SlotDetail = ({ slotDetail, showSlotDetail, setShowSlotDetail }) => {
                               className="staff-edit-button"
                               id="edit-button-tooltip"
                             >
-                              Chi tiết
+                              Xem chi tiết
                             </Tooltip>
                           }
                         >

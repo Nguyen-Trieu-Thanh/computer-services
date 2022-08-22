@@ -112,7 +112,7 @@
 }
 
 .schedule-for-order .modal-content-container .modal-body-container .date-th {
-  width: 10%;
+  vertical-align: middle;
 }
 
 .schedule-for-order .modal-content-container .modal-body-container .slot-th {

@@ -9,6 +9,9 @@ import {
 import { Navigate, useLocation } from "react-router-dom";
 import useRefreshToken from "../hooks/useRefreshToken";
 
+//React-bootstrap
+import { Spinner } from "react-bootstrap";
+
 //JWT-decode
 import jwt_decode from "jwt-decode";
 
@@ -50,7 +53,16 @@ const RememberMeLogin = ({ children }) => {
   }, []);
 
   return isRefreshLoading ? (
-    <p>Loading...</p>
+    <div
+      style={{
+        width: "100%",
+        padding: "10px 0 0 0",
+        textAlign: "center",
+      }}
+    >
+      <Spinner animation="border" />
+      <div style={{ fontSize: "30px" }}>Đang tải trang...</div>
+    </div>
   ) : token ? (
     rememberMe ? (
       <Navigate to="/dashboard" state={{ from: location }} replace />

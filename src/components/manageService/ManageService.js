@@ -28,7 +28,11 @@ import {
 import ServiceDetail from "../serviceDetail/ServiceDetail";
 
 //Icons
-import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faPlus,
+  faArrowRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //momentjs
@@ -123,7 +127,7 @@ const ManageService = () => {
             </Col>
           </Row>
           <Row className="d-flex align-items-end">
-            <Col>
+            <Col xs={6}>
               <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
                 <Form.Control
@@ -158,8 +162,24 @@ const ManageService = () => {
                 <option value="desc">Mới đến cũ</option>
               </Form.Control>
             </Col>
-            <Col xs={2} className="button-container">
+            <Col xs={2}>
               <Button
+                disabled={isFetching}
+                style={{ width: "100%" }}
+                variant="dark"
+                onClick={() => {
+                  refetch();
+                }}
+              >
+                Tải lại dữ liệu{" "}
+                <FontAwesomeIcon icon={faArrowRotateRight} color="" />
+              </Button>
+            </Col>
+          </Row>
+          <Row className="d-flex justify-content-end mt-2">
+            <Col xs={2}>
+              <Button
+                style={{ width: "100%" }}
                 variant="primary"
                 onClick={() => {
                   navigate("/create-service");
@@ -208,7 +228,7 @@ const ManageService = () => {
                                     className="service-edit-button"
                                     id="edit-button-tooltip"
                                   >
-                                    Chi tiết
+                                    Xem chi tiết
                                   </Tooltip>
                                 }
                               >

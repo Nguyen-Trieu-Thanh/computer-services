@@ -205,7 +205,7 @@ const CustomChart = () => {
                     getDatesInBetween(7);
                   }}
                 >
-                  7 ngày
+                  7 ngày trước
                 </ListGroup.Item>
                 <ListGroup.Item
                   className="date-item"
@@ -215,7 +215,7 @@ const CustomChart = () => {
                     getDatesInBetween(14);
                   }}
                 >
-                  14 ngày
+                  14 ngày trước
                 </ListGroup.Item>
                 <ListGroup.Item
                   className="date-item"
@@ -225,7 +225,7 @@ const CustomChart = () => {
                     getDatesInBetween(30);
                   }}
                 >
-                  30 ngày
+                  30 ngày trước
                 </ListGroup.Item>
                 <ListGroup.Item
                   className="date-item"
@@ -235,7 +235,7 @@ const CustomChart = () => {
                     getMonthsInBetween(6);
                   }}
                 >
-                  6 tháng
+                  6 tháng trước
                 </ListGroup.Item>
                 <ListGroup.Item
                   className="date-item"
@@ -245,7 +245,7 @@ const CustomChart = () => {
                     getMonthsInBetween(9);
                   }}
                 >
-                  9 tháng
+                  9 tháng trước
                 </ListGroup.Item>
                 <ListGroup.Item
                   className="date-item"
@@ -255,7 +255,7 @@ const CustomChart = () => {
                     getMonthsInBetween(12);
                   }}
                 >
-                  12 tháng
+                  12 tháng trước
                 </ListGroup.Item>
               </ListGroup>
             </Col>

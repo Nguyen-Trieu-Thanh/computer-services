@@ -24,7 +24,11 @@ import {
 } from "react-bootstrap";
 
 //Icons
-import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faPlus,
+  faArrowRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Components
@@ -114,8 +118,8 @@ const ManageCustomer = () => {
               <Card.Title>Danh sách khách hàng</Card.Title>
             </Col>
           </Row>
-          <Row className="d-flex align-items-end">
-            <Col>
+          <Row className="d-flex align-items-end justify-content-between">
+            <Col xs={6}>
               <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
                 <Form.Control
@@ -150,9 +154,26 @@ const ManageCustomer = () => {
                 <option value="desc">Mới đến cũ</option>
               </Form.Control>
             </Col>
-            {role === "manager" && (
-              <Col xs={2} className="button-container">
+            <Col xs={2}>
+              <Button
+                disabled={isFetching}
+                style={{ width: "100%" }}
+                variant="dark"
+                onClick={() => {
+                  refetch();
+                }}
+              >
+                Tải lại dữ liệu{" "}
+                <FontAwesomeIcon icon={faArrowRotateRight} color="" />
+              </Button>
+            </Col>
+          </Row>
+
+          {role === "manager" && (
+            <Row className="d-flex justify-content-end mt-2">
+              <Col xs={2}>
                 <Button
+                  style={{ width: "100%" }}
                   variant="primary"
                   onClick={() => {
                     setShowCreateCustomer(true);
@@ -161,8 +182,8 @@ const ManageCustomer = () => {
                   Thêm tài khoản <FontAwesomeIcon icon={faPlus} color="" />
                 </Button>
               </Col>
-            )}
-          </Row>
+            </Row>
+          )}
           <Row className="mt-2">
             <Col className="table-container">
               {isFetching ? (
@@ -205,7 +226,7 @@ const ManageCustomer = () => {
                                       className="customer-edit-button"
                                       id="edit-button-tooltip"
                                     >
-                                      Chi tiết
+                                      Xem chi tiết
                                     </Tooltip>
                                   }
                                 >

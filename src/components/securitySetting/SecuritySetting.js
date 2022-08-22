@@ -73,6 +73,10 @@ const SecuritySetting = () => {
       setSecurity({ ...security, [name]: value });
       setValidation({
         ...validation,
+        newPassword: {
+          message: "",
+          isInvalid: false,
+        },
         confirmNewPassword: {
           message: "",
           isInvalid: false,
@@ -318,6 +322,7 @@ const SecuritySetting = () => {
                 <Row>
                   <Col>
                     <Button
+                      disabled={isLoading}
                       className="form-button"
                       variant="primary"
                       type="submit"

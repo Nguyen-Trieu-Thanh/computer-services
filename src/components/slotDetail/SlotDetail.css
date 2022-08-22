@@ -24,6 +24,28 @@
   vertical-align: middle;
 }
 
+.slot-detail
+  .modal-content-container
+  .modal-body-container
+  .td-dont-have-order {
+  color: red;
+}
+
+.slot-detail .modal-content-container .modal-body-container .td-have-order {
+  cursor: pointer;
+  color: blue;
+}
+
+.slot-detail
+  .modal-content-container
+  .modal-body-container
+  .td-have-order:hover {
+  /* background-color: #d9d9d9; */
+  font-size: 18px;
+  font-weight: 500;
+
+}
+
 .slot-detail .modal-content-container .modal-body-container .form-label {
   font-size: 18px;
   font-weight: 700;
@@ -31,7 +53,6 @@
 
 .slot-detail .modal-content-container button {
   /* width: 15%; */
-  
 }
 
 .slot-detail .modal-content-container button .spinner-border {

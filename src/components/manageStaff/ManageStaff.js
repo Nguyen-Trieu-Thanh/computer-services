@@ -34,6 +34,7 @@ import {
   faPenToSquare,
   faPlus,
   faTrash,
+  faArrowRotateRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -124,7 +125,7 @@ const ManageStaff = () => {
             </Col>
           </Row>
           <Row className="d-flex align-items-end">
-            <Col>
+            <Col xs={6}>
               <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
                 <Form.Control
@@ -159,8 +160,24 @@ const ManageStaff = () => {
                 <option value="desc">Mới đến cũ</option>
               </Form.Control>
             </Col>
-            <Col xs={2} className="button-container">
+            <Col xs={2}>
               <Button
+                disabled={isFetching}
+                style={{ width: "100%" }}
+                variant="dark"
+                onClick={() => {
+                  refetch();
+                }}
+              >
+                Tải lại dữ liệu{" "}
+                <FontAwesomeIcon icon={faArrowRotateRight} color="" />
+              </Button>
+            </Col>
+          </Row>
+          <Row className="d-flex justify-content-end mt-2">
+            <Col xs={2}>
+              <Button
+                style={{ width: "100%" }}
                 onClick={() => {
                   setShowCreateStaff(true);
                 }}
@@ -211,7 +228,7 @@ const ManageStaff = () => {
                                       className="staff-edit-button"
                                       id="edit-button-tooltip"
                                     >
-                                      Chi tiết
+                                      Xem chi tiết
                                     </Tooltip>
                                   }
                                 >

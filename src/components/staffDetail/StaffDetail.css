@@ -64,11 +64,11 @@
 }
 
 .staff-detail-container .table-container .date-th {
-  width: 11%;
+  vertical-align: middle;
 }
 
 .staff-detail-container .table-container .slot-th {
-  width: 11.125%;
+  width: 11.25%;
 }
 
 .staff-detail-container .table-container td {

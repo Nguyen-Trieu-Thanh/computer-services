@@ -30,8 +30,6 @@ const ManagerDetail = () => {
     isFetching,
   } = useGetAccountDetailByIdQuery(account_id);
 
-  console.log(managerDetailData);
-
   return <Container fluid className="customer-detail-container"></Container>;
 };
 

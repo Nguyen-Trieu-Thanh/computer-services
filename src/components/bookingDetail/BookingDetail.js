@@ -215,7 +215,7 @@ const BookingDetail = ({
         <Modal.Header>
           {/* <Modal.Title>Chi tiết lịch hẹn mã: {bookingDetail._id}</Modal.Title> */}
           <Modal.Title>
-            Chi tiết lịch hẹn của khách hàng {bookingDetail.cus_name}
+            Chi tiết lịch hẹn của khách hàng: {bookingDetail.cus_name}
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>

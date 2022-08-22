@@ -169,11 +169,23 @@ const ServiceDetail = () => {
 
   const handleConfirmUpdateServiceSubmit = async (e) => {
     e.preventDefault();
+
     if (serviceDetail.name === "") {
       setValidation({
         ...validation,
         name: {
           message: "Tên dịch vụ không được để trống",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
+    if (serviceDetail.name.trim() !== serviceDetail.name) {
+      setValidation({
+        ...validation,
+        name: {
+          message: "Tên dịch vụ không hợp lệ",
           isInvalid: true,
         },
       });

@@ -123,7 +123,13 @@ const MenuBar = () => {
                 />
               </Nav.Link>
             </Nav.Item>
-            <Nav.Item className="menu-button">
+            <div
+              style={{ fontSize: "20px", fontWeight: "500" }}
+              className="text-center"
+            >
+              {data ? data.name : "Đang tải dữ liệu..."}
+            </div>
+            <Nav.Item className="menu-button mt-3">
               <Nav.Link as={Link} to="/dashboard" eventKey="/dashboard">
                 Dashboard
               </Nav.Link>

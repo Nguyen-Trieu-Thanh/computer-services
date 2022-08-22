@@ -376,13 +376,12 @@ const ProfileSetting = () => {
                     >
                       <OverlayTrigger
                         placement="bottom"
-                        delay={{ show: 200, hide: 100 }}
                         overlay={
                           <Tooltip
                             className="avatar-edit-button"
                             id="avatar-tooltip"
                           >
-                            Tải ảnh mới
+                            Tải lên ảnh mới
                           </Tooltip>
                         }
                       >

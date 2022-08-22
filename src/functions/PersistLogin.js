@@ -4,6 +4,9 @@ import useRefreshToken from "../hooks/useRefreshToken";
 import { useSelector } from "react-redux";
 import { selectCurrentToken } from "../redux/slices/auth/authSlice";
 
+//React-bootstrap
+import { Spinner } from "react-bootstrap";
+
 const PersistLogin = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
   const refresh = useRefreshToken();
@@ -27,7 +30,20 @@ const PersistLogin = ({ children }) => {
     return () => (isMounted = false);
   }, []);
 
-  return isLoading ? <p>Loading...</p> : children;
+  return isLoading ? (
+    <div
+      style={{
+        width: "100%",
+        padding: "10px 0 0 0",
+        textAlign: "center",
+      }}
+    >
+      <Spinner animation="border" />
+      <div style={{ fontSize: "30px" }}>Đang tải trang...</div>
+    </div>
+  ) : (
+    children
+  );
 };
 
 export default PersistLogin;

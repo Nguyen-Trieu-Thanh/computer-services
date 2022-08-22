@@ -45,6 +45,7 @@ import RequireAuth from "./functions/RequireAuth";
 import PersistLogin from "./functions/PersistLogin";
 import RememberMeLogin from "./functions/RememberMeLogin";
 import CheckInternetConnection from "./functions/CheckInternetConnection";
+import ErrorBoundary from "./functions/ErrorBoundary";
 
 function App() {
   return (
@@ -76,7 +77,9 @@ function App() {
               path="/dashboard"
               element={
                 <CheckInternetConnection>
-                  <Dashboard />
+                  <ErrorBoundary>
+                    <Dashboard />
+                  </ErrorBoundary>
                 </CheckInternetConnection>
               }
             />
@@ -85,7 +88,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <ManageBooking />
+                    <ErrorBoundary>
+                      <ManageBooking />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -95,7 +100,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <CreateBooking />
+                    <ErrorBoundary>
+                      <CreateBooking />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -106,7 +113,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <ManageStaff />
+                    <ErrorBoundary>
+                      <ManageStaff />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -116,7 +125,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <StaffDetail />
+                    <ErrorBoundary>
+                      <StaffDetail />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -125,7 +136,9 @@ function App() {
               path="/customer"
               element={
                 <CheckInternetConnection>
-                  <ManageCustomer />
+                  <ErrorBoundary>
+                    <ManageCustomer />
+                  </ErrorBoundary>
                 </CheckInternetConnection>
               }
             />
@@ -133,7 +146,9 @@ function App() {
               path="/customer-detail/:account_id"
               element={
                 <CheckInternetConnection>
-                  <CustomerDetail />
+                  <ErrorBoundary>
+                    <CustomerDetail />
+                  </ErrorBoundary>
                 </CheckInternetConnection>
               }
             />
@@ -142,7 +157,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["admin"]}>
-                    <ManageManager />
+                    <ErrorBoundary>
+                      <ManageManager />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -155,7 +172,9 @@ function App() {
               path="/order-detail/:order_id"
               element={
                 <CheckInternetConnection>
-                  <OrderDetail />
+                  <ErrorBoundary>
+                    <OrderDetail />
+                  </ErrorBoundary>
                 </CheckInternetConnection>
               }
             />
@@ -163,7 +182,9 @@ function App() {
               path="/userProfile"
               element={
                 <CheckInternetConnection>
-                  <UserProfile />
+                  <ErrorBoundary>
+                    <UserProfile />
+                  </ErrorBoundary>
                 </CheckInternetConnection>
               }
             />
@@ -172,7 +193,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <ManageService />
+                    <ErrorBoundary>
+                      <ManageService />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -182,7 +205,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <CreateService />
+                    <ErrorBoundary>
+                      <CreateService />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -192,7 +217,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <ServiceDetail />
+                    <ErrorBoundary>
+                      <ServiceDetail />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -202,7 +229,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <ManageAccessory />
+                    <ErrorBoundary>
+                      <ManageAccessory />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -212,7 +241,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <CreateAccessory />
+                    <ErrorBoundary>
+                      <CreateAccessory />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }
@@ -222,7 +253,9 @@ function App() {
               element={
                 <CheckInternetConnection>
                   <ProtectedRoute user={["manager"]}>
-                    <AccessoryDetail />
+                    <ErrorBoundary>
+                      <AccessoryDetail />
+                    </ErrorBoundary>
                   </ProtectedRoute>
                 </CheckInternetConnection>
               }

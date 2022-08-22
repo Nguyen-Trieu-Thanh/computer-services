@@ -32,7 +32,11 @@ import BookingDetail from "../bookingDetail/BookingDetail";
 import CustomPagination from "../customPagination/CustomPagination";
 
 //Icons
-import { faPenToSquare, faPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPenToSquare,
+  faPlus,
+  faArrowRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 //Momentjs
@@ -153,7 +157,7 @@ const ManageBooking = () => {
       return "processing";
     }
 
-    if (status === "Khách hàng xác nhận") {
+    if (status === "Hoàn tất hóa đơn") {
       return "processing";
     }
 
@@ -181,11 +185,11 @@ const ManageBooking = () => {
           <Card.Body>
             <Row>
               <Col>
-                <Card.Title>Quản lý lịch hẹn</Card.Title>
+                <Card.Title>Danh sách lịch hẹn</Card.Title>
               </Col>
             </Row>
-            <Row className="d-flex align-items-end">
-              <Col>
+            <Row className="d-flex align-items-end justify-content-between">
+              <Col xs={6}>
                 <Form.Label>Tìm kiếm theo tên:</Form.Label>
                 <InputGroup>
                   <Form.Control
@@ -209,7 +213,7 @@ const ManageBooking = () => {
                 </InputGroup>
               </Col>
               <Col>
-                <Form.Label>Trạng thái:</Form.Label>
+                <Form.Label>Trạng thái lịch hẹn:</Form.Label>
                 <Form.Control
                   as="select"
                   name="status"
@@ -234,8 +238,24 @@ const ManageBooking = () => {
                   <option value="desc">Mới đến cũ</option>
                 </Form.Control>
               </Col>
-              <Col xs={2} className="button-container">
+              <Col xs={2}>
                 <Button
+                  style={{ width: "100%" }}
+                  disabled={isFetching}
+                  variant="dark"
+                  onClick={() => {
+                    refetch();
+                  }}
+                >
+                  Tải lại dữ liệu{" "}
+                  <FontAwesomeIcon icon={faArrowRotateRight} color="" />
+                </Button>
+              </Col>
+            </Row>
+            <Row className="d-flex justify-content-end mt-2">
+              <Col xs={2}>
+                <Button
+                  style={{ width: "100%" }}
                   variant="primary"
                   onClick={() => {
                     navigate("/create-booking");
@@ -306,7 +326,7 @@ const ManageBooking = () => {
                                       className="booking-edit-button"
                                       id="edit-button-tooltip"
                                     >
-                                      Chi tiết
+                                      Xem chi tiết
                                     </Tooltip>
                                   }
                                 >

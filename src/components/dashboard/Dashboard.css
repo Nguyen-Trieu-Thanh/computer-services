@@ -180,7 +180,7 @@
   .schedule-container
   .dashboard-schedule-table-container
   .date-th {
-  width: 11%;
+  vertical-align: middle;
 }
 
 .dashboard-container
@@ -188,7 +188,7 @@
   .schedule-container
   .dashboard-schedule-table-container
   .slot-th {
-  width: 11.125%;
+  width: 11.25%;
 }
 
 .dashboard-container
@@ -198,6 +198,7 @@
   td {
   text-align: center;
   vertical-align: middle;
+  background-color: white;
 }
 
 .dashboard-container
@@ -221,7 +222,8 @@
   .schedule-container
   .dashboard-schedule-table-container
   .td-clickable:hover {
-  background-color: #d9d9d9;
+  /* background-color: #f2f2f2; */
+  filter: brightness(0.90);
 }
 
 .dashboard-container

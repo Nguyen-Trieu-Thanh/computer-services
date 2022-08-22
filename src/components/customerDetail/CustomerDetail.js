@@ -179,8 +179,6 @@ const CustomerDetail = () => {
     }
   }, [isGetBookingFetching]);
 
-  console.log(customerDetailData);
-
   if (error) {
     return <Navigate to="/error" state={{ from: location }} replace />;
   }
@@ -304,7 +302,7 @@ const CustomerDetail = () => {
               <Col>
                 <InputGroup>
                   <InputGroup.Prepend>
-                    <InputGroup.Text>Trạng thái:</InputGroup.Text>
+                    <InputGroup.Text>Trạng thái lịch hẹn:</InputGroup.Text>
                   </InputGroup.Prepend>
                   <Form.Control
                     as="select"
@@ -386,7 +384,7 @@ const CustomerDetail = () => {
                                       className="booking-edit-button"
                                       id="edit-button-tooltip"
                                     >
-                                      Chi tiết
+                                      Xem chi tiết
                                     </Tooltip>
                                   }
                                 >

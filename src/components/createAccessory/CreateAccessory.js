@@ -210,6 +210,17 @@ const CreateAccessory = () => {
       return;
     }
 
+    if (accessory.name.trim() !== accessory.name) {
+      setValidation({
+        ...validation,
+        name: {
+          message: "Tên linh kiện không hợp lệ",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
     if (accessory.price === "") {
       setValidation({
         ...validation,
@@ -226,6 +237,17 @@ const CreateAccessory = () => {
         ...validation,
         insurance: {
           message: "Thời hạn bảo hành không được để trống",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
+    if (accessory.insurance.trim() !== accessory.insurance) {
+      setValidation({
+        ...validation,
+        insurance: {
+          message: "Thời hạn bảo hành không hợp lệ",
           isInvalid: true,
         },
       });

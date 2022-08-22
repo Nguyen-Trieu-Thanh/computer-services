@@ -17,6 +17,10 @@
   cursor: pointer;
 }
 
+.profile-setting-container .image-container img:hover {
+  opacity: 0.5;
+}
+
 .profile-setting-container .save-button {
   float: right;
   width: 115px;
