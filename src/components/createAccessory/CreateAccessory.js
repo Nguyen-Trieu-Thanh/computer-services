@@ -305,7 +305,7 @@ const CreateAccessory = () => {
                             show: true,
                             title: "Tạo linh kiện",
                             time: "just now",
-                            content: "Tạo linh kiện thành công",
+                            content: "Linh kiện được tạo thành công",
                             color: {
                               header: "#dbf0dc",
                               body: "#41a446",
@@ -354,7 +354,7 @@ const CreateAccessory = () => {
                     show: true,
                     title: "Tạo linh kiện",
                     time: "just now",
-                    content: "Tạo linh kiện thành công",
+                    content: "Linh kiện được tạo thành công",
                     color: {
                       header: "#dbf0dc",
                       body: "#41a446",

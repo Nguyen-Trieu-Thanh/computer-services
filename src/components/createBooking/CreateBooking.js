@@ -82,6 +82,10 @@ const CreateBooking = () => {
       message: "",
       isInvalid: false,
     },
+    slot: {
+      message: "",
+      isInvalid: false,
+    },
     street: {
       message: "",
       isInvalid: false,
@@ -671,24 +675,38 @@ const CreateBooking = () => {
         .unwrap()
         .then((res) => {
           if (res) {
-            setBooking({
-              ...booking,
-              acc_id: res._id,
-              cus_name:
-                booking.cus_name === "" ? res.user_id?.name : booking.cus_name,
-            });
-            setValidation({
-              ...validation,
-              phonenum: {
-                message: "",
-                isInvalid: false,
-                isValid: true,
-              },
-              cus_name: {
-                message: "",
-                isInvalid: false,
-              },
-            });
+            if (res.role === "customer") {
+              setBooking({
+                ...booking,
+                acc_id: res._id,
+                cus_name:
+                  booking.cus_name === ""
+                    ? res.user_id?.name
+                    : booking.cus_name,
+              });
+              setValidation({
+                ...validation,
+                phonenum: {
+                  message: "",
+                  isInvalid: false,
+                  isValid: true,
+                },
+                cus_name: {
+                  message: "",
+                  isInvalid: false,
+                },
+              });
+            } else {
+              setBooking({ ...booking, acc_id: "", cus_name: "" });
+              setValidation({
+                ...validation,
+                phonenum: {
+                  message: "Tài khoản không hợp lệ",
+                  isInvalid: true,
+                  isValid: false,
+                },
+              });
+            }
           } else {
             setBooking({ ...booking, acc_id: "", cus_name: "" });
             setValidation({
@@ -756,6 +774,44 @@ const CreateBooking = () => {
     );
   }
 
+  const checkIsDateAndSlotSameOrAfter = () => {
+    if (moment(booking.time).isSame(moment(), "day")) {
+      if (slot == 1) {
+        return moment().format("Hmm") < 800;
+      }
+
+      if (slot == 2) {
+        return moment().format("Hmm") < 930;
+      }
+
+      if (slot == 3) {
+        return moment().format("Hmm") < 1100;
+      }
+
+      if (slot == 4) {
+        return moment().format("Hmm") < 1230;
+      }
+
+      if (slot == 5) {
+        return moment().format("Hmm") < 1400;
+      }
+
+      if (slot == 6) {
+        return moment().format("Hmm") < 1530;
+      }
+
+      if (slot == 7) {
+        return moment().format("Hmm") < 1700;
+      }
+
+      if (slot == 8) {
+        return moment().format("Hmm") < 1830;
+      }
+    }
+
+    return true;
+  };
+
   const handleConfirmBookingSubmit = (e) => {
     e.preventDefault();
     if (booking.phonenum === "") {
@@ -807,6 +863,28 @@ const CreateBooking = () => {
       return;
     }
 
+    if (moment(booking.time).isBefore(moment(), "day")) {
+      setValidation({
+        ...validation,
+        time: {
+          message: "Ngày không được nhỏ hơn ngày hôm nay",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
+    if (!checkIsDateAndSlotSameOrAfter()) {
+      setValidation({
+        ...validation,
+        slot: {
+          message: "Đã quá thời gian slot hẹn",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
     if (booking.cus_address.street === "") {
       setValidation({
         ...validation,
@@ -824,6 +902,7 @@ const CreateBooking = () => {
       !validation.cus_name.isInvalid &&
       !validation.description.isInvalid &&
       !validation.time.isInvalid &&
+      !validation.slot.isInvalid &&
       !validation.street.isInvalid
     ) {
       setShowConfirmCreateBooking(true);
@@ -833,6 +912,13 @@ const CreateBooking = () => {
 
   const handleSlotChange = (e) => {
     const value = e.target.value;
+    setValidation({
+      ...validation,
+      slot: {
+        message: "",
+        isInvalid: false,
+      },
+    });
 
     if (value == 1) {
       setBooking({
@@ -999,7 +1085,7 @@ const CreateBooking = () => {
   return (
     <>
       <Container fluid className="create-booking-container">
-        <Form onSubmit={handleConfirmBookingSubmit}>
+        <Form noValidate onSubmit={handleConfirmBookingSubmit}>
           <Card className="booking-info-container ">
             <Card.Body>
               <Row>
@@ -1082,19 +1168,23 @@ const CreateBooking = () => {
                   <Form.Group controlId="formCreateBookingSlot">
                     <Form.Label>Slot hẹn:</Form.Label>
                     <Form.Control
+                      isInvalid={validation.slot.isInvalid}
                       as="select"
                       value={slot}
                       onChange={handleSlotChange}
                     >
-                      <option>1</option>
-                      <option>2</option>
-                      <option>3</option>
-                      <option>4</option>
-                      <option>5</option>
-                      <option>6</option>
-                      <option>7</option>
-                      <option>8</option>
+                      <option value="1">1: 08:00 - 09:30</option>
+                      <option value="2">2: 09:30 - 11:00</option>
+                      <option value="3">3: 11:00 - 12:30</option>
+                      <option value="4">4: 12:30 - 14:00</option>
+                      <option value="5">5: 14:00 - 15:30</option>
+                      <option value="6">6: 15:30 - 17:00</option>
+                      <option value="7">7: 17:00 - 18:30</option>
+                      <option value="8">8: 18:30 - 20:00</option>
                     </Form.Control>
+                    <Form.Control.Feedback type="invalid">
+                      {validation.slot.message}
+                    </Form.Control.Feedback>
                   </Form.Group>
                 </Col>
               </Row>

@@ -102,6 +102,44 @@ const ConfirmCreateBooking = ({
 
   const handleConfirmBookingSubmit = async (e) => {
     e.preventDefault();
+
+    if (
+      moment(booking.time).isSame(moment(), "day") &&
+      parseInt(moment().format("Hmm")) > moment(booking.time).format("Hmm")
+    ) {
+      dispatch(
+        setToast({
+          show: true,
+          title: "Tạo lịch hẹn",
+          time: "just now",
+          content: "Đã quá thời gian slot hẹn. Xin thử lại",
+          color: {
+            header: "#ffcccc",
+            body: "#e60000",
+          },
+        })
+      );
+      setShowConfirmCreateBooking(false);
+      return;
+    }
+
+    if (moment(booking.time).isBefore(moment(), "day")) {
+      dispatch(
+        setToast({
+          show: true,
+          title: "Tạo lịch hẹn",
+          time: "just now",
+          content: "Ngày hẹn không được nhỏ hơn ngày hôm nay",
+          color: {
+            header: "#ffcccc",
+            body: "#e60000",
+          },
+        })
+      );
+      setShowConfirmCreateBooking(false);
+      return;
+    }
+
     try {
       await createBooking(booking)
         .unwrap()

@@ -38,10 +38,7 @@ import {
 } from "../../redux/slices/auth/authSlice";
 import SlotDetail from "../slotDetail/SlotDetail";
 import CustomChart from "../customChart/CustomChart";
-import {
-  useDataForDashboardQuery,
-  useDataForDashboardRealtimeQuery,
-} from "../../redux/slices/chart/chartApiSlice";
+import { useDataForDashboardQuery } from "../../redux/slices/chart/chartApiSlice";
 
 const slots = [1, 2, 3, 4, 5, 6, 7, 8];
 const slotTimes = [

@@ -158,7 +158,7 @@ const CustomerDetail = () => {
       return "processing";
     }
 
-    if (status === "Khách hàng xác nhận") {
+    if (status === "Hoàn tất hóa đơn") {
       return "processing";
     }
 

@@ -36,6 +36,10 @@
   background-color: #00b300;
 }
 
+.staff-detail-container .table-filter-container .box-have-order {
+  background-color: red;
+}
+
 .staff-detail-container .card-table-container {
   box-shadow: 0px 3px 8px #a6a6a6;
 }
@@ -49,6 +53,16 @@
 
 .staff-detail-container .table-container .td-checked {
   background-color: #00b300;
+}
+
+.staff-detail-container .table-container .td-have-order {
+  cursor: pointer;
+  background-color: red;
+}
+
+.staff-detail-container .table-container .td-have-order:hover {
+  cursor: pointer;
+  filter: brightness(0.9);
 }
 
 .staff-detail-container .table-container .table {

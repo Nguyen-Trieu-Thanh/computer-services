@@ -61,42 +61,8 @@ export const chartApiSlice = apiSlice.injectEndpoints({
     //   },
     //   // keepUnusedDataFor: 0,
     // }),
-    dataForDashboardRealtime: builder.query({
-      query: (request) => "/chart/data-for-dashboard",
-      async onCacheEntryAdded(
-        arg,
-        { updateCachedData, cacheDataLoaded, cacheEntryRemoved }
-      ) {
-        const ws = new WebSocket(
-          "https://computer-services-api.herokuapp.com/chart/data-for-dashboard"
-        );
-        // const ws = new WebSocket("ws://computer-services-api.herokuapp.com");
-
-        try {
-          await cacheDataLoaded;
-
-          const listener = (event) => {
-            const data = JSON.parse(event.data);
-            if (data.channel !== arg) return;
-
-            updateCachedData((draft) => {
-              draft.push(data);
-            });
-          };
-          ws.addEventListener("message", listener);
-        } catch (error) {}
-
-        await cacheEntryRemoved;
-
-        ws.close();
-      },
-      // keepUnusedDataFor: 0,
-    }),
   }),
 });
 
-export const {
-  useDataToChartMutation,
-  useDataForDashboardQuery,
-  useDataForDashboardRealtimeQuery,
-} = chartApiSlice;
+export const { useDataToChartMutation, useDataForDashboardQuery } =
+  chartApiSlice;

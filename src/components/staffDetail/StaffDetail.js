@@ -282,7 +282,13 @@ const StaffDetail = () => {
               <Col>
                 <div className="box-container">
                   <div className="box box-checked" />
-                  <span>Có lịch làm việc</span>
+                  <span>Lịch làm việc đã đăng kí</span>
+                </div>
+              </Col>
+              <Col xs={5}>
+                <div className="box-container">
+                  <div className="box box-have-order" />
+                  <span>Lịch làm việc có đơn hàng (nhấn vào để xem chi tiết đơn hàng)</span>
                 </div>
               </Col>
             </Row>
@@ -324,12 +330,50 @@ const StaffDetail = () => {
                                       .map((workSlot) => workSlot._id)
                                       .includes(y)
                                   ) ? (
-                                  <td key={slotIndex} className="td-checked">
-                                    <FontAwesomeIcon
-                                      icon={faCheck}
-                                      color="#ffffff"
-                                    />
-                                  </td>
+                                  // <td key={slotIndex} className="td-checked">
+                                  //   <FontAwesomeIcon
+                                  //     icon={faCheck}
+                                  //     color="#ffffff"
+                                  //   />
+                                  // </td>
+                                  date.slots
+                                    .find((x) => x.slot === slot)
+                                    .work_slot.find((y) =>
+                                      workSlotsData
+                                        .map((workSlot) => workSlot._id)
+                                        .includes(y._id)
+                                    ).order_id !== undefined ? (
+                                    <td
+                                      key={slotIndex}
+                                      className="td-have-order"
+                                      onClick={() => {
+                                        window.open(
+                                          "/order-detail/" +
+                                            date.slots
+                                              .find((x) => x.slot === slot)
+                                              .work_slot.find((y) =>
+                                                workSlotsData
+                                                  .map(
+                                                    (workSlot) => workSlot._id
+                                                  )
+                                                  .includes(y._id)
+                                              ).order_id
+                                        );
+                                      }}
+                                    >
+                                      {/* <FontAwesomeIcon
+                                        icon={faCheck}
+                                        color="#ffffff"
+                                      /> */}
+                                    </td>
+                                  ) : (
+                                    <td key={slotIndex} className="td-checked">
+                                      {/* <FontAwesomeIcon
+                                        icon={faCheck}
+                                        color="#ffffff"
+                                      /> */}
+                                    </td>
+                                  )
                                 ) : (
                                   <td key={slotIndex}></td>
                                 )
