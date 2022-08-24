@@ -338,37 +338,45 @@ const OrderDetail = () => {
 
   useEffect(() => {
     if (!isFetching && !schedulesIsFetching && schedules.length !== 0) {
-      if (orderDetail.status === "Đang chờ") {
-        setSchedule({
-          ...schedule,
-          date: moment(bookingDetail.time).format(),
-        });
-      } else {
-        schedules.map((scheduleData, scheduleIndex) =>
-          scheduleData.slots.map((slot, slotIndex) =>
-            slot.work_slot.map((work_slot, index) => {
-              if (work_slot._id === orderDetail.work_slot) {
-                setSchedule({
-                  ...schedule,
-                  date: scheduleData.date,
-                  slot: slot.slot,
-                  work_slots: slot.work_slot,
-                });
-                setUpdateOrderSlot({
-                  ...updateOrderSlot,
-                  workSlotId: orderDetail.work_slot,
-                });
-                setInitUpdateOrderSlot({
-                  ...updateOrderSlot,
-                  workSlotId: orderDetail.work_slot,
-                });
-              }
-            })
-          )
-        );
+      if (orderDetail !== undefined) {
+        if (orderDetail.status === "Đang chờ") {
+          setSchedule({
+            ...schedule,
+            date: moment(bookingDetail.time).format(),
+          });
+        } else {
+          schedules.map((scheduleData, scheduleIndex) =>
+            scheduleData.slots.map((slot, slotIndex) =>
+              slot.work_slot.map((work_slot, index) => {
+                if (work_slot._id === orderDetail.work_slot) {
+                  setSchedule({
+                    ...schedule,
+                    date: scheduleData.date,
+                    slot: slot.slot,
+                    work_slots: slot.work_slot,
+                  });
+                  setUpdateOrderSlot({
+                    ...updateOrderSlot,
+                    workSlotId: orderDetail.work_slot,
+                  });
+                  setInitUpdateOrderSlot({
+                    ...updateOrderSlot,
+                    workSlotId: orderDetail.work_slot,
+                  });
+                }
+              })
+            )
+          );
+        }
       }
     }
-  }, [isFetching, schedulesIsFetching, schedules, isGetBookingByIdLoading]);
+  }, [
+    isFetching,
+    schedulesIsFetching,
+    schedules,
+    isGetBookingByIdLoading,
+    bookingDetail.time,
+  ]);
 
   if (error) {
     return <Navigate to="/error" state={{ from: location }} replace />;
@@ -828,6 +836,8 @@ const OrderDetail = () => {
         setUpdateOrderSlot={setUpdateOrderSlot}
         schedulesRefetch={schedulesRefetch}
         schedulesIsFetching={schedulesIsFetching}
+        bookingDetail={bookingDetail}
+        isGetBookingByIdLoading={isGetBookingByIdLoading}
       />
     </>
   );

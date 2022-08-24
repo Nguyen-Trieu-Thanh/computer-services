@@ -47,13 +47,15 @@ const ScheduleForOrder = ({
   setUpdateOrderSlot,
   schedulesRefetch,
   schedulesIsFetching,
+  bookingDetail,
+  isGetBookingByIdLoading,
 }) => {
   //Local state
   const [startDate, setStartDate] = useState(
-    moment(schedule.date).format("YYYY-MM-DD")
+    moment(bookingDetail.time).format("YYYY-MM-DD")
   );
   const [endDate, setEndDate] = useState(
-    moment(schedule.date).add("2", "days").format("YYYY-MM-DD")
+    moment(bookingDetail.time).add("2", "days").format("YYYY-MM-DD")
   );
   const [datesInBetween, setDatesInBetween] = useState([]);
   const [selectedSchedule, setSelectedSchedule] = useState({
@@ -183,10 +185,19 @@ const ScheduleForOrder = ({
     getDateInBetween();
   }, [startDate, endDate]);
 
+  // useEffect(() => {
+  //   setStartDate(moment(schedule.date).format("YYYY-MM-DD"));
+  //   setEndDate(moment(schedule.date).add("2", "days").format("YYYY-MM-DD"));
+  // }, [schedule.date]);
+
   useEffect(() => {
-    setStartDate(moment(schedule.date).format("YYYY-MM-DD"));
-    setEndDate(moment(schedule.date).add("2", "days").format("YYYY-MM-DD"));
-  }, [schedule.date]);
+    if (!isGetBookingByIdLoading) {
+      setStartDate(moment(bookingDetail.time).format("YYYY-MM-DD"));
+      setEndDate(
+        moment(bookingDetail.time).add("2", "days").format("YYYY-MM-DD")
+      );
+    }
+  }, [isGetBookingByIdLoading, bookingDetail.time]);
 
   return (
     <>

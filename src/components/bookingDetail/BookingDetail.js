@@ -92,11 +92,7 @@ const BookingDetail = ({
                 })
               );
               setShowBookingDetail(false);
-              navigate("/order-detail/" + res._id, {
-                state: {
-                  bookingDetail: bookingDetail,
-                },
-              });
+              navigate("/order-detail/" + res._id);
             }
           });
       } catch (error) {
@@ -197,11 +193,7 @@ const BookingDetail = ({
   };
 
   const handleViewOrder = () => {
-    navigate("/order-detail/" + bookingDetail.order_id._id, {
-      state: {
-        bookingDetail: bookingDetail,
-      },
-    });
+    window.open("/order-detail/" + bookingDetail.order_id._id);
   };
 
   return (
