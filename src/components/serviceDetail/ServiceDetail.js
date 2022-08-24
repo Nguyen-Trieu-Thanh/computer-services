@@ -278,8 +278,6 @@ const ServiceDetail = () => {
     return JSON.stringify(initServiceDetail) !== JSON.stringify(serviceDetail);
   };
 
-  console.log(serviceDetail);
-
   useEffect(() => {
     if (!isFetching && !error) {
       setServiceDetail({
