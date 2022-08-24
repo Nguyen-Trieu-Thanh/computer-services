@@ -225,7 +225,11 @@ const MenuBar = () => {
             )}
 
             <Nav.Item className="log-out-button menu-button">
-              <Nav.Link onClick={handleLogout} eventKey="/logout">
+              <Nav.Link
+                disabled={isLoading}
+                onClick={handleLogout}
+                eventKey="/logout"
+              >
                 Đăng xuất
               </Nav.Link>
             </Nav.Item>

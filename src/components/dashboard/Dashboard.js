@@ -188,7 +188,9 @@ const Dashboard = () => {
                   Xin chào {currentUserData.user_id.name},
                 </Card.Title>
               )}
-              <Card.Subtitle>Chức vụ: {role}</Card.Subtitle>
+              <Card.Subtitle>
+                Chức vụ: {role === "manager" ? "Quản lí" : "Admin"}
+              </Card.Subtitle>
               <Card.Text>{todayDate}</Card.Text>
             </Card.Body>
           </Card>

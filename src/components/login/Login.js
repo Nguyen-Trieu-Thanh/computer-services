@@ -247,6 +247,7 @@ const Login = () => {
                   <Row>
                     <Col className="text-center">
                       <Button
+                        disabled={isLoading}
                         className="form-button"
                         variant="primary"
                         type="submit"

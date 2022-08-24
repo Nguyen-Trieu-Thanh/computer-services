@@ -251,9 +251,16 @@ const CreateService = () => {
                     value={service.brand}
                     onChange={handleCreateServiceChange}
                   >
-                    <option>Asus</option>
-                    <option>MSI</option>
-                    <option>Razer</option>
+                    <option value="Acer">Acer</option>
+                    <option value="Asus">Asus</option>
+                    <option value="MSI">MSI</option>
+                    <option value="Lenovo">Lenovo</option>
+                    <option value="Dell">Dell</option>
+                    <option value="Gigabyte">Gigabyte</option>
+                    <option value="HP">HP</option>
+                    <option value="Razer">Razer</option>
+                    <option value="Apple">Apple</option>
+                    <option value="">Khác</option>
                   </Form.Control>
                 </Form.Group>
               </Col>

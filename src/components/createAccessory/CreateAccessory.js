@@ -32,6 +32,8 @@ import {
 } from "../../redux/slices/accessory/accessoryApiSlice";
 import { useNavigate } from "react-router-dom";
 
+import suppliers from "../../datas/suppliers";
+
 const CreateAccessory = () => {
   const [createAccessory, { isLoading }] = useCreateAccessoryMutation();
   const [uploadAccessoryImage, { isLoading: isUploadAccessoryImage }] =
@@ -498,7 +500,14 @@ const CreateAccessory = () => {
                     value={accessory.supplier_id}
                     onChange={handleCreateAccessoryChange}
                   >
-                    <option value="62d14b772c7ff9eccc4f528d">Intel</option>
+                    {/* <option value="62d14b772c7ff9eccc4f528d">Intel</option> */}
+                    {suppliers.map((supplier, index) => {
+                      return (
+                        <option key={index} value={supplier._id}>
+                          {supplier.name}
+                        </option>
+                      );
+                    })}
                   </Form.Control>
                 </Form.Group>
               </Col>
