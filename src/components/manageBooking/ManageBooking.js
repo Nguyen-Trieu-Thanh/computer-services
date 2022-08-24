@@ -279,11 +279,12 @@ const ManageBooking = () => {
                         <th>#</th>
                         <th>Tên khách hàng</th>
                         <th>Số điện thoại</th>
-                        <th>Loại lịch hẹn</th>
+                        {/* <th>Loại lịch hẹn</th> */}
                         <th>Thời gian hẹn</th>
-                        <th>Cập nhật lúc</th>
                         <th>Trạng thái lịch hẹn</th>
                         <th>Trạng thái đơn hàng</th>
+                        <th>Thời gian tạo</th>
+                        <th>Cập nhật lúc</th>
                         <th>Hành động</th>
                       </tr>
                     </thead>
@@ -294,15 +295,11 @@ const ManageBooking = () => {
                             <td>{index + 1}</td>
                             <td>{booking.cus_name}</td>
                             <td>{booking.phonenum}</td>
-                            <td>{booking.type}</td>
+                            {/* <td>{booking.type}</td> */}
                             <td>
                               {moment(booking.time).format("HH:mm MM/DD/YYYY")}
                             </td>
-                            <td>
-                              {moment(booking.updatedAt).format(
-                                "HH:mm MM/DD/YYYY"
-                              )}
-                            </td>
+
                             <td className={checkBookingStatus(booking.status)}>
                               {booking.status}
                             </td>
@@ -324,7 +321,16 @@ const ManageBooking = () => {
                                 ? booking.order_id.status
                                 : "Chưa có"}
                             </td>
-
+                            <td>
+                              {moment(booking.createdAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
+                            <td>
+                              {moment(booking.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
                             <td>
                               <div className="action-button-container">
                                 <OverlayTrigger

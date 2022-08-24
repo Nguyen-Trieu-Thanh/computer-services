@@ -47,12 +47,14 @@ const BookingDetail = ({
     slot: "",
   });
   const [isEditBooking, setIsEditBooking] = useState(false);
+  const [showConfirmClose, setShowConfirmClose] = useState(false);
 
   //Utilities
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleClose = () => {
+    setShowConfirmClose(false);
     setShowBookingDetail(false);
   };
 
@@ -200,7 +202,9 @@ const BookingDetail = ({
     <>
       <Modal
         show={showBookingDetail}
-        onHide={handleClose}
+        onHide={() => {
+          setShowConfirmClose(true);
+        }}
         dialogClassName="booking-detail"
         centered
       >
@@ -339,7 +343,12 @@ const BookingDetail = ({
           >
             Xem đơn hàng
           </Button>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setShowConfirmClose(true);
+            }}
+          >
             Đóng
           </Button>
           {!isAdmin && (
@@ -347,7 +356,9 @@ const BookingDetail = ({
               disabled={
                 !isChange() ||
                 (initBookingDetail.order_id &&
-                  initBookingDetail.status !== "Đã tiếp nhận")
+                  initBookingDetail.status !== "Đã tiếp nhận") ||
+                isLoading ||
+                acceptBookingLoading
               }
               type="submit"
               variant="primary"
@@ -368,6 +379,36 @@ const BookingDetail = ({
         selectedSlot={selectedSlot}
         setSelectedSlot={setSelectedSlot}
       />
+      <Modal
+        show={showConfirmClose}
+        onHide={() => {
+          setShowConfirmClose(false);
+        }}
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title>Xác nhận đóng</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Dữ liệu bạn nhập sẽ không được lưu</Modal.Body>
+        <Modal.Footer>
+          <Button
+            style={{ width: "100px" }}
+            variant="danger"
+            onClick={() => {
+              setShowConfirmClose(false);
+            }}
+          >
+            Hủy
+          </Button>
+          <Button
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={handleClose}
+          >
+            Xác nhận
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
