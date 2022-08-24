@@ -278,6 +278,8 @@ const ServiceDetail = () => {
     return JSON.stringify(initServiceDetail) !== JSON.stringify(serviceDetail);
   };
 
+  console.log(serviceDetail);
+
   useEffect(() => {
     if (!isFetching && !error) {
       setServiceDetail({
@@ -365,6 +367,7 @@ const ServiceDetail = () => {
                         <option>Thay thế</option>
                         <option>Vệ sinh</option>
                         <option>Cài đặt</option>
+                        <option>Sửa lỗi</option>
                       </Form.Control>
                     </Form.Group>
                   </Col>

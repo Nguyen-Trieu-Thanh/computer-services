@@ -464,6 +464,7 @@ const CreateManager = ({
                     />
                     <InputGroup.Append>
                       <Button
+                        disabled={isLoading || isCreateManagerLoading}
                         variant="primary"
                         onClick={handleGetAccountByUsername}
                         className="check-phonenumber-button"
@@ -538,7 +539,12 @@ const CreateManager = ({
             >
               Đóng
             </Button>
-            <Button type="submit" variant="primary" className="confirm-button">
+            <Button
+              disabled={isCreateManagerLoading}
+              type="submit"
+              variant="primary"
+              className="confirm-button"
+            >
               {isCreateManagerLoading ? (
                 <Spinner animation="border" />
               ) : (

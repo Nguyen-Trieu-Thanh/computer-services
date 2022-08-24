@@ -474,6 +474,7 @@ const CreateCustomer = ({
                     />
                     <InputGroup.Append>
                       <Button
+                        disabled={isLoading || isCreateCustomerLoading}
                         variant="primary"
                         onClick={handleGetAccountByUsername}
                         className="check-phonenumber-button"
@@ -548,7 +549,12 @@ const CreateCustomer = ({
             >
               Đóng
             </Button>
-            <Button type="submit" variant="primary" className="confirm-button">
+            <Button
+              disabled={isCreateCustomerLoading}
+              type="submit"
+              variant="primary"
+              className="confirm-button"
+            >
               {isCreateCustomerLoading ? (
                 <Spinner animation="border" />
               ) : (

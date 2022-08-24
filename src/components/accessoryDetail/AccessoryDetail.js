@@ -537,12 +537,14 @@ const AccessoryDetail = () => {
                       value={accessoryDetail.component}
                       onChange={handleUpdateAccessoryChange}
                     >
+                      <option>Nguồn</option>
+                      <option>Main</option>
                       <option>RAM</option>
+                      <option>Ổ cứng</option>
                       <option>CPU</option>
                       <option>Màn hình</option>
-                      <option>PSU</option>
                       <option>Tản nhiệt</option>
-                      <option>Mainboard</option>
+                      <option>Bàn phím</option>
                     </Form.Control>
                   </Form.Group>
                 </Col>

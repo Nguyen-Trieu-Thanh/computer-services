@@ -686,7 +686,11 @@ const OrderDetail = () => {
                     </Button>
                   ) : (
                     <Button
-                      disabled={checkIsUpdateDisabled()}
+                      disabled={
+                        checkIsUpdateDisabled() ||
+                        isLoading ||
+                        isUpdateOrderByIdLoading
+                      }
                       className="confirm-button"
                       onClick={handleUpdateOrder}
                     >

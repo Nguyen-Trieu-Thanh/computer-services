@@ -202,6 +202,7 @@ const ManageService = () => {
                     <tr>
                       <th>#</th>
                       <th>Tên dịch vụ</th>
+                      <th>Loại dịch vụ</th>
                       <th>Giá dịch vụ</th>
                       <th>Ngày tạo</th>
                       <th style={{ width: "200px" }}>Hành động</th>
@@ -215,6 +216,7 @@ const ManageService = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{service.name}</td>
+                            <td>{service.type}</td>
                             <td>{service.price}</td>
                             <td>
                               {moment(service.createdAt).format("MM/DD/YYYY")}

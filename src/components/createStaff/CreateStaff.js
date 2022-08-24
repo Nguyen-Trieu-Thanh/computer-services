@@ -476,6 +476,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                     />
                     <InputGroup.Append>
                       <Button
+                        disabled={isLoading || isCreateStaffLoading}
                         variant="primary"
                         onClick={handleGetAccountByUsername}
                         className="check-phonenumber-button"
@@ -550,7 +551,12 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
             >
               Đóng
             </Button>
-            <Button type="submit" variant="primary" className="confirm-button">
+            <Button
+              disabled={isCreateStaffLoading}
+              type="submit"
+              variant="primary"
+              className="confirm-button"
+            >
               {isCreateStaffLoading ? (
                 <Spinner animation="border" />
               ) : (

@@ -269,6 +269,7 @@ const CustomChart = () => {
                 >
                   <Col>
                     <Form.Check
+                      disabled={isLoading}
                       inline
                       label={chartDataType.nameVN}
                       value={chartDataType.nameEN}

@@ -239,6 +239,7 @@ const CreateService = () => {
                     <option>Thay thế</option>
                     <option>Vệ sinh</option>
                     <option>Cài đặt</option>
+                    <option>Sửa lỗi</option>
                   </Form.Control>
                 </Form.Group>
               </Col>
