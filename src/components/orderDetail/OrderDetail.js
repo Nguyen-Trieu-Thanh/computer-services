@@ -122,6 +122,15 @@ const OrderDetail = () => {
     cus_name: "",
     phonenum: "",
     time: moment().format(),
+    description: "",
+    services: [],
+    type: "Sửa tại nhà",
+    cus_address: {
+      city: "",
+      district: "",
+      ward: "",
+      street: "",
+    },
   });
 
   const dispatch = useDispatch();
@@ -393,6 +402,15 @@ const OrderDetail = () => {
     );
   }
 
+  const address =
+    bookingDetail.cus_address.street +
+    ", " +
+    bookingDetail.cus_address.ward +
+    ", " +
+    bookingDetail.cus_address.district +
+    ", " +
+    bookingDetail.cus_address.city;
+
   return (
     <>
       <Container fluid className="order-detail-container">
@@ -408,30 +426,70 @@ const OrderDetail = () => {
               <div className="loading-text">Đang tải dữ liệu...</div>
             </div>
           ) : (
-            <Row>
-              <Col>
-                <Form.Label>Khách hàng:</Form.Label>
-                <Form.Control readOnly value={bookingDetail.cus_name} />
-              </Col>
-              <Col>
-                <Form.Label>Số điện thoại:</Form.Label>
-                <Form.Control readOnly value={bookingDetail.phonenum} />
-              </Col>
-              <Col>
-                <Form.Label>Ngày hẹn :</Form.Label>
-                <Form.Control
-                  readOnly
-                  value={moment(bookingDetail.time).format("MM/DD/YYYY")}
-                />
-              </Col>
-              <Col>
-                <Form.Label>Giờ hẹn:</Form.Label>
-                <Form.Control
-                  readOnly
-                  value={moment(bookingDetail.time).format("HH:mm")}
-                />
-              </Col>
-            </Row>
+            <>
+              <Row>
+                <Col>
+                  <Form.Label>Khách hàng:</Form.Label>
+                  <p>{bookingDetail.cus_name}</p>
+                </Col>
+                <Col>
+                  <Form.Label>Số điện thoại:</Form.Label>
+                  <p>{bookingDetail.phonenum}</p>
+                </Col>
+                <Col>
+                  <Form.Label>Ngày hẹn :</Form.Label>
+                  <p>{moment(bookingDetail.time).format("MM/DD/YYYY")}</p>
+                </Col>
+                <Col>
+                  <Form.Label>Giờ hẹn:</Form.Label>
+                  <p>{moment(bookingDetail.time).format("HH:mm")}</p>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <Form.Label>Mô tả lịch hẹn:</Form.Label>
+                  <Form.Control
+                    readOnly
+                    as="textarea"
+                    rows={3}
+                    value={bookingDetail.description}
+                  />
+                </Col>
+              </Row>
+              <Row className="mt-2">
+                <Col>
+                  <Form.Label>Loại lịch hẹn:</Form.Label>
+                  <p>{bookingDetail.type}</p>
+                </Col>
+                <Col>
+                  <Form.Label>Địa chỉ:</Form.Label>
+                  <p>{address}</p>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="table-container">
+                  <Form.Label>Danh sách dịch vụ khách hàng đặt:</Form.Label>
+                  <Table bordered size="sm">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Tên dịch vụ</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {bookingDetail.services.map((service, index) => {
+                        return (
+                          <tr key={index}>
+                            <td>{index + 1}</td>
+                            <td>{service}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </Table>
+                </Col>
+              </Row>
+            </>
           )}
         </Card>
         <Card className="order-info-container">
@@ -523,12 +581,8 @@ const OrderDetail = () => {
           </Card.Body>
           <Card.Body>
             <Row>
-              <Col>
-                <Card.Title>Danh sách dịch vụ nhân viên thực hiện</Card.Title>
-              </Col>
-            </Row>
-            <Row>
               <Col className="table-container">
+                <Form.Label>Danh sách dịch vụ nhân viên thực hiện:</Form.Label>
                 <Table bordered size="sm">
                   <thead>
                     <tr>
