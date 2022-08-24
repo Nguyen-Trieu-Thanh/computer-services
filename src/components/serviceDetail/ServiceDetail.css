@@ -38,6 +38,7 @@
 
 .service-detail-container .service-table-container .table-container th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .service-detail-container .service-table-container .table-container td {

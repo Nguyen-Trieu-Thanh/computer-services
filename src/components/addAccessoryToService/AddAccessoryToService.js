@@ -199,7 +199,7 @@ const AddAccessoryToService = ({
                     <tr>
                       <th>#</th>
                       <th>Tên linh kiện (nhấn vào để xem chi tiết)</th>
-                      <th>Giá linh kiện</th>
+                      <th>Giá linh kiện (VNĐ)</th>
                       <th>Nhà cung cấp</th>
                       <th>Loại máy tính</th>
                       <th>Hành động</th>

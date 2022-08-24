@@ -16,6 +16,7 @@
 }
 
 .create-order-container .create-order-body-container th {
+  vertical-align: middle;
   text-align: center;
 }
 

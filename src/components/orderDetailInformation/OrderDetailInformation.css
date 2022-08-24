@@ -24,6 +24,7 @@
   .order-detail-information-body-container
   th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .order-detail-information-container

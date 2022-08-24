@@ -45,6 +45,7 @@
 
 .order-detail-container .order-info-container .table-container th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .order-detail-container .order-info-container .table-container td {
@@ -96,6 +97,7 @@
 }
 .service-detail-modal .table-container th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .service-detail-modal .table-container td {

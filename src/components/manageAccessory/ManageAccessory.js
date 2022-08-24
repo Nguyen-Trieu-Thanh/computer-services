@@ -217,8 +217,9 @@ const ManageAccessory = () => {
                       <th>Giá linh kiện (VNĐ)</th>
                       <th>Thời hạn bảo hành</th>
                       <th>Nhà cung cấp</th>
-                      <th>Ngày thêm mới</th>
-                      <th style={{ width: "200px" }}>Hành động</th>
+                      <th>Thời gian tạo</th>
+                      <th>Cập nhật lúc</th>
+                      <th>Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -233,7 +234,14 @@ const ManageAccessory = () => {
                             <td>{accessory.insurance}</td>
                             <td>{accessory.supplier_id?.name}</td>
                             <td>
-                              {moment(accessory.updatedAt).format("MM/DD/YYYY")}
+                              {moment(accessory.createdAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
+                            <td>
+                              {moment(accessory.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
                             </td>
                             <td>
                               <OverlayTrigger

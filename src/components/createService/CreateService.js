@@ -303,7 +303,7 @@ const CreateService = () => {
                         <tr>
                           <th>#</th>
                           <th>Tên linh kiện</th>
-                          <th>Giá linh kiện</th>
+                          <th>Giá linh kiện (VNĐ)</th>
                           <th>Nhà cung cấp</th>
                         </tr>
                       </thead>

@@ -199,8 +199,9 @@ const ManageCustomer = () => {
                       <th>Tên khách hàng</th>
                       <th>Số điện thoại</th>
                       <th>Email</th>
-                      <th>Ngày tạo</th>
-                      <th style={{ width: "200px" }}>Hành động</th>
+                      <th>Thời gian tạo</th>
+                      <th>Cập nhật lúc</th>
+                      <th>Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -214,7 +215,14 @@ const ManageCustomer = () => {
                             <td>{customer.user_id?.phonenum}</td>
                             <td>{customer.user_id?.email}</td>
                             <td>
-                              {moment(customer.createdAt).format("MM/DD/YYYY")}
+                              {moment(customer.createdAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
+                            <td>
+                              {moment(customer.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
                             </td>
                             <td>
                               <div className="action-button-container">

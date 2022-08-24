@@ -9,6 +9,7 @@
 }
 
 .dashboard-manage-booking-table-container .table-container th {
+  vertical-align: middle;
   text-align: center;
 }
 

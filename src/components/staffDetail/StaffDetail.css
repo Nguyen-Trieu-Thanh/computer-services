@@ -75,6 +75,7 @@
 
 .staff-detail-container .table-container th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .staff-detail-container .table-container .date-th {

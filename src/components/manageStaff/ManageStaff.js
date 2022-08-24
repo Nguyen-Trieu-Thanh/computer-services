@@ -201,8 +201,9 @@ const ManageStaff = () => {
                       <th>Tên nhân viên</th>
                       <th>Số điện thoại</th>
                       <th>Email</th>
-                      <th>Ngày tạo</th>
-                      <th style={{ width: "200px" }}>Hành động</th>
+                      <th>Thời gian tạo</th>
+                      <th>Cập nhật lúc</th>
+                      <th>Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -216,7 +217,14 @@ const ManageStaff = () => {
                             <td>{staff.user_id?.phonenum}</td>
                             <td>{staff.user_id?.email}</td>
                             <td>
-                              {moment(staff.createdAt).format("MM/DD/YYYY")}
+                              {moment(staff.createdAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
+                            <td>
+                              {moment(staff.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
                             </td>
                             <td>
                               <div className="action-button-container">

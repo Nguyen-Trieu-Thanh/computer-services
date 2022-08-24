@@ -75,7 +75,7 @@ const ManageOrder = () => {
                 <th>MÃ ĐƠN HÀNG</th>
                 <th>TÊN KHÁCH HÀNG</th>
                 <th>SỐ ĐIỆN THOẠI</th>
-                <th style={{ width: "200px" }}>HÀNH ĐỘNG</th>
+                <th>HÀNH ĐỘNG</th>
               </tr>
             </thead>
             <tbody>

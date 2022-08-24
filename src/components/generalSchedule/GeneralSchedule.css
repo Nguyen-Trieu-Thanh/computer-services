@@ -36,6 +36,7 @@
 
 .general-schedule-container .modal-content-container .modal-body-container th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .general-schedule-container .modal-content-container .modal-body-container td {

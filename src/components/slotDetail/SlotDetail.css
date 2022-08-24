@@ -17,6 +17,7 @@
 
 .slot-detail .modal-content-container .modal-body-container th {
   text-align: center;
+  vertical-align: middle;
 }
 
 .slot-detail .modal-content-container .modal-body-container td {

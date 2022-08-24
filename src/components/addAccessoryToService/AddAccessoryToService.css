@@ -30,6 +30,7 @@
 }
 
 .add-accessory-to-service .table-container th {
+  vertical-align: middle;
   text-align: center;
 }
 .add-accessory-to-service .table-container td {

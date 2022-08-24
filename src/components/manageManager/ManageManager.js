@@ -211,8 +211,9 @@ const ManageManager = () => {
                       <th>Tên quản lí</th>
                       <th>Số điện thoại</th>
                       <th>Email</th>
-                      <th>Ngày tạo</th>
-                      <th style={{ width: "200px" }}>Hành động</th>
+                      <th>Thời gian tạo</th>
+                      <th>Cập nhật lúc</th>
+                      <th>Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -226,7 +227,14 @@ const ManageManager = () => {
                             <td>{manager.user_id?.phonenum}</td>
                             <td>{manager.user_id?.email}</td>
                             <td>
-                              {moment(manager.createdAt).format("MM/DD/YYYY")}
+                              {moment(manager.createdAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
+                            <td>
+                              {moment(manager.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
                             </td>
                             <td>
                               <div className="action-button-container">
@@ -256,7 +264,7 @@ const ManageManager = () => {
                                         phonenum: manager.user_id?.phonenum,
                                         createdAt: moment(
                                           manager.createdAt
-                                        ).format("MM/DD/YYYY"),
+                                        ).format("HH:mm MM/DD/YYYY"),
                                         img: manager.user_id?.img,
                                       });
                                       setShowManagerDetail(true);
@@ -321,8 +329,11 @@ const ManageManager = () => {
                 </Col>
                 <Col>
                   <Form.Group>
-                    <Form.Label>Ngày sinh:</Form.Label>
-                    <Form.Control readOnly defaultValue={managerDetail.birth} />
+                    <Form.Label>Thời gian tạo:</Form.Label>
+                    <Form.Control
+                      readOnly
+                      defaultValue={managerDetail.createdAt}
+                    />
                   </Form.Group>
                 </Col>
               </Row>
@@ -344,11 +355,8 @@ const ManageManager = () => {
                 </Col>
                 <Col>
                   <Form.Group>
-                    <Form.Label>Ngày tạo:</Form.Label>
-                    <Form.Control
-                      readOnly
-                      defaultValue={managerDetail.createdAt}
-                    />
+                    <Form.Label>Ngày sinh:</Form.Label>
+                    <Form.Control readOnly defaultValue={managerDetail.birth} />
                   </Form.Group>
                 </Col>
               </Row>

@@ -31,6 +31,7 @@
 }
 
 .manage-service-container .content-container .table-container th {
+  vertical-align: middle;
   text-align: center;
 }
 

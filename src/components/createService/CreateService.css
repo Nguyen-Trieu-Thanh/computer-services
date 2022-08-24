@@ -16,6 +16,7 @@
 }
 
 .create-service-container .service-table-container .table-container th {
+  vertical-align: middle;
   text-align: center;
 }
 

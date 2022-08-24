@@ -535,7 +535,7 @@ const OrderDetail = () => {
                       <th>#</th>
                       <th>Tên dịch vụ (nhấn vào để xem chi tiết)</th>
                       <th>Số linh kiện sử dụng</th>
-                      <th>Giá dịch vụ</th>
+                      <th>Giá dịch vụ (VNĐ)</th>
                       {role === "manager" && <th>Xác nhận</th>}
                     </tr>
                   </thead>
@@ -731,7 +731,7 @@ const OrderDetail = () => {
         <Modal.Body>
           <Row>
             <Col>
-              <Form.Label>Giá dịch vụ:</Form.Label>
+              <Form.Label>Giá dịch vụ (VNĐ):</Form.Label>
               <p>{serviceDetail.servicePrice}</p>
             </Col>
             <Col>

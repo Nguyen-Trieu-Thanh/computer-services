@@ -85,6 +85,7 @@
 }
 
 .customer-detail-container .customer-bookings-container .table-container th {
+  vertical-align: middle;
   text-align: center;
 }
 

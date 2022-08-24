@@ -20,6 +20,7 @@
 }
 
 .booking-detail .table-container th {
+  vertical-align: middle;
   text-align: center;
 }
 

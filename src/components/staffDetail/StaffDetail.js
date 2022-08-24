@@ -165,11 +165,11 @@ const StaffDetail = () => {
                   </Col>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Ngày tạo:</Form.Label>
+                      <Form.Label>Thời gian tạo:</Form.Label>
                       <Form.Control
                         readOnly
                         defaultValue={moment(staffDetailData.createdAt).format(
-                          "MM/DD/YYYY"
+                          "HH:mm MM/DD/YYYY"
                         )}
                       />
                     </Form.Group>

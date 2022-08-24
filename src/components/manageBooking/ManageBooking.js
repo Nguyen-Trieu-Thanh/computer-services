@@ -280,10 +280,11 @@ const ManageBooking = () => {
                         <th>Tên khách hàng</th>
                         <th>Số điện thoại</th>
                         <th>Loại lịch hẹn</th>
-                        <th>Ngày hẹn</th>
+                        <th>Thời gian hẹn</th>
+                        <th>Cập nhật lúc</th>
                         <th>Trạng thái lịch hẹn</th>
                         <th>Trạng thái đơn hàng</th>
-                        <th style={{ width: "200px" }}>Hành động</th>
+                        <th>Hành động</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -294,7 +295,14 @@ const ManageBooking = () => {
                             <td>{booking.cus_name}</td>
                             <td>{booking.phonenum}</td>
                             <td>{booking.type}</td>
-                            <td>{moment(booking.time).format("MM/DD/YYYY")}</td>
+                            <td>
+                              {moment(booking.time).format("HH:mm MM/DD/YYYY")}
+                            </td>
+                            <td>
+                              {moment(booking.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
                             <td className={checkBookingStatus(booking.status)}>
                               {booking.status}
                             </td>
@@ -316,6 +324,7 @@ const ManageBooking = () => {
                                 ? booking.order_id.status
                                 : "Chưa có"}
                             </td>
+
                             <td>
                               <div className="action-button-container">
                                 <OverlayTrigger

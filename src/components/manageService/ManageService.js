@@ -203,9 +203,10 @@ const ManageService = () => {
                       <th>#</th>
                       <th>Tên dịch vụ</th>
                       <th>Loại dịch vụ</th>
-                      <th>Giá dịch vụ</th>
-                      <th>Ngày tạo</th>
-                      <th style={{ width: "200px" }}>Hành động</th>
+                      <th>Giá dịch vụ (VNĐ)</th>
+                      <th>Thời gian tạo</th>
+                      <th>Cập nhật lúc</th>
+                      <th>Hành động</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -219,7 +220,14 @@ const ManageService = () => {
                             <td>{service.type}</td>
                             <td>{service.price}</td>
                             <td>
-                              {moment(service.createdAt).format("MM/DD/YYYY")}
+                              {moment(service.createdAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
+                            <td>
+                              {moment(service.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
                             </td>
                             <td>
                               <OverlayTrigger

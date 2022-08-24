@@ -221,12 +221,12 @@ const CustomerDetail = () => {
                   </Col>
                   <Col>
                     <Form.Group>
-                      <Form.Label>Ngày tạo:</Form.Label>
+                      <Form.Label>Thời gian tạo:</Form.Label>
                       <Form.Control
                         readOnly
                         defaultValue={moment(
                           customerDetailData.createdAt
-                        ).format("MM/DD/YYYY")}
+                        ).format("HH:mm MM/DD/YYYY")}
                       />
                     </Form.Group>
                   </Col>
@@ -347,10 +347,11 @@ const CustomerDetail = () => {
                       <tr>
                         <th>#</th>
                         <th>Loại lịch hẹn</th>
-                        <th>Ngày hẹn</th>
+                        <th>Thời gian hẹn</th>
+                        <th>Cập nhật lúc</th>
                         <th>Trạng thái lịch hẹn</th>
                         <th>Trạng thái đơn hàng</th>
-                        <th style={{ width: "200px" }}>Hành động</th>
+                        <th>Hành động</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -359,7 +360,14 @@ const CustomerDetail = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{booking.type}</td>
-                            <td>{moment(booking.time).format("MM/DD/YYYY")}</td>
+                            <td>
+                              {moment(booking.time).format("HH:mm MM/DD/YYYY")}
+                            </td>
+                            <td>
+                              {moment(booking.updatedAt).format(
+                                "HH:mm MM/DD/YYYY"
+                              )}
+                            </td>
                             <td className={checkBookingStatus(booking.status)}>
                               {booking.status}
                             </td>
