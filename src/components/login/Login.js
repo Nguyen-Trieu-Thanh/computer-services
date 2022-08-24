@@ -110,6 +110,7 @@ const Login = () => {
           .then((res) => {
             if (res) {
               if (res.role === "manager" || res.role === "admin") {
+                localStorage.setItem("rememberMe", true);
                 dispatch(setRememberMe({ rememberMe: true }));
                 dispatch(setCredentials({ ...res, username }));
                 navigate("/dashboard");
@@ -173,9 +174,9 @@ const Login = () => {
     setToast({ ...toast, show: false });
   };
 
-  useEffect(() => {
-    localStorage.setItem("rememberMe", rememberMe);
-  }, [rememberMe]);
+  // useEffect(() => {
+  //   localStorage.setItem("rememberMe", rememberMe);
+  // }, [rememberMe]);
 
   return (
     <>
