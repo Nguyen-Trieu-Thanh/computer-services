@@ -51,7 +51,7 @@ const CustomChart = () => {
 
   const [request, setRequest] = useState({
     dates: [],
-    types: ["totalbooking"],
+    types: ["totalbooking", "completedorder", "newcustomer"],
     filter: "bydate",
   });
 
@@ -198,6 +198,7 @@ const CustomChart = () => {
             <Col>
               <ListGroup horizontal defaultActiveKey="7days">
                 <ListGroup.Item
+                  disabled={isLoading}
                   className="date-item"
                   action
                   eventKey="7days"
@@ -208,6 +209,7 @@ const CustomChart = () => {
                   7 ngày trước
                 </ListGroup.Item>
                 <ListGroup.Item
+                  disabled={isLoading}
                   className="date-item"
                   action
                   eventKey="14days"
@@ -218,6 +220,7 @@ const CustomChart = () => {
                   14 ngày trước
                 </ListGroup.Item>
                 <ListGroup.Item
+                  disabled={isLoading}
                   className="date-item"
                   action
                   eventKey="30days"
@@ -228,6 +231,7 @@ const CustomChart = () => {
                   30 ngày trước
                 </ListGroup.Item>
                 <ListGroup.Item
+                  disabled={isLoading}
                   className="date-item"
                   action
                   eventKey="6months"
@@ -238,6 +242,7 @@ const CustomChart = () => {
                   6 tháng trước
                 </ListGroup.Item>
                 <ListGroup.Item
+                  disabled={isLoading}
                   className="date-item"
                   action
                   eventKey="9months"
@@ -248,6 +253,7 @@ const CustomChart = () => {
                   9 tháng trước
                 </ListGroup.Item>
                 <ListGroup.Item
+                  disabled={isLoading}
                   className="date-item"
                   action
                   eventKey="12months"
