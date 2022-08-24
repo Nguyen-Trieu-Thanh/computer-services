@@ -53,7 +53,7 @@ const ProfileSetting = () => {
       message: "",
       isInvalid: false,
     },
-    phoenum: {
+    phonenum: {
       message: "",
       isInvalid: false,
     },
@@ -100,10 +100,108 @@ const ProfileSetting = () => {
 
     if (name === "birth") {
       setProfile({ ...profile, [name]: moment(value).format() });
+      setValidation({
+        ...validation,
+        birth: {
+          message: "",
+          isInvalid: false,
+        },
+      });
       return;
     }
 
-    setProfile({ ...profile, [name]: value });
+    if (name === "phonenum") {
+      if (value === "") {
+        setProfile({ ...profile, [name]: value });
+        setValidation({
+          ...validation,
+          phonenum: {
+            message: "Số điện thoại không được để trống",
+            isInvalid: true,
+            isValid: false,
+          },
+        });
+        return;
+      } else {
+        const phonenumRegex = /^(?:\d+|)$/;
+        if (!phonenumRegex.test(value)) {
+          setProfile({ ...profile, [name]: value });
+          setValidation({
+            ...validation,
+            phonenum: {
+              message: "Số điện thoại chỉ được chứa số",
+              isInvalid: true,
+              isValid: false,
+            },
+          });
+          return;
+        } else {
+          if (value.length > 10) {
+            setProfile({ ...profile, [name]: value });
+            setValidation({
+              ...validation,
+              phonenum: {
+                message: "Số điện thoại không được vượt quá 10 số",
+                isInvalid: true,
+                isValid: false,
+              },
+            });
+            return;
+          } else {
+            setProfile({ ...profile, [name]: value });
+            setValidation({
+              ...validation,
+              phonenum: {
+                message: "",
+                isInvalid: false,
+                isValid: false,
+              },
+            });
+          }
+        }
+      }
+      return;
+    }
+
+    if (name === "email") {
+      if (value === "") {
+        setProfile({ ...profile, [name]: value });
+        setValidation({
+          ...validation,
+          email: {
+            message: "Email không được để trống",
+            isInvalid: true,
+            isValid: false,
+          },
+        });
+        return;
+      } else {
+        const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/;
+        if (!emailRegex.test(value)) {
+          setProfile({ ...profile, [name]: value });
+          setValidation({
+            ...validation,
+            email: {
+              message: "Email không hợp lệ",
+              isInvalid: true,
+              isValid: false,
+            },
+          });
+          return;
+        } else {
+          setProfile({ ...profile, [name]: value });
+          setValidation({
+            ...validation,
+            email: {
+              message: "",
+              isInvalid: false,
+              isValid: false,
+            },
+          });
+        }
+      }
+      return;
+    }
   };
 
   const handleProfileSubmit = async (e) => {
@@ -120,114 +218,156 @@ const ProfileSetting = () => {
       return;
     }
 
-    try {
-      await updateProfileAccount(profile)
-        .unwrap()
-        .then(async (res) => {
-          if (res) {
-            if (file) {
-              const formData = new FormData();
-              formData.append("img", file);
-              try {
-                await updateImage(formData)
-                  .unwrap()
-                  .then((imgRes) => {
-                    if (imgRes) {
+    if (profile.birth === "Invalid date") {
+      setValidation({
+        ...validation,
+        birth: {
+          message: "Xin hãy chọn ngày",
+          isInvalid: true,
+        },
+      });
+      return;
+    }
+
+    if (profile.phonenum === "") {
+      setValidation({
+        ...validation,
+        phonenum: {
+          message: "Số điện thoại không được để trống",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    }
+
+    if (profile.email === "") {
+      setValidation({
+        ...validation,
+        email: {
+          message: "Email không được để trống",
+          isInvalid: true,
+          isValid: false,
+        },
+      });
+      return;
+    }
+
+    if (
+      !validation.name.isInvalid &&
+      !validation.phonenum.isInvalid &&
+      !validation.birth.isInvalid &&
+      !validation.email.isInvalid
+    ) {
+      try {
+        await updateProfileAccount(profile)
+          .unwrap()
+          .then(async (res) => {
+            if (res) {
+              if (file) {
+                const formData = new FormData();
+                formData.append("img", file);
+                try {
+                  await updateImage(formData)
+                    .unwrap()
+                    .then((imgRes) => {
+                      if (imgRes) {
+                        dispatch(
+                          setToast({
+                            show: true,
+                            title: "Cập nhật hồ sơ",
+                            time: "just now",
+                            content: "Hồ sơ được cập nhật thành công",
+                            color: {
+                              header: "#dbf0dc",
+                              body: "#41a446",
+                            },
+                          })
+                        );
+                        setFile();
+                        setImgData();
+                        refetch();
+                      }
+                    });
+                } catch (error) {
+                  if (error) {
+                    if (error.data) {
                       dispatch(
                         setToast({
                           show: true,
                           title: "Cập nhật hồ sơ",
                           time: "just now",
-                          content: "Hồ sơ được cập nhật thành công",
+                          content: error.data,
                           color: {
-                            header: "#dbf0dc",
-                            body: "#41a446",
+                            header: "#ffcccc",
+                            body: "#e60000",
                           },
                         })
                       );
-                      setFile();
-                      setImgData();
                       refetch();
+                    } else {
+                      dispatch(
+                        setToast({
+                          show: true,
+                          title: "Cập nhật hồ sơ",
+                          time: "just now",
+                          content: "Đã xảy ra lỗi. Xin thử lại sau",
+                          color: {
+                            header: "#ffcccc",
+                            body: "#e60000",
+                          },
+                        })
+                      );
                     }
-                  });
-              } catch (error) {
-                if (error) {
-                  if (error.data) {
-                    dispatch(
-                      setToast({
-                        show: true,
-                        title: "Cập nhật hồ sơ",
-                        time: "just now",
-                        content: error.data,
-                        color: {
-                          header: "#ffcccc",
-                          body: "#e60000",
-                        },
-                      })
-                    );
-                    refetch();
-                  } else {
-                    dispatch(
-                      setToast({
-                        show: true,
-                        title: "Cập nhật hồ sơ",
-                        time: "just now",
-                        content: "Đã xảy ra lỗi. Xin thử lại sau",
-                        color: {
-                          header: "#ffcccc",
-                          body: "#e60000",
-                        },
-                      })
-                    );
                   }
                 }
+              } else {
+                dispatch(
+                  setToast({
+                    show: true,
+                    title: "Cập nhật hồ sơ",
+                    time: "just now",
+                    content: "Hồ sơ được cập nhật thành công",
+                    color: {
+                      header: "#dbf0dc",
+                      body: "#41a446",
+                    },
+                  })
+                );
+                refetch();
               }
-            } else {
-              dispatch(
-                setToast({
-                  show: true,
-                  title: "Cập nhật hồ sơ",
-                  time: "just now",
-                  content: "Hồ sơ được cập nhật thành công",
-                  color: {
-                    header: "#dbf0dc",
-                    body: "#41a446",
-                  },
-                })
-              );
-              refetch();
             }
+          });
+      } catch (error) {
+        if (error) {
+          if (error.data) {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Cập nhật hồ sơ",
+                time: "just now",
+                content: error.data,
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
+            refetch();
+          } else {
+            dispatch(
+              setToast({
+                show: true,
+                title: "Cập nhật hồ sơ",
+                time: "just now",
+                content: "Đã xảy ra lỗi. Xin thử lại sau",
+                color: {
+                  header: "#ffcccc",
+                  body: "#e60000",
+                },
+              })
+            );
           }
-        });
-    } catch (error) {
-      if (error) {
-        if (error.data) {
-          dispatch(
-            setToast({
-              show: true,
-              title: "Cập nhật hồ sơ",
-              time: "just now",
-              content: error.data,
-              color: {
-                header: "#ffcccc",
-                body: "#e60000",
-              },
-            })
-          );
-          refetch();
-        } else {
-          dispatch(
-            setToast({
-              show: true,
-              title: "Cập nhật hồ sơ",
-              time: "just now",
-              content: "Đã xảy ra lỗi. Xin thử lại sau",
-              color: {
-                header: "#ffcccc",
-                body: "#e60000",
-              },
-            })
-          );
         }
       }
     }
@@ -285,7 +425,7 @@ const ProfileSetting = () => {
     <>
       <Card className="profile-setting-container">
         <Card.Body>
-          <Form onSubmit={handleProfileSubmit}>
+          <Form noValidate onSubmit={handleProfileSubmit}>
             <Row>
               <Col>
                 <Row>
@@ -313,11 +453,15 @@ const ProfileSetting = () => {
                     <Form.Group controlId="formProfileSettingBirth">
                       <Form.Label>Ngày sinh:</Form.Label>
                       <Form.Control
+                        isInvalid={validation.birth.isInvalid}
                         type="date"
                         name="birth"
                         value={moment(profile.birth).format("YYYY-MM-DD")}
                         onChange={handleProfileChange}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.birth.message}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                 </Row>
@@ -326,22 +470,30 @@ const ProfileSetting = () => {
                     <Form.Group controlId="formProfileSettingPhonenum">
                       <Form.Label>Số điện thoại:</Form.Label>
                       <Form.Control
+                        isInvalid={validation.phonenum.isInvalid}
                         type="text"
                         name="phonenum"
                         value={profile.phonenum}
                         onChange={handleProfileChange}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.phonenum.message}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                   <Col>
                     <Form.Group controlId="formProfileSettingEmail">
                       <Form.Label>Email:</Form.Label>
                       <Form.Control
+                        isInvalid={validation.email.isInvalid}
                         type="text"
                         name="email"
                         value={profile.email}
                         onChange={handleProfileChange}
                       />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.email.message}
+                      </Form.Control.Feedback>
                     </Form.Group>
                   </Col>
                 </Row>
