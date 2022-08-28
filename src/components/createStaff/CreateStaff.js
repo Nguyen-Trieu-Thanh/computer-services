@@ -38,7 +38,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
     password: "",
     confirmPassword: "",
     role: "staff",
-    agency_id: "62d11bfdee51782c70fe0736",
+    agency_id: "6305e03c57eed4242690bbce",
   });
   const [validation, setValidation] = useState({
     username: {
@@ -68,7 +68,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
       password: "",
       confirmPassword: "",
       role: "staff",
-      agency_id: "62d11bfdee51782c70fe0736",
+      agency_id: "6305e03c57eed4242690bbce",
     });
     setValidation({
       username: {
@@ -342,7 +342,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
                 password: "",
                 confirmPassword: "",
                 role: "staff",
-                agency_id: "62d11bfdee51782c70fe0736",
+                agency_id: "6305e03c57eed4242690bbce",
               });
               setValidation({
                 username: {
@@ -383,7 +383,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
               password: "",
               confirmPassword: "",
               role: "staff",
-              agency_id: "62d11bfdee51782c70fe0736",
+              agency_id: "6305e03c57eed4242690bbce",
             });
             setValidation({
               username: {
@@ -420,7 +420,7 @@ const CreateStaff = ({ showCreateStaff, setShowCreateStaff, refetch }) => {
               password: "",
               confirmPassword: "",
               role: "staff",
-              agency_id: "62d11bfdee51782c70fe0736",
+              agency_id: "6305e03c57eed4242690bbce",
             });
             setValidation({
               username: {

@@ -42,7 +42,7 @@ const CreateManager = ({
     password: "",
     confirmPassword: "",
     role: "manager",
-    agency_id: "62d11bfdee51782c70fe0736",
+    agency_id: "6305e03c57eed4242690bbce",
   });
   const [validation, setValidation] = useState({
     username: {
@@ -71,7 +71,7 @@ const CreateManager = ({
       password: "",
       confirmPassword: "",
       role: "manager",
-      agency_id: "62d11bfdee51782c70fe0736",
+      agency_id: "6305e03c57eed4242690bbce",
     });
     setValidation({
       username: {
@@ -331,7 +331,7 @@ const CreateManager = ({
                 password: "",
                 confirmPassword: "",
                 role: "manager",
-                agency_id: "62d11bfdee51782c70fe0736",
+                agency_id: "6305e03c57eed4242690bbce",
               });
               setValidation({
                 username: {
@@ -372,7 +372,7 @@ const CreateManager = ({
               password: "",
               confirmPassword: "",
               role: "manager",
-              agency_id: "62d11bfdee51782c70fe0736",
+              agency_id: "6305e03c57eed4242690bbce",
             });
             setValidation({
               username: {
@@ -409,7 +409,7 @@ const CreateManager = ({
               password: "",
               confirmPassword: "",
               role: "manager",
-              agency_id: "62d11bfdee51782c70fe0736",
+              agency_id: "6305e03c57eed4242690bbce",
             });
             setValidation({
               username: {
