@@ -464,7 +464,11 @@ const ServiceDetail = () => {
                                 <tr key={index}>
                                   <td>{index + 1}</td>
                                   <td>{accessory.name}</td>
-                                  <td>{accessory.price}</td>
+                                  <td>
+                                    {new Intl.NumberFormat("de-DE").format(
+                                      accessory.price
+                                    )}
+                                  </td>
                                   <td>{accessory.supplier_id?.name}</td>
                                 </tr>
                               );

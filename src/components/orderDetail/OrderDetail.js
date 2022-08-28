@@ -22,6 +22,7 @@ import {
   Button,
   ButtonGroup,
   Card,
+  Carousel,
   Col,
   Container,
   Dropdown,
@@ -132,9 +133,60 @@ const OrderDetail = () => {
       street: "",
     },
   });
+  const [validation, setValidation] = useState({
+    time: {
+      message: "",
+      isInvalid: false,
+    },
+    slot: {
+      message: "",
+      isInvalid: false,
+    },
+  });
+
+  const [showViewImg, setShowViewImg] = useState(false);
+  const [img, setImg] = useState("");
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const checkIsDateAndSlotSameOrAfter = () => {
+    if (moment(schedule.date).isSame(moment(), "day")) {
+      if (schedule.slot == 1) {
+        return moment().format("Hmm") < 800;
+      }
+
+      if (schedule.slot == 2) {
+        return moment().format("Hmm") < 930;
+      }
+
+      if (schedule.slot == 3) {
+        return moment().format("Hmm") < 1100;
+      }
+
+      if (schedule.slot == 4) {
+        return moment().format("Hmm") < 1230;
+      }
+
+      if (schedule.slot == 5) {
+        return moment().format("Hmm") < 1400;
+      }
+
+      if (schedule.slot == 6) {
+        return moment().format("Hmm") < 1530;
+      }
+
+      if (schedule.slot == 7) {
+        return moment().format("Hmm") < 1700;
+      }
+
+      if (schedule.slot == 8) {
+        return moment().format("Hmm") < 1830;
+      }
+    }
+
+    return true;
+  };
 
   const handleUpdateOrder = async (e) => {
     e.preventDefault();
@@ -143,25 +195,58 @@ const OrderDetail = () => {
         orderDetail.status === "Đang chờ" ||
         orderDetail.status === "Đang xử lí"
       ) {
-        await assignWorkSlotToOrder(updateOrderSlot)
-          .unwrap()
-          .then(async (res) => {
-            if (res) {
-              dispatch(
-                setToast({
-                  show: true,
-                  title: "Cập nhật đơn hàng",
-                  time: "just now",
-                  content: "Đơn hàng được cập nhật thành công",
-                  color: {
-                    header: "#dbf0dc",
-                    body: "#41a446",
-                  },
-                })
-              );
-              refetch();
-            }
+        if (moment(schedule.date).isBefore(moment(), "day")) {
+          setValidation({
+            ...validation,
+            time: {
+              message: "Ngày không được nhỏ hơn ngày hôm nay",
+              isInvalid: true,
+            },
+            slot: {
+              message: "",
+              isInvalid: false,
+            },
           });
+          return;
+        }
+
+        if (!checkIsDateAndSlotSameOrAfter()) {
+          setValidation({
+            ...validation,
+            time: {
+              message: "",
+              isInvalid: false,
+            },
+            slot: {
+              message: "Đã quá thời gian slot hẹn",
+              isInvalid: true,
+            },
+          });
+          return;
+        }
+
+        if (!validation.time.isInvalid && !validation.slot.isInvalid) {
+          await assignWorkSlotToOrder(updateOrderSlot)
+            .unwrap()
+            .then(async (res) => {
+              if (res) {
+                dispatch(
+                  setToast({
+                    show: true,
+                    title: "Cập nhật đơn hàng",
+                    time: "just now",
+                    content: "Đơn hàng được cập nhật thành công",
+                    color: {
+                      header: "#dbf0dc",
+                      body: "#41a446",
+                    },
+                  })
+                );
+                refetch();
+              }
+            });
+          return;
+        }
         return;
       }
       if (orderDetail.status === "Chờ xác nhận") {
@@ -194,7 +279,7 @@ const OrderDetail = () => {
               show: true,
               title: "Cập nhật đơn hàng",
               time: "just now",
-              content: error.data,
+              content: error.data.message ? error.data.message : error.data,
               color: {
                 header: "#ffcccc",
                 body: "#e60000  ",
@@ -437,7 +522,7 @@ const OrderDetail = () => {
                   <p>{bookingDetail.phonenum}</p>
                 </Col>
                 <Col>
-                  <Form.Label>Ngày hẹn :</Form.Label>
+                  <Form.Label>Ngày hẹn:</Form.Label>
                   <p>{moment(bookingDetail.time).format("MM/DD/YYYY")}</p>
                 </Col>
                 <Col>
@@ -510,13 +595,18 @@ const OrderDetail = () => {
                   <Col>
                     <Form.Label>Ngày thực hiện:</Form.Label>
                     <Form.Control
+                      isInvalid={validation.time.isInvalid}
                       readOnly
                       value={moment(schedule.date).format("MM/DD/YYYY")}
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {validation.time.message}
+                    </Form.Control.Feedback>
                   </Col>
                   <Col>
                     <Form.Label>Slot:</Form.Label>
                     <Form.Control
+                      isInvalid={validation.slot.isInvalid}
                       readOnly
                       value={
                         schedule.slot === 0
@@ -524,6 +614,9 @@ const OrderDetail = () => {
                           : schedule.slot
                       }
                     />
+                    <Form.Control.Feedback type="invalid">
+                      {validation.slot.message}
+                    </Form.Control.Feedback>
                   </Col>
                   <Col xs={4}>
                     <Form.Label>Nhân viên:</Form.Label>
@@ -564,23 +657,111 @@ const OrderDetail = () => {
                     />
                   </Col>
                 </Row>
-                <Row className="mt-2">
-                  {role === "manager" && (
-                    <Col className="d-flex flex-row-reverse">
-                      <Button
-                        disabled={orderDetail.work_slot}
-                        onClick={() => setShowScheduleForOrder(true)}
-                      >
-                        Chọn ngày hẹn
-                      </Button>
-                    </Col>
-                  )}
-                </Row>
+                {(orderDetail.status === "Đang chờ" ||
+                  orderDetail.status === "Đang xử lí") && (
+                  <Row className="mt-2">
+                    {role === "manager" && (
+                      <Col className="d-flex flex-row-reverse">
+                        <Button
+                          disabled={orderDetail.work_slot}
+                          onClick={() => setShowScheduleForOrder(true)}
+                        >
+                          Chọn ngày hẹn
+                        </Button>
+                      </Col>
+                    )}
+                  </Row>
+                )}
+
+                {orderDetail.computer_id && (
+                  <>
+                    {/* <Row className="mt-2">
+                      <Col>
+                        <Form.Label>Mã máy:</Form.Label>
+                        <p>{orderDetail.computer_id.code}</p>
+                      </Col>
+                      <Col>
+                        <Form.Label>Thời gian tạo:</Form.Label>
+                        <p>
+                          {moment(orderDetail.computer_id.createdAt).format(
+                            "HH:mm DD/MM/YYYY"
+                          )}
+                        </p>
+                      </Col>
+                      <Col>
+                        <Form.Label>Cập nhật lúc:</Form.Label>
+                        <p>
+                          {moment(orderDetail.computer_id.updatedAt).format(
+                            "HH:mm DD/MM/YYYY"
+                          )}
+                        </p>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col>
+                        <Form.Label>Tên máy:</Form.Label>
+                        <p>{orderDetail.computer_id.name}</p>
+                      </Col>
+                      <Col>
+                        <Form.Label>Hãng máy:</Form.Label>
+                        <p>{orderDetail.computer_id.brand}</p>
+                      </Col>
+                      <Col>
+                        <Form.Label>Loại máy:</Form.Label>
+                        <p>{orderDetail.computer_id.type}</p>
+                      </Col>
+                    </Row> */}
+                    <Row className="mt-3">
+                      <Col>
+                        <Form.Label>Tên máy:</Form.Label>
+                        <p>{orderDetail.computer_id.name}</p>
+                      </Col>
+                      <Col>
+                        <Form.Label>Hãng máy:</Form.Label>
+                        <p>{orderDetail.computer_id.brand}</p>
+                      </Col>
+                      <Col xs={4}>
+                        <Form.Label>Mã máy:</Form.Label>
+                        <p>{orderDetail.computer_id.code}</p>
+                      </Col>
+                      <Col>
+                        <Form.Label>Loại máy:</Form.Label>
+                        <p>{orderDetail.computer_id.type}</p>
+                      </Col>
+                    </Row>
+                  </>
+                )}
+
+                {orderDetail.imgComUrls?.length !== 0 && (
+                  <>
+                    <Row>
+                      <Col>
+                        <Form.Label>
+                          Hình ảnh máy (nhấn vào ảnh để phóng lớn):
+                        </Form.Label>
+                      </Col>
+                    </Row>
+                    <Row>
+                      {orderDetail.imgComUrls.map((img, index) => {
+                        return (
+                          <Col
+                            key={index}
+                            style={{ cursor: "pointer" }}
+                            onClick={() => {
+                              setImg(img);
+                              setShowViewImg(true);
+                            }}
+                          >
+                            <img src={img} />
+                          </Col>
+                        );
+                      })}
+                    </Row>
+                  </>
+                )}
               </>
             )}
-          </Card.Body>
-          <Card.Body>
-            <Row>
+            <Row className="mt-3">
               <Col className="table-container">
                 <Form.Label>Danh sách dịch vụ nhân viên thực hiện:</Form.Label>
                 <Table bordered size="sm">
@@ -624,7 +805,11 @@ const OrderDetail = () => {
                                 ? orderDetailData.accessories.length
                                 : 0}
                             </td>
-                            <td> {orderDetailData.service_id.price} VNĐ</td>
+                            <td style={{ textAlign: "right" }}>
+                              {new Intl.NumberFormat("de-DE").format(
+                                orderDetailData.service_id.price
+                              )}
+                            </td>
                             {role === "manager" && (
                               <td>
                                 <div className="action-button-container">
@@ -648,18 +833,20 @@ const OrderDetail = () => {
                       }
                     )}
                     <tr>
-                      <td colSpan={2}>Tổng giá tiền</td>
-                      <td colSpan={3}>{orderDetail.totalPrice} VNĐ</td>
+                      <td colSpan={2}>Tổng giá tiền (VNĐ)</td>
+                      <td colSpan={2} style={{ textAlign: "right" }}>
+                        {new Intl.NumberFormat("de-DE").format(
+                          orderDetail.totalPrice
+                        )}
+                      </td>
                     </tr>
                   </tbody>
                 </Table>
               </Col>
             </Row>
-          </Card.Body>
-          <Card.Body>
-            <Row>
+            <Row className="mt-3">
               <Col>
-                <Card.Title>Tiến trình</Card.Title>
+                <Form.Label>Tiến trình:</Form.Label>
               </Col>
             </Row>
             <Row className="mt-2">
@@ -786,7 +973,11 @@ const OrderDetail = () => {
           <Row>
             <Col>
               <Form.Label>Giá dịch vụ (VNĐ):</Form.Label>
-              <p>{serviceDetail.servicePrice}</p>
+              <p>
+                {new Intl.NumberFormat("de-DE").format(
+                  serviceDetail.servicePrice
+                )}
+              </p>
             </Col>
             <Col>
               <Form.Label>Loại dịch vụ:</Form.Label>
@@ -822,7 +1013,11 @@ const OrderDetail = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td>{accessory.accessory_id.name}</td>
-                            <td>{accessory.accessory_id.price}</td>
+                            <td>
+                              {new Intl.NumberFormat("de-DE").format(
+                                accessory.accessory_id.price
+                              )}
+                            </td>
                             <td>{accessory.amount_acc}</td>
                             <td>{accessory.accessory_id.insurance}</td>
                             <td>{accessory.accessory_id.supplier_id.name}</td>
@@ -879,6 +1074,16 @@ const OrderDetail = () => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <Modal
+        show={showViewImg}
+        onHide={() => {
+          setShowViewImg(false);
+        }}
+        centered
+        dialogClassName="img-modal"
+      >
+        <img style={{ width: "100%", height: "auto" }} src={img} />
+      </Modal>
       <ScheduleForOrder
         showScheduleForOrder={showScheduleForOrder}
         setShowScheduleForOrder={setShowScheduleForOrder}
@@ -892,6 +1097,8 @@ const OrderDetail = () => {
         schedulesIsFetching={schedulesIsFetching}
         bookingDetail={bookingDetail}
         isGetBookingByIdLoading={isGetBookingByIdLoading}
+        validation={validation}
+        setValidation={setValidation}
       />
     </>
   );

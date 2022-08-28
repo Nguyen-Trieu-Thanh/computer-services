@@ -286,7 +286,7 @@ const BookingDetail = ({
             {bookingDetail.services.length !== 0 && (
               <Row>
                 <Col className="table-container">
-                  <Form.Label>Danh sách dịch vụ:</Form.Label>
+                  <Form.Label>Danh sách dịch vụ khách hàng đặt:</Form.Label>
                   {/* <p>{bookingDetail.services.join(", ")}</p> */}
                   <Table bordered size="sm">
                     <thead>

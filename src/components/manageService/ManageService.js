@@ -218,7 +218,11 @@ const ManageService = () => {
                             <td>{index + 1}</td>
                             <td>{service.name}</td>
                             <td>{service.type}</td>
-                            <td>{service.price}</td>
+                            <td>
+                              {new Intl.NumberFormat("de-DE").format(
+                                service.price
+                              )}
+                            </td>
                             <td>
                               {moment(service.createdAt).format(
                                 "HH:mm MM/DD/YYYY"

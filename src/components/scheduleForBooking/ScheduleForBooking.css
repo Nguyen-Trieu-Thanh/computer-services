@@ -1,0 +1,100 @@
+.schedule-for-booking {
+  width: 90vw;
+  max-width: none !important;
+}
+
+.schedule-for-booking .table-container {
+}
+
+.schedule-for-booking .table-container .loading {
+  width: 100%;
+  padding: 10px 0 0 0;
+  text-align: center;
+}
+.schedule-for-booking .table-container .loading-text {
+  font-size: 30px;
+}
+
+.schedule-for-booking .box-container {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.schedule-for-booking .box {
+  width: 50px;
+  height: 100%;
+  border: 1px solid #000000;
+  margin: 0 10px 0 0;
+}
+
+.schedule-for-booking .box-disabled {
+  background-color: #cccccc;
+}
+
+.schedule-for-booking .box-selected {
+  background-color: #00b300;
+}
+
+.schedule-for-booking .box-almost-full {
+  background-color: #ffff4d;
+}
+
+.schedule-for-booking .box-is-full {
+  background-color: #ff3333;
+}
+
+.schedule-for-booking .table-container .table {
+  margin: 0;
+}
+
+.schedule-for-booking .table-container thead {
+  background-color: var(--main-color);
+}
+
+.schedule-for-booking .table-container th {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.schedule-for-booking .table-container .date-th {
+  vertical-align: middle;
+}
+
+.schedule-for-booking .table-container .slot-th {
+  width: 11.25%;
+}
+
+.schedule-for-booking .table-container td {
+  text-align: center;
+  vertical-align: middle;
+  height: 60px;
+}
+
+.schedule-for-booking .table-container .td-clickable {
+  cursor: pointer;
+}
+
+.schedule-for-booking .table-container .selected-td {
+  background-color: #00b300;
+}
+
+.schedule-for-booking .table-container .almost-full {
+  background-color: #ffff4d;
+}
+
+.schedule-for-booking .table-container .is-full {
+  background-color: #ff3333;
+}
+
+.schedule-for-booking .table-container .tr-disabled {
+  background-color: #cccccc;
+}
+
+.schedule-for-booking .table-container .td-disabled {
+  background-color: #cccccc;
+}
+
+.schedule-for-booking .table-container .tr-disabled td {
+  color: #808080;
+}

@@ -25,6 +25,14 @@ import moment from "moment";
 
 import CustomPagination from "../customPagination/CustomPagination";
 
+//Icons
+import {
+  faPenToSquare,
+  faPlus,
+  faArrowRotateRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 //CSS
 import "./AddAccessoryToService.css";
 
@@ -149,7 +157,7 @@ const AddAccessoryToService = ({
           <Modal.Title>Thêm linh kiện vào dịch vụ</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <Row>
+          <Row className="d-flex align-items-end">
             <Col>
               <Form.Label>Tìm kiếm theo tên:</Form.Label>
               <InputGroup>
@@ -173,7 +181,7 @@ const AddAccessoryToService = ({
                 </InputGroup.Append>
               </InputGroup>
             </Col>
-            <Col>
+            <Col xs={3}>
               <Form.Label>Thứ tự:</Form.Label>
               <Form.Control
                 as="select"
@@ -184,6 +192,19 @@ const AddAccessoryToService = ({
                 <option value="asc">Cũ đến mới</option>
                 <option value="desc">Mới đến cũ</option>
               </Form.Control>
+            </Col>
+            <Col xs={3}>
+              <Button
+                disabled={isFetching}
+                style={{ width: "100%" }}
+                variant="dark"
+                onClick={() => {
+                  refetch();
+                }}
+              >
+                Tải lại dữ liệu{" "}
+                <FontAwesomeIcon icon={faArrowRotateRight} color="" />
+              </Button>
             </Col>
           </Row>
           <Row className="mt-2">
@@ -223,7 +244,11 @@ const AddAccessoryToService = ({
                             >
                               {accessory.name}
                             </td>
-                            <td>{accessory.price}</td>
+                            <td>
+                              {new Intl.NumberFormat("de-DE").format(
+                                accessory.price
+                              )}
+                            </td>
                             <td>{accessory.supplier_id?.name}</td>
                             <td>{accessory.type}</td>
                             <td>

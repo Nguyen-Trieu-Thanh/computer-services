@@ -63,6 +63,13 @@
   font-size: 30px;
 }
 
+.order-detail-container .order-info-container img {
+  display: block;
+  margin: auto;
+  width: auto;
+  height: 200px;
+}
+
 .order-detail-container .order-info-container .table-container {
 }
 
@@ -161,4 +168,9 @@
 
 .accessory-edit-button .arrow::before {
   border-bottom-color: blue;
+}
+
+.img-modal {
+  width: 60vw;
+  max-width: none !important;
 }

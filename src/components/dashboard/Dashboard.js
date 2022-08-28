@@ -417,7 +417,12 @@ const Dashboard = () => {
                               <tr key={dateIndex} className="tr-disabled">
                                 <td>{date.date}</td>
                                 {slots.map((slot, slotIndex) => {
-                                  return <td key={slotIndex}></td>;
+                                  return (
+                                    <td
+                                      key={slotIndex}
+                                      className="td-disabled"
+                                    ></td>
+                                  );
                                 })}
                               </tr>
                             );

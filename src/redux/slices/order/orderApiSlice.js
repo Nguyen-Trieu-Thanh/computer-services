@@ -8,7 +8,7 @@ export const orderApiSlice = apiSlice.injectEndpoints({
     }),
     updateOrderById: builder.mutation({
       query: (orderDetail) => ({
-        url: `/order/${orderDetail._id}`,
+        url: `/order/manager-confirm/${orderDetail._id}`,
         method: "PATCH",
         body: {
           orderDetails_id: orderDetail.orderDetails_id,

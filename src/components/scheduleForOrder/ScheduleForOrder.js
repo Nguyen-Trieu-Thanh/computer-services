@@ -49,6 +49,8 @@ const ScheduleForOrder = ({
   schedulesIsFetching,
   bookingDetail,
   isGetBookingByIdLoading,
+  validation,
+  setValidation,
 }) => {
   //Local state
   const [startDate, setStartDate] = useState(
@@ -179,6 +181,16 @@ const ScheduleForOrder = ({
       ...updateOrderSlot,
       workSlotId: selectedWorkSlotId,
     });
+    setValidation({
+      time: {
+        message: "",
+        isInvalid: false,
+      },
+      slot: {
+        message: "",
+        isInvalid: false,
+      },
+    });
   };
 
   useEffect(() => {
@@ -234,7 +246,7 @@ const ScheduleForOrder = ({
                     <InputGroup.Text>Đến ngày:</InputGroup.Text>
                   </InputGroup.Prepend>
                   <Form.Control
-                    disabled
+                    // disabled
                     type="date"
                     value={endDate}
                     onChange={(e) => {
@@ -391,7 +403,9 @@ const ScheduleForOrder = ({
                                           date.slots.findIndex(
                                             (x) => x.slot === slot
                                           )
-                                        ].work_slot[0]._id
+                                        ].work_slot.filter(
+                                          (y) => !y.order_id
+                                        )[0]._id
                                       );
                                       setSelectedSlotDetail({
                                         ...selectedSlotDetail,
@@ -452,10 +466,15 @@ const ScheduleForOrder = ({
                             })}
                           </tr>
                         ) : (
-                          <tr key={dateIndex} className="tr-disabled">
+                          <tr key={dateIndex}>
                             <td>{moment(date.date).format("MM/DD/YYYY")}</td>
                             {slots.map((slot, slotIndex) => {
-                              return <td key={slotIndex}></td>;
+                              return (
+                                <td
+                                  key={slotIndex}
+                                  className="td-disabled"
+                                ></td>
+                              );
                             })}
                           </tr>
                         );

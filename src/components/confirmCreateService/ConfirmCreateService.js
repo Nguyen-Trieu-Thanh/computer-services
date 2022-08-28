@@ -115,7 +115,9 @@ const ConfirmCreateService = ({
                 <Col>
                   <Form.Group controlId="formConfirmCreateServicePrice">
                     <Form.Label>Giá dịch vụ (VNĐ):</Form.Label>
-                    <p>{service.price}</p>
+                    <p>
+                      {new Intl.NumberFormat("de-DE").format(service.price)}
+                    </p>
                   </Form.Group>
                 </Col>
                 <Col>
@@ -165,7 +167,11 @@ const ConfirmCreateService = ({
                             <tr key={index}>
                               <td>{index + 1}</td>
                               <td>{accessory.name}</td>
-                              <td>{accessory.price}</td>
+                              <td>
+                                {new Intl.NumberFormat("de-DE").format(
+                                  accessory.price
+                                )}
+                              </td>
                               <td>{accessory.supplier_id?.name}</td>
                             </tr>
                           );

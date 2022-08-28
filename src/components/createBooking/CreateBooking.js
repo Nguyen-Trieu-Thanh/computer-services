@@ -29,6 +29,7 @@ import { useLocation } from "react-router-dom";
 //CSS
 import "./CreateBooking.css";
 import { useEffect } from "react";
+import ScheduleForBooking from "../scheduleForBooking/ScheduleForBooking";
 
 const CreateBooking = () => {
   const [getAccountByUsername, { isLoading }] =
@@ -93,7 +94,8 @@ const CreateBooking = () => {
   });
   const [showConfirmCreateBooking, setShowConfirmCreateBooking] =
     useState(false);
-  const [slot, setSlot] = useState(1);
+  const [slot, setSlot] = useState(0);
+  const [showScheduleForBooking, setShowScheduleForBooking] = useState(false);
 
   const { state } = useLocation();
 
@@ -410,6 +412,10 @@ const CreateBooking = () => {
               message: "",
               isInvalid: false,
             },
+            slot: {
+              message: "",
+              isInvalid: false,
+            },
           });
           return;
         }
@@ -429,6 +435,10 @@ const CreateBooking = () => {
           setValidation({
             ...validation,
             time: {
+              message: "",
+              isInvalid: false,
+            },
+            slot: {
               message: "",
               isInvalid: false,
             },
@@ -454,6 +464,10 @@ const CreateBooking = () => {
               message: "",
               isInvalid: false,
             },
+            slot: {
+              message: "",
+              isInvalid: false,
+            },
           });
           return;
         }
@@ -473,6 +487,10 @@ const CreateBooking = () => {
           setValidation({
             ...validation,
             time: {
+              message: "",
+              isInvalid: false,
+            },
+            slot: {
               message: "",
               isInvalid: false,
             },
@@ -498,6 +516,10 @@ const CreateBooking = () => {
               message: "",
               isInvalid: false,
             },
+            slot: {
+              message: "",
+              isInvalid: false,
+            },
           });
           return;
         }
@@ -517,6 +539,10 @@ const CreateBooking = () => {
           setValidation({
             ...validation,
             time: {
+              message: "",
+              isInvalid: false,
+            },
+            slot: {
               message: "",
               isInvalid: false,
             },
@@ -542,6 +568,10 @@ const CreateBooking = () => {
               message: "",
               isInvalid: false,
             },
+            slot: {
+              message: "",
+              isInvalid: false,
+            },
           });
           return;
         }
@@ -561,6 +591,10 @@ const CreateBooking = () => {
           setValidation({
             ...validation,
             time: {
+              message: "",
+              isInvalid: false,
+            },
+            slot: {
               message: "",
               isInvalid: false,
             },
@@ -859,6 +893,10 @@ const CreateBooking = () => {
           message: "Xin hãy chọn ngày",
           isInvalid: true,
         },
+        slot: {
+          message: "",
+          isInvalid: false,
+        },
       });
       return;
     }
@@ -867,7 +905,26 @@ const CreateBooking = () => {
       setValidation({
         ...validation,
         time: {
-          message: "Ngày không được nhỏ hơn ngày hôm nay",
+          message: "Ngày hẹn không được nhỏ hơn ngày hôm nay",
+          isInvalid: true,
+        },
+        slot: {
+          message: "",
+          isInvalid: false,
+        },
+      });
+      return;
+    }
+
+    if (slot == 0) {
+      setValidation({
+        ...validation,
+        time: {
+          message: "",
+          isInvalid: false,
+        },
+        slot: {
+          message: "Xin hãy chọn slot",
           isInvalid: true,
         },
       });
@@ -877,6 +934,10 @@ const CreateBooking = () => {
     if (!checkIsDateAndSlotSameOrAfter()) {
       setValidation({
         ...validation,
+        time: {
+          message: "",
+          isInvalid: false,
+        },
         slot: {
           message: "Đã quá thời gian slot hẹn",
           isInvalid: true,
@@ -1049,6 +1110,36 @@ const CreateBooking = () => {
     }
   };
 
+  const checkSlotValue = () => {
+    if (slot == 0) {
+      return "Xin hãy chọn slot";
+    }
+    if (slot == 1) {
+      return "1: 08:00 - 09:30";
+    }
+    if (slot == 2) {
+      return "2: 09:30 - 11:00";
+    }
+    if (slot == 3) {
+      return "3: 11:00 - 12:30";
+    }
+    if (slot == 4) {
+      return "4: 12:30 - 14:00";
+    }
+    if (slot == 5) {
+      return "5: 14:00 - 15:30";
+    }
+    if (slot == 6) {
+      return "6: 15:30 - 17:00";
+    }
+    if (slot == 7) {
+      return "7: 17:00 - 18:30";
+    }
+    if (slot == 8) {
+      return "8: 18:30 - 20:00";
+    }
+  };
+
   useEffect(() => {
     if (state) {
       const { bookingDetailFromOrder } = state;
@@ -1152,7 +1243,7 @@ const CreateBooking = () => {
                   <Form.Group controlId="formCreateBookingTime">
                     <Form.Label>Ngày hẹn:</Form.Label>
                     <Form.Control
-                      // disabled
+                      disabled
                       isInvalid={validation.time.isInvalid}
                       type="date"
                       name="time"
@@ -1167,7 +1258,8 @@ const CreateBooking = () => {
                 <Col>
                   <Form.Group controlId="formCreateBookingSlot">
                     <Form.Label>Slot hẹn:</Form.Label>
-                    <Form.Control
+                    {/* <Form.Control
+                      disabled
                       isInvalid={validation.slot.isInvalid}
                       as="select"
                       value={slot}
@@ -1181,11 +1273,24 @@ const CreateBooking = () => {
                       <option value="6">6: 15:30 - 17:00</option>
                       <option value="7">7: 17:00 - 18:30</option>
                       <option value="8">8: 18:30 - 20:00</option>
-                    </Form.Control>
+                    </Form.Control> */}
+                    <Form.Control
+                      disabled
+                      isInvalid={validation.slot.isInvalid}
+                      value={checkSlotValue()}
+                      onChange={handleSlotChange}
+                    />
                     <Form.Control.Feedback type="invalid">
                       {validation.slot.message}
                     </Form.Control.Feedback>
                   </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col className="d-flex flex-row-reverse">
+                  <Button onClick={() => setShowScheduleForBooking(true)}>
+                    Chọn ngày hẹn
+                  </Button>
                 </Col>
               </Row>
               <Row>
@@ -1317,6 +1422,16 @@ const CreateBooking = () => {
         setShowConfirmCreateBooking={setShowConfirmCreateBooking}
         showConfirmCreateBooking={showConfirmCreateBooking}
         servicesData={servicesData}
+      />
+      <ScheduleForBooking
+        showScheduleForBooking={showScheduleForBooking}
+        setShowScheduleForBooking={setShowScheduleForBooking}
+        booking={booking}
+        setBooking={setBooking}
+        slot={slot}
+        setSlot={setSlot}
+        validation={validation}
+        setValidation={setValidation}
       />
     </>
   );
