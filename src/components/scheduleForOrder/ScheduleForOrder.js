@@ -246,7 +246,7 @@ const ScheduleForOrder = ({
                     <InputGroup.Text>Đến ngày:</InputGroup.Text>
                   </InputGroup.Prepend>
                   <Form.Control
-                    // disabled
+                    disabled
                     type="date"
                     value={endDate}
                     onChange={(e) => {
