@@ -46,17 +46,17 @@
   vertical-align: middle;
 }
 
-.service-detail-container .service-table-container .button-container {
+.service-detail-container .service-info-container .button-container {
   display: flex;
   flex-direction: row-reverse;
 }
 
-.service-detail-container .service-table-container .button-container button {
+.service-detail-container .service-info-container .button-container button {
   width: 100px;
 }
 
 .service-detail-container
-  .service-table-container
+  .service-info-container
   .button-container
   button
   .spinner-border {

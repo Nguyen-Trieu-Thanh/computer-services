@@ -126,12 +126,12 @@ const ConfirmCreateService = ({
                     <p>{service.type}</p>
                   </Form.Group>
                 </Col>
-                <Col>
+                {/* <Col>
                   <Form.Group controlId="formConfirmCreateServiceBrand">
                     <Form.Label>Dùng cho hãng:</Form.Label>
                     <p>{service.brand}</p>
                   </Form.Group>
-                </Col>
+                </Col> */}
               </Row>
               <Row>
                 <Col>
@@ -148,7 +148,7 @@ const ConfirmCreateService = ({
                   </Form.Group>
                 </Col>
               </Row>
-              <Row>
+              {/* <Row>
                 <Col>
                   <Form.Label>Dịch vụ bao gồm linh kiện:</Form.Label>
                   <div className="table-container">
@@ -180,7 +180,7 @@ const ConfirmCreateService = ({
                     </Table>
                   </div>
                 </Col>
-              </Row>
+              </Row> */}
             </Modal.Body>
             <Modal.Footer>
               <Button

@@ -282,20 +282,20 @@ const ServiceDetail = () => {
     if (!isFetching && !error) {
       setServiceDetail({
         ...serviceDetailData,
-        accessories_id: serviceDetailData?.serHasAcc.map((x) => {
-          return {
-            ...x.accessory_id,
-          };
-        }),
+        // accessories_id: serviceDetailData?.serHasAcc.map((x) => {
+        //   return {
+        //     ...x.accessory_id,
+        //   };
+        // }),
         price: String(serviceDetailData.price),
       });
       setInitServiceDetail({
         ...serviceDetailData,
-        accessories_id: serviceDetailData?.serHasAcc.map((x) => {
-          return {
-            ...x.accessory_id,
-          };
-        }),
+        // accessories_id: serviceDetailData?.serHasAcc.map((x) => {
+        //   return {
+        //     ...x.accessory_id,
+        //   };
+        // }),
         price: String(serviceDetailData.price),
       });
     }
@@ -309,67 +309,68 @@ const ServiceDetail = () => {
     <>
       <Container fluid className="service-detail-container">
         <Form onSubmit={handleConfirmUpdateServiceSubmit}>
-          <Card body className="service-info-container">
-            <Row>
-              <Col>
-                <Card.Title>Thông tin dịch vụ</Card.Title>
-              </Col>
-            </Row>
-            {isFetching ? (
-              <div className="loading">
-                <Spinner animation="border" />
-                <div className="loading-text">Đang tải dữ liệu...</div>
-              </div>
-            ) : (
-              <>
-                <Row>
-                  <Col>
-                    <Form.Group controlId="formCreateServiceName">
-                      <Form.Label>Tên dịch vụ:</Form.Label>
-                      <Form.Control
-                        isInvalid={validation.name.isInvalid}
-                        type="text"
-                        name="name"
-                        value={serviceDetail.name}
-                        onChange={handleUpdateServiceChange}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {validation.name.message}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="formCreateServicePrice">
-                      <Form.Label>Giá dịch vụ (VNĐ):</Form.Label>
-                      <Form.Control
-                        isInvalid={validation.price.isInvalid}
-                        type="text"
-                        name="price"
-                        value={serviceDetail.price}
-                        onChange={handleUpdateServiceChange}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {validation.price.message}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                  <Col>
-                    <Form.Group controlId="formCreateServiceType">
-                      <Form.Label>Loại dịch vụ:</Form.Label>
-                      <Form.Control
-                        as="select"
-                        name="type"
-                        value={serviceDetail.type}
-                        onChange={handleUpdateServiceChange}
-                      >
-                        <option>Thay thế</option>
-                        <option>Vệ sinh</option>
-                        <option>Cài đặt</option>
-                        <option>Sửa lỗi</option>
-                      </Form.Control>
-                    </Form.Group>
-                  </Col>
-                  <Col>
+          <Card className="service-info-container">
+            <Card.Body>
+              <Row>
+                <Col>
+                  <Card.Title>Thông tin dịch vụ</Card.Title>
+                </Col>
+              </Row>
+              {isFetching ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="formCreateServiceName">
+                        <Form.Label>Tên dịch vụ:</Form.Label>
+                        <Form.Control
+                          isInvalid={validation.name.isInvalid}
+                          type="text"
+                          name="name"
+                          value={serviceDetail.name}
+                          onChange={handleUpdateServiceChange}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {validation.name.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group controlId="formCreateServicePrice">
+                        <Form.Label>Giá dịch vụ (VNĐ):</Form.Label>
+                        <Form.Control
+                          isInvalid={validation.price.isInvalid}
+                          type="text"
+                          name="price"
+                          value={serviceDetail.price}
+                          onChange={handleUpdateServiceChange}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {validation.price.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group controlId="formCreateServiceType">
+                        <Form.Label>Loại dịch vụ:</Form.Label>
+                        <Form.Control
+                          as="select"
+                          name="type"
+                          value={serviceDetail.type}
+                          onChange={handleUpdateServiceChange}
+                        >
+                          <option>Thay thế</option>
+                          <option>Vệ sinh</option>
+                          <option>Cài đặt</option>
+                          <option>Sửa lỗi</option>
+                        </Form.Control>
+                      </Form.Group>
+                    </Col>
+                    {/* <Col>
                     <Form.Group controlId="formCreateServiceType">
                       <Form.Label>Hãng:</Form.Label>
                       <Form.Control
@@ -390,33 +391,47 @@ const ServiceDetail = () => {
                         <option value="">Khác</option>
                       </Form.Control>
                     </Form.Group>
-                  </Col>
-                </Row>
-                <Row>
-                  <Col>
-                    <Form.Group controlId="formCreateServiceDescription">
-                      <Form.Label>
-                        Mô tả dịch vụ ({serviceDetail?.description?.length}/200
-                        từ) (bắt buộc):
-                      </Form.Label>
-                      <Form.Control
-                        isInvalid={validation.description.isInvalid}
-                        as="textarea"
-                        rows={3}
-                        name="description"
-                        value={serviceDetail.description}
-                        onChange={handleUpdateServiceChange}
-                      />
-                      <Form.Control.Feedback type="invalid">
-                        {validation.description.message}
-                      </Form.Control.Feedback>
-                    </Form.Group>
-                  </Col>
-                </Row>
-              </>
-            )}
+                  </Col> */}
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Form.Group controlId="formCreateServiceDescription">
+                        <Form.Label>
+                          Mô tả dịch vụ ({serviceDetail?.description?.length}
+                          /200 từ) (bắt buộc):
+                        </Form.Label>
+                        <Form.Control
+                          isInvalid={validation.description.isInvalid}
+                          as="textarea"
+                          rows={3}
+                          name="description"
+                          value={serviceDetail.description}
+                          onChange={handleUpdateServiceChange}
+                        />
+                        <Form.Control.Feedback type="invalid">
+                          {validation.description.message}
+                        </Form.Control.Feedback>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                </>
+              )}
+            </Card.Body>
+            <Card.Footer>
+              <Row>
+                <Col className="button-container">
+                  <Button
+                    disabled={isLoading || !isChange()}
+                    type="submit"
+                    variant="primary"
+                  >
+                    {isLoading ? <Spinner animation="border" /> : "Cập nhật"}
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
           </Card>
-          <Card className="service-table-container">
+          {/* <Card className="service-table-container">
             <Card.Body>
               <Row>
                 <Col>
@@ -494,17 +509,17 @@ const ServiceDetail = () => {
                 </Col>
               </Row>
             </Card.Footer>
-          </Card>
+          </Card> */}
         </Form>
       </Container>
-      <AddAccessoryToService
+      {/* <AddAccessoryToService
         showAddAccessoryToService={showAddAccessoryToService}
         setShowAddAccessoryToService={setShowAddAccessoryToService}
         serviceDetail={serviceDetail}
         setServiceDetail={setServiceDetail}
         addAccessories={addAccessories}
         setAddAccessories={setAddAccessories}
-      />
+      /> */}
     </>
   );
 };

@@ -6,8 +6,12 @@ export const serviceApiSlice = apiSlice.injectEndpoints({
       query: () => "/service/all-service",
       keepUnusedDataFor: 0,
     }),
+    // getServiceDetail: builder.query({
+    //   query: (serviceId) => `/service/all-accessories-service/${serviceId}`,
+    //   keepUnusedDataFor: 0,
+    // }),
     getServiceDetail: builder.query({
-      query: (serviceId) => `/service/all-accessories-service/${serviceId}`,
+      query: (serviceId) => `/service/detail-service/${serviceId}`,
       keepUnusedDataFor: 0,
     }),
     createService: builder.mutation({
@@ -19,36 +23,36 @@ export const serviceApiSlice = apiSlice.injectEndpoints({
           description: service.description,
           price: service.price,
           type: service.type,
-          brand: service.brand,
-          accessories: service.accessories_id.map((x) => {
-            return {
-              typeCom: x.type,
-              // brandCom: x.brandCom,
-              accessory_id: x._id,
-            };
-          }),
-          hasAccessory: service.accessories_id.length === 0 ? false : true,
+          // brand: service.brand,
+          // accessories: service.accessories_id.map((x) => {
+          //   return {
+          //     typeCom: x.type,
+          //     brandCom: x.brandCom,
+          //     accessory_id: x._id,
+          //   };
+          // }),
+          // hasAccessory: service.accessories_id.length === 0 ? false : true,
         },
       }),
     }),
     updateService: builder.mutation({
       query: (service) => ({
-        url: `/service/update-service/${service._id}`,
-        method: "POST",
+        url: `/service/${service._id}`,
+        method: "PATCH",
         body: {
           name: service.name,
           description: service.description,
           price: service.price,
           type: service.type,
-          brand: service.brand,
-          accessories: service.accessories_id.map((x) => {
-            return {
-              typeCom: x.type,
-              // brandCom: x.brandCom,
-              accessory_id: x._id,
-            };
-          }),
-          hasAccessory: service.accessories_id.length === 0 ? false : true,
+          // brand: service.brand,
+          // accessories: service.accessories_id.map((x) => {
+          //   return {
+          //     typeCom: x.type,
+          //     // brandCom: x.brandCom,
+          //     accessory_id: x._id,
+          //   };
+          // }),
+          // hasAccessory: service.accessories_id.length === 0 ? false : true,
         },
       }),
     }),
