@@ -70,7 +70,7 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
     }),
     acceptBooking: builder.mutation({
       query: (booking) => ({
-        url: "/booking/accpet-booking",
+        url: "/booking/accept-booking",
         method: "PATCH",
         body: {
           id: booking._id,

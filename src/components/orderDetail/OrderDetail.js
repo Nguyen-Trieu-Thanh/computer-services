@@ -763,14 +763,14 @@ const OrderDetail = () => {
             )}
             <Row className="mt-3">
               <Col className="table-container">
-                <Form.Label>Danh sách dịch vụ nhân viên thực hiện:</Form.Label>
+                <Form.Label>Danh sách hóa đơn:</Form.Label>
                 <Table bordered size="sm">
                   <thead>
                     <tr>
                       <th>#</th>
-                      <th>Tên dịch vụ (nhấn vào để xem chi tiết)</th>
-                      <th>Số linh kiện sử dụng</th>
-                      <th>Giá dịch vụ (VNĐ)</th>
+                      <th>Tên sản phẩm (nhấn vào để xem chi tiết)</th>
+                      <th>Số lượng</th>
+                      <th>Giá tiền (VNĐ)</th>
                       {role === "manager" && <th>Xác nhận</th>}
                     </tr>
                   </thead>
@@ -780,7 +780,7 @@ const OrderDetail = () => {
                         return (
                           <tr key={orderDetailDataIndex}>
                             <td>{orderDetailDataIndex + 1}</td>
-                            <td
+                            {/* <td
                               className="td-service-name"
                               onClick={() => {
                                 setServiceDetail({
@@ -799,17 +799,51 @@ const OrderDetail = () => {
                               }}
                             >
                               {orderDetailData.service_id.name}
-                            </td>
-                            <td>
-                              {orderDetailData.service_id.hasAccessory
-                                ? orderDetailData.accessories.length
-                                : 0}
-                            </td>
+                            </td> */}
+                            {orderDetailData.service_id && (
+                              <td
+                                className="td-service-name"
+                                onClick={() => {
+                                  window.open(
+                                    "/service-detail/" +
+                                      orderDetailData.service_id._id,
+                                    "_blank"
+                                  );
+                                }}
+                              >
+                                {orderDetailData.service_id.name}
+                              </td>
+                            )}
+
+                            {orderDetailData.accessory_id && (
+                              <td
+                                className="td-service-name"
+                                onClick={() => {
+                                  window.open(
+                                    "/accessory-detail/" +
+                                      orderDetailData.accessory_id._id,
+                                    "_blank"
+                                  );
+                                }}
+                              >
+                                {orderDetailData.accessory_id.name}
+                              </td>
+                            )}
+
+                            {orderDetailData.service_id && (
+                              <td>{orderDetailData.amount_ser}</td>
+                            )}
+
+                            {orderDetailData.accessory_id && (
+                              <td>{orderDetailData.amount_acc}</td>
+                            )}
+
                             <td style={{ textAlign: "right" }}>
                               {new Intl.NumberFormat("de-DE").format(
-                                orderDetailData.service_id.price
+                                orderDetailData.price_after
                               )}
                             </td>
+
                             {role === "manager" && (
                               <td>
                                 <div className="action-button-container">

@@ -469,7 +469,7 @@ const AccessoryDetail = () => {
               <Row>
                 <Col>
                   <Form.Group controlId="formAccessoryDetailName">
-                    <Form.Label>Tên dịch vụ:</Form.Label>
+                    <Form.Label>Tên linh kiện:</Form.Label>
                     <Form.Control
                       isInvalid={validation.name.isInvalid}
                       type="text"
@@ -484,7 +484,7 @@ const AccessoryDetail = () => {
                 </Col>
                 <Col>
                   <Form.Group controlId="formAccessoryDetailPrice">
-                    <Form.Label>Giá dịch vụ (VNĐ):</Form.Label>
+                    <Form.Label>Giá linh kiện (VNĐ):</Form.Label>
                     <Form.Control
                       isInvalid={validation.price.isInvalid}
                       type="text"
