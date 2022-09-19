@@ -569,8 +569,6 @@ const AccessoryDetail = () => {
     }
   };
 
-  console.log(accessoryDetail);
-
   useEffect(() => {
     if (!isFetching && !error) {
       setAccessoryDetail({
