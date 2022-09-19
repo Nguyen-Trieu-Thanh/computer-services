@@ -7,7 +7,9 @@ import { setToast } from "../../redux/slices/toast/toastSlice";
 
 //API Actions
 import {
+  useDeleteServiceMutation,
   useGetServiceDetailQuery,
+  useRestoreServiceMutation,
   useUpdateServiceMutation,
 } from "../../redux/slices/service/serviceApiSlice";
 
@@ -51,7 +53,10 @@ const ServiceDetail = () => {
   } = useGetServiceDetailQuery(service_id);
 
   const [updateService, { isLoading }] = useUpdateServiceMutation();
-
+  const [deleteService, { isLoading: isDeleteServiceLoading }] =
+    useDeleteServiceMutation();
+  const [restoreService, { isLoading: isRestoreServiceLoading }] =
+    useRestoreServiceMutation();
   //Local state
   const [showAddAccessoryToService, setShowAddAccessoryToService] =
     useState(false);
@@ -89,6 +94,12 @@ const ServiceDetail = () => {
   });
 
   const [addAccessories, setAddAccessories] = useState([]);
+
+  const [showDelete, setShowDelete] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState("");
+
+  const [showRestore, setShowRestore] = useState(false);
+  const [confirmRestore, setConfirmRestore] = useState("");
 
   const dispatch = useDispatch();
 
@@ -278,6 +289,128 @@ const ServiceDetail = () => {
     return JSON.stringify(initServiceDetail) !== JSON.stringify(serviceDetail);
   };
 
+  const handleConfirmDeleteChange = (e) => {
+    const value = e.target.value;
+    setConfirmDelete(value);
+  };
+
+  const handleDeleteServiceSubmit = async (e) => {
+    try {
+      await deleteService(serviceDetail)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
+            setConfirmDelete("");
+            setShowDelete(false);
+            dispatch(
+              setToast({
+                show: true,
+                title: "Ngưng dịch vụ",
+                time: "just now",
+                content: "Dịch vụ đã ngưng hoạt động",
+                color: {
+                  header: "#dbf0dc",
+                  body: "#41a446",
+                },
+              })
+            );
+            refetch();
+          }
+        });
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Ngưng dịch vụ",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Ngưng dịch vụ",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        }
+      }
+    }
+  };
+
+  const handleConfirmRestoreChange = (e) => {
+    const value = e.target.value;
+    setConfirmRestore(value);
+  };
+
+  const handleRestoreServiceSubmit = async (e) => {
+    try {
+      await restoreService(serviceDetail)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
+            setConfirmRestore("");
+            setShowRestore(false);
+            dispatch(
+              setToast({
+                show: true,
+                title: "Kích hoạt dịch vụ",
+                time: "just now",
+                content: "Dịch vụ đã hoạt động trở lại",
+                color: {
+                  header: "#dbf0dc",
+                  body: "#41a446",
+                },
+              })
+            );
+            refetch();
+          }
+        });
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Kích hoạt dịch vụ",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Kích hoạt dịch vụ",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        }
+      }
+    }
+  };
+
   useEffect(() => {
     if (!isFetching && !error) {
       setServiceDetail({
@@ -308,6 +441,20 @@ const ServiceDetail = () => {
   return (
     <>
       <Container fluid className="service-detail-container">
+        {serviceDetail.deleted && (
+          <Card body className="service-info-container">
+            <Card.Text>
+              Linh kiện này đã ngưng hoạt động. Bạn có muốn kích hoạt lại?
+            </Card.Text>
+            <Button
+              disabled={isFetching || !serviceDetail.deleted}
+              variant="success"
+              onClick={() => setShowRestore(true)}
+            >
+              Kích hoạt lại
+            </Button>
+          </Card>
+        )}
         <Form onSubmit={handleConfirmUpdateServiceSubmit}>
           <Card className="service-info-container">
             <Card.Body>
@@ -427,6 +574,15 @@ const ServiceDetail = () => {
                   >
                     {isLoading ? <Spinner animation="border" /> : "Cập nhật"}
                   </Button>
+                  <Button
+                    disabled={isFetching || serviceDetail.deleted}
+                    className="mr-2"
+                    style={{ width: "140px" }}
+                    variant="outline-danger"
+                    onClick={() => setShowDelete(true)}
+                  >
+                    Ngưng dịch vụ
+                  </Button>
                 </Col>
               </Row>
             </Card.Footer>
@@ -520,6 +676,106 @@ const ServiceDetail = () => {
         addAccessories={addAccessories}
         setAddAccessories={setAddAccessories}
       /> */}
+      <Modal
+        show={showDelete}
+        onHide={() => {
+          setShowDelete(false);
+        }}
+        centered
+        dialogClassName="service-modal"
+      >
+        <Modal.Header>
+          <Modal.Title>Xác nhận ngưng dịch vụ</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Dịch vụ sẽ không tiếp tục hoạt động nữa. <br />
+            Xin hãy nhập <b>DELETE</b> để xác nhận
+          </p>
+          <Form.Group controlId="formConfirmDelete">
+            <Form.Control
+              type="text"
+              name="deleteName"
+              value={confirmDelete}
+              onChange={handleConfirmDeleteChange}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            style={{ width: "100px" }}
+            variant="danger"
+            onClick={() => {
+              setShowDelete(false);
+              setConfirmDelete("");
+            }}
+          >
+            Hủy
+          </Button>
+          <Button
+            disabled={isDeleteServiceLoading || confirmDelete !== "DELETE"}
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={handleDeleteServiceSubmit}
+          >
+            {isDeleteServiceLoading ? (
+              <Spinner animation="border" />
+            ) : (
+              "Xác nhận"
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showRestore}
+        onHide={() => {
+          setShowRestore(false);
+        }}
+        centered
+        dialogClassName="service-modal"
+      >
+        <Modal.Header>
+          <Modal.Title>Xác nhận kích hoạt lại dịch vụ</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Dịch vụ sẽ tiếp tục hoạt động trở lại. <br />
+            Xin hãy nhập <b>RESTORE</b> để xác nhận
+          </p>
+          <Form.Group controlId="formConfirmRestore">
+            <Form.Control
+              type="text"
+              name="restoreName"
+              value={confirmRestore}
+              onChange={handleConfirmRestoreChange}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            style={{ width: "100px" }}
+            variant="danger"
+            onClick={() => {
+              setShowRestore(false);
+              setConfirmRestore("");
+            }}
+          >
+            Hủy
+          </Button>
+          <Button
+            disabled={isRestoreServiceLoading || confirmRestore !== "RESTORE"}
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={handleRestoreServiceSubmit}
+          >
+            {isRestoreServiceLoading ? (
+              <Spinner animation="border" />
+            ) : (
+              "Xác nhận"
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };

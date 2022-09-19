@@ -217,6 +217,7 @@ const ManageAccessory = () => {
                       <th>Giá linh kiện (VNĐ)</th>
                       <th>Thời hạn bảo hành</th>
                       <th>Nhà cung cấp</th>
+                      <th>Trạng thái</th>
                       <th>Thời gian tạo</th>
                       <th>Cập nhật lúc</th>
                       <th>Hành động</th>
@@ -237,6 +238,16 @@ const ManageAccessory = () => {
                             </td>
                             <td>{accessory.insurance}</td>
                             <td>{accessory.supplier_id?.name}</td>
+                            {accessory.deleted ? (
+                              <td style={{ color: "red", fontWeight: "600" }}>
+                                Ngưng hoạt động
+                              </td>
+                            ) : (
+                              <td style={{ color: "green", fontWeight: "600" }}>
+                                Hoạt động
+                              </td>
+                            )}
+
                             <td>
                               {moment(accessory.createdAt).format(
                                 "HH:mm MM/DD/YYYY"

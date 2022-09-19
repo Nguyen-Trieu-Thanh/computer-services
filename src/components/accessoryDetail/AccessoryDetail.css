@@ -57,3 +57,14 @@
   border: 3px solid currentColor;
   border-right-color: transparent;
 }
+
+.accessory-modal button {
+  width: 100px;
+}
+
+.accessory-modal button .spinner-border {
+  width: 20px;
+  height: 20px;
+  border: 3px solid currentColor;
+  border-right-color: transparent;
+}

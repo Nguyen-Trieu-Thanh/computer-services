@@ -11,7 +11,7 @@ export const serviceApiSlice = apiSlice.injectEndpoints({
     //   keepUnusedDataFor: 0,
     // }),
     getServiceDetail: builder.query({
-      query: (serviceId) => `/service/detail-service/${serviceId}`,
+      query: (serviceId) => `/service/detail-service-with-deleted/${serviceId}`,
       keepUnusedDataFor: 0,
     }),
     createService: builder.mutation({
@@ -56,6 +56,18 @@ export const serviceApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+    deleteService: builder.mutation({
+      query: (service) => ({
+        url: `/service/deleted-service/${service._id}`,
+        method: "DELETE",
+      }),
+    }),
+    restoreService: builder.mutation({
+      query: (service) => ({
+        url: `/service/restored-service/${service._id}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -64,4 +76,6 @@ export const {
   useGetServiceDetailQuery,
   useCreateServiceMutation,
   useUpdateServiceMutation,
+  useDeleteServiceMutation,
+  useRestoreServiceMutation,
 } = serviceApiSlice;

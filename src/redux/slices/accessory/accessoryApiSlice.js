@@ -7,7 +7,8 @@ export const accessoryApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 0,
     }),
     getAccessoryDetail: builder.query({
-      query: (accessory_id) => `/accessory/detail-accessory/${accessory_id}`,
+      query: (accessory_id) =>
+        `/accessory/detail-accessory-with-deleted/${accessory_id}`,
       keepUnusedDataFor: 0,
     }),
     createAccessory: builder.mutation({
@@ -45,6 +46,18 @@ export const accessoryApiSlice = apiSlice.injectEndpoints({
         body,
       }),
     }),
+    deleteAccessory: builder.mutation({
+      query: (accessory) => ({
+        url: `/accessory/deleted-accessory/${accessory._id}`,
+        method: "DELETE",
+      }),
+    }),
+    restoreAccessory: builder.mutation({
+      query: (accessory) => ({
+        url: `/accessory/restored-accessory/${accessory._id}`,
+        method: "PATCH",
+      }),
+    }),
   }),
 });
 
@@ -54,4 +67,6 @@ export const {
   useCreateAccessoryMutation,
   useUpdateAccessoryMutation,
   useUploadAccessoryImageMutation,
+  useDeleteAccessoryMutation,
+  useRestoreAccessoryMutation,
 } = accessoryApiSlice;

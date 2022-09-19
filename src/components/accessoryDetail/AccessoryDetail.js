@@ -1,6 +1,10 @@
 import React from "react";
 import { useParams, Navigate, useLocation } from "react-router-dom";
-import { useGetAccessoryDetailQuery } from "../../redux/slices/accessory/accessoryApiSlice";
+import {
+  useDeleteAccessoryMutation,
+  useGetAccessoryDetailQuery,
+  useRestoreAccessoryMutation,
+} from "../../redux/slices/accessory/accessoryApiSlice";
 
 //Actions
 import { setToast } from "../../redux/slices/toast/toastSlice";
@@ -47,6 +51,10 @@ const AccessoryDetail = () => {
   const [updateAccessory, { isLoading }] = useUpdateAccessoryMutation();
   const [uploadAccessoryImage, { isLoading: isUploadAccessoryImage }] =
     useUploadAccessoryImageMutation();
+  const [deleteAccessory, { isLoading: isDeleteAccessoryLoading }] =
+    useDeleteAccessoryMutation();
+  const [restoreAccessory, { isLoading: isRestoreAccessoryLoading }] =
+    useRestoreAccessoryMutation();
 
   //Local state
   const [accessoryDetail, setAccessoryDetail] = useState();
@@ -72,6 +80,12 @@ const AccessoryDetail = () => {
       isInvalid: false,
     },
   });
+
+  const [showDelete, setShowDelete] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState("");
+
+  const [showRestore, setShowRestore] = useState(false);
+  const [confirmRestore, setConfirmRestore] = useState("");
 
   const dispatch = useDispatch();
 
@@ -433,6 +447,130 @@ const AccessoryDetail = () => {
     );
   };
 
+  const handleConfirmDeleteChange = (e) => {
+    const value = e.target.value;
+    setConfirmDelete(value);
+  };
+
+  const handleDeleteAccessorySubmit = async (e) => {
+    try {
+      await deleteAccessory(accessoryDetail)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
+            setConfirmDelete("");
+            setShowDelete(false);
+            dispatch(
+              setToast({
+                show: true,
+                title: "Ngưng linh kiện",
+                time: "just now",
+                content: "Linh kiện đã ngưng hoạt động",
+                color: {
+                  header: "#dbf0dc",
+                  body: "#41a446",
+                },
+              })
+            );
+            refetch();
+          }
+        });
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Ngưng linh kiện",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Ngưng linh kiện",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        }
+      }
+    }
+  };
+
+  const handleConfirmRestoreChange = (e) => {
+    const value = e.target.value;
+    setConfirmRestore(value);
+  };
+
+  const handleRestoreAccessorySubmit = async (e) => {
+    try {
+      await restoreAccessory(accessoryDetail)
+        .unwrap()
+        .then(async (res) => {
+          if (res) {
+            setConfirmRestore("");
+            setShowRestore(false);
+            dispatch(
+              setToast({
+                show: true,
+                title: "Kích hoạt linh kiện",
+                time: "just now",
+                content: "Linh kiện đã hoạt động trở lại",
+                color: {
+                  header: "#dbf0dc",
+                  body: "#41a446",
+                },
+              })
+            );
+            refetch();
+          }
+        });
+    } catch (error) {
+      if (error) {
+        if (error.data) {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Kích hoạt linh kiện",
+              time: "just now",
+              content: error.data,
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        } else {
+          dispatch(
+            setToast({
+              show: true,
+              title: "Kích hoạt linh kiện",
+              time: "just now",
+              content: "Đã xảy ra lỗi. Xin thử lại sau",
+              color: {
+                header: "#ffcccc",
+                body: "#e60000",
+              },
+            })
+          );
+        }
+      }
+    }
+  };
+
+  console.log(accessoryDetail);
+
   useEffect(() => {
     if (!isFetching && !error) {
       setAccessoryDetail({
@@ -451,200 +589,325 @@ const AccessoryDetail = () => {
   }
 
   return (
-    <Container fluid className="accessory-detail-container">
-      <Form onSubmit={handleUpdateAccessorySubmit}>
-        <Card body className="accessory-info-container ">
-          <Row>
-            <Col>
-              <Card.Title>Thông tin linh kiện</Card.Title>
-            </Col>
-          </Row>
-          {isFetching || !accessoryDetail ? (
-            <div className="loading">
-              <Spinner animation="border" />
-              <div className="loading-text">Đang tải dữ liệu...</div>
-            </div>
-          ) : (
-            <>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formAccessoryDetailName">
-                    <Form.Label>Tên linh kiện:</Form.Label>
-                    <Form.Control
-                      isInvalid={validation.name.isInvalid}
-                      type="text"
-                      name="name"
-                      value={accessoryDetail.name}
-                      onChange={handleUpdateAccessoryChange}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {validation.name.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formAccessoryDetailPrice">
-                    <Form.Label>Giá linh kiện (VNĐ):</Form.Label>
-                    <Form.Control
-                      isInvalid={validation.price.isInvalid}
-                      type="text"
-                      name="price"
-                      value={accessoryDetail.price}
-                      onChange={handleUpdateAccessoryChange}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {validation.price.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formAccessoryDetailInsurance">
-                    <Form.Label>Thời hạn bảo hành:</Form.Label>
-                    <Form.Control
-                      isInvalid={validation.insurance.isInvalid}
-                      type="text"
-                      name="insurance"
-                      value={accessoryDetail.insurance}
-                      onChange={handleUpdateAccessoryChange}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {validation.insurance.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formAccessoryDetailType">
-                    <Form.Label>Loại máy tính:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="type"
-                      value={accessoryDetail.type}
-                      onChange={handleUpdateAccessoryChange}
-                    >
-                      <option>PC</option>
-                      <option>Laptop</option>
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formAccessoryDetailComponent">
-                    <Form.Label>Loại linh kiện:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="component"
-                      value={accessoryDetail.component}
-                      onChange={handleUpdateAccessoryChange}
-                    >
-                      <option>Nguồn</option>
-                      <option>Main</option>
-                      <option>RAM</option>
-                      <option>Ổ cứng</option>
-                      <option>CPU</option>
-                      <option>Màn hình</option>
-                      <option>Tản nhiệt</option>
-                      <option>Bàn phím</option>
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group controlId="formAccessoryDetailSupplier_id">
-                    <Form.Label>Nhà cung cấp:</Form.Label>
-                    <Form.Control
-                      as="select"
-                      name="supplier_id"
-                      value={accessoryDetail.supplier_id}
-                      onChange={handleUpdateAccessoryChange}
-                    >
-                      {/* <option value="62d14b772c7ff9eccc4f528d">Intel</option> */}
-                      {suppliers.map((supplier, index) => {
-                        return (
-                          <option key={index} value={supplier._id}>
-                            {supplier.name}
-                          </option>
-                        );
-                      })}
-                    </Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Form.Group controlId="formAccessoryDetailDescription">
-                    <Form.Label>
-                      Mô tả linh kiện ({accessoryDetail.description.length}
-                      /200 từ) (bắt buộc):
-                    </Form.Label>
-                    <Form.Control
-                      isInvalid={validation.description.isInvalid}
-                      as="textarea"
-                      rows={3}
-                      name="description"
-                      value={accessoryDetail.description}
-                      onChange={handleUpdateAccessoryChange}
-                    />
-                    <Form.Control.Feedback type="invalid">
-                      {validation.description.message}
-                    </Form.Control.Feedback>
-                  </Form.Group>
-                </Col>
-              </Row>
-            </>
-          )}
-        </Card>
-        <Card className="accessory-image-container">
-          <Card.Body className="text-center">
-            <Form.Group controlId="formProfileSettingAvatar">
-              <Form.Label>
-                <Card.Link style={{ cursor: "pointer" }}>
-                  Tải lên ảnh linh kiện
-                </Card.Link>
-              </Form.Label>
-              <Form.File
-                accept="image/*"
-                onChange={handleImageChange}
-                style={{ display: "none" }}
-              />
-            </Form.Group>
+    <>
+      <Container fluid className="accessory-detail-container">
+        {accessoryDetail?.deleted && (
+          <Card body className="accessory-info-container">
+            <Card.Text>
+              Linh kiện này đã ngưng hoạt động. Bạn có muốn kích hoạt lại?
+            </Card.Text>
+            <Button
+              disabled={isFetching || !accessoryDetail?.deleted}
+              variant="success"
+              onClick={() => setShowRestore(true)}
+            >
+              Kích hoạt lại
+            </Button>
+          </Card>
+        )}
+        <Form onSubmit={handleUpdateAccessorySubmit}>
+          <Card body className="accessory-info-container">
+            <Row>
+              <Col>
+                <Card.Title>Thông tin linh kiện</Card.Title>
+              </Col>
+            </Row>
             {isFetching || !accessoryDetail ? (
               <div className="loading">
                 <Spinner animation="border" />
                 <div className="loading-text">Đang tải dữ liệu...</div>
               </div>
             ) : (
-              <Card.Img
-                variant="bottom"
-                src={imgData ? imgData : accessoryDetail.imgURL}
-                onLoad={() => setImgLoading(false)}
-              />
+              <>
+                <Row>
+                  <Col>
+                    <Form.Group controlId="formAccessoryDetailName">
+                      <Form.Label>Tên linh kiện:</Form.Label>
+                      <Form.Control
+                        isInvalid={validation.name.isInvalid}
+                        type="text"
+                        name="name"
+                        value={accessoryDetail.name}
+                        onChange={handleUpdateAccessoryChange}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.name.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formAccessoryDetailPrice">
+                      <Form.Label>Giá linh kiện (VNĐ):</Form.Label>
+                      <Form.Control
+                        isInvalid={validation.price.isInvalid}
+                        type="text"
+                        name="price"
+                        value={accessoryDetail.price}
+                        onChange={handleUpdateAccessoryChange}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.price.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formAccessoryDetailInsurance">
+                      <Form.Label>Thời hạn bảo hành:</Form.Label>
+                      <Form.Control
+                        isInvalid={validation.insurance.isInvalid}
+                        type="text"
+                        name="insurance"
+                        value={accessoryDetail.insurance}
+                        onChange={handleUpdateAccessoryChange}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.insurance.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Group controlId="formAccessoryDetailType">
+                      <Form.Label>Loại máy tính:</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="type"
+                        value={accessoryDetail.type}
+                        onChange={handleUpdateAccessoryChange}
+                      >
+                        <option>PC</option>
+                        <option>Laptop</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formAccessoryDetailComponent">
+                      <Form.Label>Loại linh kiện:</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="component"
+                        value={accessoryDetail.component}
+                        onChange={handleUpdateAccessoryChange}
+                      >
+                        <option>Nguồn</option>
+                        <option>Main</option>
+                        <option>RAM</option>
+                        <option>Ổ cứng</option>
+                        <option>CPU</option>
+                        <option>Màn hình</option>
+                        <option>Tản nhiệt</option>
+                        <option>Bàn phím</option>
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Group controlId="formAccessoryDetailSupplier_id">
+                      <Form.Label>Nhà cung cấp:</Form.Label>
+                      <Form.Control
+                        as="select"
+                        name="supplier_id"
+                        value={accessoryDetail.supplier_id._id}
+                        onChange={handleUpdateAccessoryChange}
+                      >
+                        {/* <option value="62d14b772c7ff9eccc4f528d">Intel</option> */}
+                        {suppliers.map((supplier, index) => {
+                          return (
+                            <option key={index} value={supplier._id}>
+                              {supplier.name}
+                            </option>
+                          );
+                        })}
+                      </Form.Control>
+                    </Form.Group>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                    <Form.Group controlId="formAccessoryDetailDescription">
+                      <Form.Label>
+                        Mô tả linh kiện ({accessoryDetail.description.length}
+                        /200 từ) (bắt buộc):
+                      </Form.Label>
+                      <Form.Control
+                        isInvalid={validation.description.isInvalid}
+                        as="textarea"
+                        rows={3}
+                        name="description"
+                        value={accessoryDetail.description}
+                        onChange={handleUpdateAccessoryChange}
+                      />
+                      <Form.Control.Feedback type="invalid">
+                        {validation.description.message}
+                      </Form.Control.Feedback>
+                    </Form.Group>
+                  </Col>
+                </Row>
+              </>
             )}
-          </Card.Body>
+          </Card>
+          <Card className="accessory-image-container">
+            <Card.Body className="text-center">
+              <Form.Group controlId="formProfileSettingAvatar">
+                <Form.Label>
+                  <Card.Link style={{ cursor: "pointer" }}>
+                    Tải lên ảnh linh kiện
+                  </Card.Link>
+                </Form.Label>
+                <Form.File
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  style={{ display: "none" }}
+                />
+              </Form.Group>
+              {isFetching || !accessoryDetail ? (
+                <div className="loading">
+                  <Spinner animation="border" />
+                  <div className="loading-text">Đang tải dữ liệu...</div>
+                </div>
+              ) : (
+                <Card.Img
+                  variant="bottom"
+                  src={imgData ? imgData : accessoryDetail.imgURL}
+                  onLoad={() => setImgLoading(false)}
+                />
+              )}
+            </Card.Body>
+            <Card.Footer className="accessory-button-container">
+              <Row>
+                <Col className="button-container">
+                  <Button
+                    disabled={
+                      isLoading ||
+                      isUploadAccessoryImage ||
+                      (!isChange() && !file)
+                    }
+                    type="submit"
+                    variant="primary"
+                  >
+                    {isLoading || isUploadAccessoryImage ? (
+                      <Spinner animation="border" />
+                    ) : (
+                      "Cập nhật"
+                    )}
+                  </Button>
 
-          <Card.Footer className="accessory-button-container">
-            <Row>
-              <Col className="button-container">
-                <Button
-                  disabled={
-                    isLoading ||
-                    isUploadAccessoryImage ||
-                    (!isChange() && !file)
-                  }
-                  type="submit"
-                  variant="primary"
-                >
-                  {isLoading || isUploadAccessoryImage ? (
-                    <Spinner animation="border" />
-                  ) : (
-                    "Cập nhật"
-                  )}
-                </Button>
-              </Col>
-            </Row>
-          </Card.Footer>
-        </Card>
-      </Form>
-    </Container>
+                  <Button
+                    disabled={isFetching || accessoryDetail?.deleted}
+                    className="mr-2"
+                    style={{ width: "140px" }}
+                    variant="outline-danger"
+                    onClick={() => setShowDelete(true)}
+                  >
+                    Ngưng linh kiện
+                  </Button>
+                </Col>
+              </Row>
+            </Card.Footer>
+          </Card>
+        </Form>
+      </Container>
+      <Modal
+        show={showDelete}
+        onHide={() => {
+          setShowDelete(false);
+        }}
+        centered
+        dialogClassName="accessory-modal"
+      >
+        <Modal.Header>
+          <Modal.Title>Xác nhận ngưng linh kiện</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Linh kiện sẽ không tiếp tục hoạt động nữa. <br />
+            Xin hãy nhập <b>DELETE</b> để xác nhận
+          </p>
+          <Form.Group controlId="formConfirmDelete">
+            <Form.Control
+              type="text"
+              name="deleteName"
+              value={confirmDelete}
+              onChange={handleConfirmDeleteChange}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            style={{ width: "100px" }}
+            variant="danger"
+            onClick={() => {
+              setShowDelete(false);
+              setConfirmDelete("");
+            }}
+          >
+            Hủy
+          </Button>
+          <Button
+            disabled={isDeleteAccessoryLoading || confirmDelete !== "DELETE"}
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={handleDeleteAccessorySubmit}
+          >
+            {isDeleteAccessoryLoading ? (
+              <Spinner animation="border" />
+            ) : (
+              "Xác nhận"
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal
+        show={showRestore}
+        onHide={() => {
+          setShowRestore(false);
+        }}
+        centered
+        dialogClassName="accessory-modal"
+      >
+        <Modal.Header>
+          <Modal.Title>Xác nhận kích hoạt lại linh kiện</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>
+            Linh kiện sẽ tiếp tục hoạt động trở lại. <br />
+            Xin hãy nhập <b>RESTORE</b> để xác nhận
+          </p>
+          <Form.Group controlId="formConfirmRestore">
+            <Form.Control
+              type="text"
+              name="restoreName"
+              value={confirmRestore}
+              onChange={handleConfirmRestoreChange}
+            />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button
+            style={{ width: "100px" }}
+            variant="danger"
+            onClick={() => {
+              setShowRestore(false);
+              setConfirmRestore("");
+            }}
+          >
+            Hủy
+          </Button>
+          <Button
+            disabled={isRestoreAccessoryLoading || confirmRestore !== "RESTORE"}
+            style={{ width: "100px" }}
+            variant="primary"
+            onClick={handleRestoreAccessorySubmit}
+          >
+            {isRestoreAccessoryLoading ? (
+              <Spinner animation="border" />
+            ) : (
+              "Xác nhận"
+            )}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    </>
   );
 };
 

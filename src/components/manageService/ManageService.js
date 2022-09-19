@@ -204,6 +204,7 @@ const ManageService = () => {
                       <th>Tên dịch vụ</th>
                       <th>Loại dịch vụ</th>
                       <th>Giá dịch vụ (VNĐ)</th>
+                      <th>Trạng thái</th>
                       <th>Thời gian tạo</th>
                       <th>Cập nhật lúc</th>
                       <th>Hành động</th>
@@ -223,6 +224,15 @@ const ManageService = () => {
                                 service.price
                               )}
                             </td>
+                            {service.deleted ? (
+                              <td style={{ color: "red", fontWeight: "600" }}>
+                                Ngưng hoạt động
+                              </td>
+                            ) : (
+                              <td style={{ color: "green", fontWeight: "600" }}>
+                                Hoạt động
+                              </td>
+                            )}
                             <td>
                               {moment(service.createdAt).format(
                                 "HH:mm MM/DD/YYYY"
