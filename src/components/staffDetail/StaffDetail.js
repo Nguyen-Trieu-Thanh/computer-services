@@ -219,7 +219,7 @@ const StaffDetail = () => {
                       src={
                         !staffDetailData.user_id?.img || imgLoading
                           ? defaultUserAvatar
-                          : `https://computer-services-api.herokuapp.com/account/avatar/${staffDetailData.user_id.img}`
+                          : staffDetailData.user_id?.imgURL
                       }
                       onLoad={() => setImgLoading(false)}
                       sx={{
@@ -288,7 +288,10 @@ const StaffDetail = () => {
               <Col xs={5}>
                 <div className="box-container">
                   <div className="box box-have-order" />
-                  <span>Lịch làm việc có đơn hàng (nhấn vào để xem chi tiết đơn hàng)</span>
+                  <span>
+                    Lịch làm việc có đơn hàng (nhấn vào để xem chi tiết đơn
+                    hàng)
+                  </span>
                 </div>
               </Col>
             </Row>

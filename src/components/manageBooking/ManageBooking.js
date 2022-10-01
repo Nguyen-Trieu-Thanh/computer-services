@@ -48,40 +48,6 @@ import "./ManageBooking.css";
 const ManageBooking = () => {
   //Local state
   const [bookings, setBookings] = useState([]);
-  const [bookingDetail, setBookingDetail] = useState({
-    _id: "",
-    cus_name: "",
-    services: [],
-    description: "",
-    type: "Sửa tại nhà",
-    cus_address: {
-      city: "",
-      district: "",
-      ward: "",
-      street: "",
-    },
-    time: "",
-    status: "",
-    phonenum: "",
-    order_id: "",
-  });
-  const [initBookingDetail, setInitBookingDetail] = useState({
-    _id: "",
-    cus_name: "",
-    services: [],
-    description: "",
-    type: "Sửa tại nhà",
-    cus_address: {
-      city: "",
-      district: "",
-      ward: "",
-      street: "",
-    },
-    time: "",
-    status: "",
-    phonenum: "",
-    order_id: "",
-  });
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [filterBooking, setFilterBooking] = useState({
     status: "",
@@ -90,6 +56,7 @@ const ManageBooking = () => {
     cus_name: "",
   });
   const [search, setSearch] = useState("");
+  const [bookingId, setBookingId] = useState("");
 
   //Utilities
   const navigate = useNavigate();
@@ -349,30 +316,7 @@ const ManageBooking = () => {
                                     variant="primary"
                                     onClick={() => {
                                       setShowBookingDetail(true);
-                                      setBookingDetail({
-                                        _id: booking._id,
-                                        cus_name: booking.cus_name,
-                                        services: booking.services,
-                                        description: booking.description,
-                                        type: booking.type,
-                                        cus_address: booking.cus_address,
-                                        time: booking.time,
-                                        status: booking.status,
-                                        phonenum: booking.phonenum,
-                                        order_id: booking.order_id,
-                                      });
-                                      setInitBookingDetail({
-                                        _id: booking._id,
-                                        cus_name: booking.cus_name,
-                                        services: booking.services,
-                                        description: booking.description,
-                                        type: booking.type,
-                                        cus_address: booking.cus_address,
-                                        time: booking.time,
-                                        status: booking.status,
-                                        phonenum: booking.phonenum,
-                                        order_id: booking.order_id,
-                                      });
+                                      setBookingId(booking._id);
                                     }}
                                   >
                                     <FontAwesomeIcon
@@ -408,11 +352,9 @@ const ManageBooking = () => {
       <BookingDetail
         showBookingDetail={showBookingDetail}
         setShowBookingDetail={setShowBookingDetail}
-        bookingDetail={bookingDetail}
-        setBookingDetail={setBookingDetail}
         refetch={refetch}
         servicesData={servicesData}
-        initBookingDetail={initBookingDetail}
+        bookingId={bookingId}
       />
     </>
   );

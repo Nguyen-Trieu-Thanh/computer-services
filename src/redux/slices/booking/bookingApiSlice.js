@@ -49,6 +49,11 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
         body: {
           cus_name: booking.cus_name,
           services: booking.services,
+          // .map((service, index) => {
+          //   return {
+          //     name: service,
+          //   };
+          // }),
           description: booking.description,
           type: booking.type,
           cus_address: booking.cus_address,
@@ -70,15 +75,15 @@ export const bookingApiSlice = apiSlice.injectEndpoints({
     }),
     acceptBooking: builder.mutation({
       query: (booking) => ({
-        url: "/booking/accept-booking",
+        url: `/booking/accept-booking/${booking._id}`,
         method: "PATCH",
-        body: {
-          id: booking._id,
-        },
       }),
     }),
     getBookingById: builder.mutation({
       query: (booking_id) => `/booking/search/${booking_id}`,
+    }),
+    getBookingWithOrderById: builder.mutation({
+      query: (booking_id) => `/booking/with-order/${booking_id}`,
     }),
   }),
 });
@@ -92,4 +97,5 @@ export const {
   useUpdateBookingMutation,
   useAcceptBookingMutation,
   useGetBookingByIdMutation,
+  useGetBookingWithOrderByIdMutation,
 } = bookingApiSlice;

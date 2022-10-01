@@ -566,7 +566,7 @@ const OrderDetail = () => {
                         return (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td>{service}</td>
+                            <td>{service.name}</td>
                           </tr>
                         );
                       })}
@@ -764,23 +764,24 @@ const OrderDetail = () => {
             <Row className="mt-3">
               <Col className="table-container">
                 <Form.Label>Danh sách hóa đơn:</Form.Label>
-                <Table bordered size="sm">
-                  <thead>
-                    <tr>
-                      <th>#</th>
-                      <th>Tên sản phẩm (nhấn vào để xem chi tiết)</th>
-                      <th>Số lượng</th>
-                      <th>Giá tiền (VNĐ)</th>
-                      {role === "manager" && <th>Xác nhận</th>}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {orderDetails_id.map(
-                      (orderDetailData, orderDetailDataIndex) => {
-                        return (
-                          <tr key={orderDetailDataIndex}>
-                            <td>{orderDetailDataIndex + 1}</td>
-                            {/* <td
+                {role === "manager" && (
+                  <Table bordered size="sm">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Tên sản phẩm (nhấn vào để xem chi tiết)</th>
+                        <th>Số lượng</th>
+                        <th>Giá tiền (VNĐ)</th>
+                        {role === "manager" && <th>Xác nhận</th>}
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orderDetails_id.map(
+                        (orderDetailData, orderDetailDataIndex) => {
+                          return (
+                            <tr key={orderDetailDataIndex}>
+                              <td>{orderDetailDataIndex + 1}</td>
+                              {/* <td
                               className="td-service-name"
                               onClick={() => {
                                 setServiceDetail({
@@ -800,82 +801,155 @@ const OrderDetail = () => {
                             >
                               {orderDetailData.service_id.name}
                             </td> */}
-                            {orderDetailData.service_id && (
-                              <td
-                                className="td-service-name"
-                                onClick={() => {
-                                  window.open(
-                                    "/service-detail/" +
-                                      orderDetailData.service_id._id,
-                                    "_blank"
-                                  );
-                                }}
-                              >
-                                {orderDetailData.service_id.name}
-                              </td>
-                            )}
-
-                            {orderDetailData.accessory_id && (
-                              <td
-                                className="td-service-name"
-                                onClick={() => {
-                                  window.open(
-                                    "/accessory-detail/" +
-                                      orderDetailData.accessory_id._id,
-                                    "_blank"
-                                  );
-                                }}
-                              >
-                                {orderDetailData.accessory_id.name}
-                              </td>
-                            )}
-
-                            {orderDetailData.service_id && (
-                              <td>{orderDetailData.amount_ser}</td>
-                            )}
-
-                            {orderDetailData.accessory_id && (
-                              <td>{orderDetailData.amount_acc}</td>
-                            )}
-
-                            <td style={{ textAlign: "right" }}>
-                              {new Intl.NumberFormat("de-DE").format(
-                                orderDetailData.price_after
+                              {orderDetailData.service_id && (
+                                <td
+                                  className="td-service-name"
+                                  onClick={() => {
+                                    window.open(
+                                      "/service-detail/" +
+                                        orderDetailData.service_id._id,
+                                      "_blank"
+                                    );
+                                  }}
+                                >
+                                  {orderDetailData.service_id.name}
+                                </td>
                               )}
-                            </td>
 
-                            {role === "manager" && (
-                              <td>
-                                <div className="action-button-container">
-                                  <Form.Check
-                                    disabled={
-                                      orderDetail.status !== "Chờ xác nhận" ||
-                                      role === "admin"
-                                    }
-                                    inline
-                                    value={orderDetailData._id}
-                                    checked={orderDetail.orderDetails_id
-                                      .map((x) => x._id)
-                                      .includes(orderDetailData._id)}
-                                    onChange={handleOrderDetails_idChange}
-                                  />
-                                </div>
+                              {orderDetailData.accessory_id && (
+                                <td
+                                  className="td-service-name"
+                                  onClick={() => {
+                                    window.open(
+                                      "/accessory-detail/" +
+                                        orderDetailData.accessory_id._id,
+                                      "_blank"
+                                    );
+                                  }}
+                                >
+                                  {orderDetailData.accessory_id.name}
+                                </td>
+                              )}
+
+                              {orderDetailData.service_id && (
+                                <td>{orderDetailData.amount_ser}</td>
+                              )}
+
+                              {orderDetailData.accessory_id && (
+                                <td>{orderDetailData.amount_acc}</td>
+                              )}
+
+                              <td style={{ textAlign: "right" }}>
+                                {new Intl.NumberFormat("de-DE").format(
+                                  orderDetailData.price_after
+                                )}
                               </td>
-                            )}
-                          </tr>
-                        );
-                      }
-                    )}
-                    <tr>
-                      <td colSpan={2}>Tổng giá tiền (VNĐ)</td>
-                      <td colSpan={2} style={{ textAlign: "right" }}>
-                        {new Intl.NumberFormat("de-DE").format(
-                          orderDetail.totalPrice
-                        )}
-                      </td>
-                    </tr>
-                  </tbody>
-                </Table>
+
+                              {role === "manager" && (
+                                <td>
+                                  <div className="action-button-container">
+                                    <Form.Check
+                                      disabled={
+                                        orderDetail.status !== "Chờ xác nhận" ||
+                                        role === "admin"
+                                      }
+                                      inline
+                                      value={orderDetailData._id}
+                                      checked={orderDetail.orderDetails_id
+                                        .map((x) => x._id)
+                                        .includes(orderDetailData._id)}
+                                      onChange={handleOrderDetails_idChange}
+                                    />
+                                  </div>
+                                </td>
+                              )}
+                            </tr>
+                          );
+                        }
+                      )}
+                      <tr>
+                        <td colSpan={2}>Tổng giá tiền (VNĐ)</td>
+                        <td colSpan={2} style={{ textAlign: "right" }}>
+                          {new Intl.NumberFormat("de-DE").format(
+                            orderDetail.totalPrice
+                          )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                )}
+
+                {role === "admin" && (
+                  <Table bordered size="sm">
+                    <thead>
+                      <tr>
+                        <th>#</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Giá tiền (VNĐ)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orderDetails_id.map(
+                        (orderDetailData, orderDetailDataIndex) => {
+                          return (
+                            <tr key={orderDetailDataIndex}>
+                              <td>{orderDetailDataIndex + 1}</td>
+                              {orderDetailData.service_id && (
+                                <td>{orderDetailData.service_id.name}</td>
+                              )}
+
+                              {orderDetailData.accessory_id && (
+                                <td>{orderDetailData.accessory_id.name}</td>
+                              )}
+
+                              {orderDetailData.service_id && (
+                                <td>{orderDetailData.amount_ser}</td>
+                              )}
+
+                              {orderDetailData.accessory_id && (
+                                <td>{orderDetailData.amount_acc}</td>
+                              )}
+
+                              <td style={{ textAlign: "right" }}>
+                                {new Intl.NumberFormat("de-DE").format(
+                                  orderDetailData.price_after
+                                )}
+                              </td>
+
+                              {role === "manager" && (
+                                <td>
+                                  <div className="action-button-container">
+                                    <Form.Check
+                                      disabled={
+                                        orderDetail.status !== "Chờ xác nhận" ||
+                                        role === "admin"
+                                      }
+                                      inline
+                                      value={orderDetailData._id}
+                                      checked={orderDetail.orderDetails_id
+                                        .map((x) => x._id)
+                                        .includes(orderDetailData._id)}
+                                      onChange={handleOrderDetails_idChange}
+                                    />
+                                  </div>
+                                </td>
+                              )}
+                            </tr>
+                          );
+                        }
+                      )}
+                      <tr>
+                        <td colSpan={2}>Tổng giá tiền (VNĐ)</td>
+                        <td colSpan={2} style={{ textAlign: "right" }}>
+                          {new Intl.NumberFormat("de-DE").format(
+                            orderDetail.totalPrice
+                          )}
+                        </td>
+                      </tr>
+                    </tbody>
+                  </Table>
+                )}
               </Col>
             </Row>
             <Row className="mt-3">

@@ -47,7 +47,7 @@ const CreateAccessory = () => {
     price: "",
     description: "",
     insurance: "",
-    supplier_id: "62d14b772c7ff9eccc4f528d",
+    supplier_id: "6305e71257eed4242690bd44",
     type: "PC",
     component: "RAM",
   });

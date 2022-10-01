@@ -444,7 +444,8 @@ const ServiceDetail = () => {
         {serviceDetail.deleted && (
           <Card body className="service-info-container">
             <Card.Text>
-              Linh kiện này đã ngưng hoạt động. Bạn có muốn kích hoạt lại?
+              Dịch vụ này đã ngưng hoạt động và không thể được sử dụng hoặc cập
+              nhật. Bạn có muốn kích hoạt lại?
             </Card.Text>
             <Button
               disabled={isFetching || !serviceDetail.deleted}
@@ -680,6 +681,7 @@ const ServiceDetail = () => {
         show={showDelete}
         onHide={() => {
           setShowDelete(false);
+          setConfirmDelete("");
         }}
         centered
         dialogClassName="service-modal"
@@ -689,8 +691,9 @@ const ServiceDetail = () => {
         </Modal.Header>
         <Modal.Body>
           <p>
-            Dịch vụ sẽ không tiếp tục hoạt động nữa. <br />
-            Xin hãy nhập <b>DELETE</b> để xác nhận
+            Dịch vụ sẽ ngưng tiếp động nữa và không thể được sử dụng hoặc cập
+            nhật. <br />
+            Xin hãy nhập <b>DELETE</b> để xác nhận.
           </p>
           <Form.Group controlId="formConfirmDelete">
             <Form.Control
@@ -730,6 +733,7 @@ const ServiceDetail = () => {
         show={showRestore}
         onHide={() => {
           setShowRestore(false);
+          setConfirmRestore("");
         }}
         centered
         dialogClassName="service-modal"

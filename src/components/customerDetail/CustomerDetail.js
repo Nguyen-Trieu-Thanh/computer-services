@@ -60,40 +60,6 @@ const CustomerDetail = () => {
 
   //Local state
   const [bookings, setBookings] = useState([]);
-  const [bookingDetail, setBookingDetail] = useState({
-    _id: "",
-    cus_name: "",
-    services: [],
-    description: "",
-    type: "Sửa tại nhà",
-    cus_address: {
-      city: "",
-      district: "",
-      ward: "",
-      street: "",
-    },
-    time: "",
-    status: "",
-    phonenum: "",
-    order_id: "",
-  });
-  const [initBookingDetail, setInitBookingDetail] = useState({
-    _id: "",
-    cus_name: "",
-    services: [],
-    description: "",
-    type: "Sửa tại nhà",
-    cus_address: {
-      city: "",
-      district: "",
-      ward: "",
-      street: "",
-    },
-    time: "",
-    status: "",
-    phonenum: "",
-    order_id: "",
-  });
   const [showBookingDetail, setShowBookingDetail] = useState(false);
   const [filterBooking, setFilterBooking] = useState({
     status: "",
@@ -101,6 +67,7 @@ const CustomerDetail = () => {
     page: 1,
   });
   const [imgLoading, setImgLoading] = useState(true);
+  const [bookingId, setBookingId] = useState("");
 
   const {
     data: bookingsData = {
@@ -275,7 +242,7 @@ const CustomerDetail = () => {
                       src={
                         !customerDetailData.user_id?.img || imgLoading
                           ? defaultUserAvatar
-                          : `https://computer-services-api.herokuapp.com/account/avatar/${customerDetailData.user_id.img}`
+                          : customerDetailData.user_id?.imgURL
                       }
                       onLoad={() => setImgLoading(false)}
                       sx={{
@@ -400,30 +367,7 @@ const CustomerDetail = () => {
                                     variant="primary"
                                     onClick={() => {
                                       setShowBookingDetail(true);
-                                      setBookingDetail({
-                                        _id: booking._id,
-                                        cus_name: booking.cus_name,
-                                        services: booking.services,
-                                        description: booking.description,
-                                        type: booking.type,
-                                        cus_address: booking.cus_address,
-                                        time: booking.time,
-                                        status: booking.status,
-                                        phonenum: booking.phonenum,
-                                        order_id: booking.order_id,
-                                      });
-                                      setInitBookingDetail({
-                                        _id: booking._id,
-                                        cus_name: booking.cus_name,
-                                        services: booking.services,
-                                        description: booking.description,
-                                        type: booking.type,
-                                        cus_address: booking.cus_address,
-                                        time: booking.time,
-                                        status: booking.status,
-                                        phonenum: booking.phonenum,
-                                        order_id: booking.order_id,
-                                      });
+                                      setBookingId(booking._id);
                                     }}
                                   >
                                     <FontAwesomeIcon
@@ -459,11 +403,9 @@ const CustomerDetail = () => {
       <BookingDetail
         showBookingDetail={showBookingDetail}
         setShowBookingDetail={setShowBookingDetail}
-        bookingDetail={bookingDetail}
-        setBookingDetail={setBookingDetail}
         refetch={refetch}
         servicesData={servicesData}
-        initBookingDetail={initBookingDetail}
+        bookingId={bookingId}
       />
     </>
   );

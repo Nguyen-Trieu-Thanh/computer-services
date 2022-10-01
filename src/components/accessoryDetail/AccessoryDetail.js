@@ -592,7 +592,8 @@ const AccessoryDetail = () => {
         {accessoryDetail?.deleted && (
           <Card body className="accessory-info-container">
             <Card.Text>
-              Linh kiện này đã ngưng hoạt động. Bạn có muốn kích hoạt lại?
+              Linh kiện này đã ngưng hoạt động và không thể được sử dụng hoặc
+              cập nhật. Bạn có muốn kích hoạt lại?
             </Card.Text>
             <Button
               disabled={isFetching || !accessoryDetail?.deleted}
@@ -809,6 +810,7 @@ const AccessoryDetail = () => {
         show={showDelete}
         onHide={() => {
           setShowDelete(false);
+          setConfirmDelete("");
         }}
         centered
         dialogClassName="accessory-modal"
@@ -818,8 +820,9 @@ const AccessoryDetail = () => {
         </Modal.Header>
         <Modal.Body>
           <p>
-            Linh kiện sẽ không tiếp tục hoạt động nữa. <br />
-            Xin hãy nhập <b>DELETE</b> để xác nhận
+            Linh kiện sẽ ngưng hoạt động và sẽ không thể được sử dụng hoặc cập
+            nhật. <br />
+            Xin hãy nhập <b>DELETE</b> để xác nhận.
           </p>
           <Form.Group controlId="formConfirmDelete">
             <Form.Control
@@ -859,6 +862,7 @@ const AccessoryDetail = () => {
         show={showRestore}
         onHide={() => {
           setShowRestore(false);
+          setConfirmRestore("");
         }}
         centered
         dialogClassName="accessory-modal"

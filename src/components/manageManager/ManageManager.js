@@ -265,7 +265,7 @@ const ManageManager = () => {
                                         createdAt: moment(
                                           manager.createdAt
                                         ).format("HH:mm MM/DD/YYYY"),
-                                        img: manager.user_id?.img,
+                                        img: manager.user_id?.imgURL,
                                       });
                                       setShowManagerDetail(true);
                                     }}
@@ -373,7 +373,7 @@ const ManageManager = () => {
                     src={
                       !managerDetail.img || imgLoading
                         ? defaultUserAvatar
-                        : `https://computer-services-api.herokuapp.com/account/avatar/${managerDetail.img}`
+                        : managerDetail.img
                     }
                     onLoad={() => setImgLoading(false)}
                     sx={{

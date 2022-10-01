@@ -3,6 +3,16 @@
   max-width: none !important;
 }
 
+.booking-detail .loading {
+  height: 100%;
+  padding: 0;
+  text-align: center;
+}
+
+.booking-detail .loading .loading-text {
+  font-size: 30px;
+}
+
 .booking-detail .form-label {
   font-size: 18px;
   font-weight: 700;

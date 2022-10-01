@@ -781,29 +781,36 @@ const CreateBooking = () => {
   };
 
   let items = [];
-  for (let i = 0; i < servicesData.length; i += 4) {
+  for (
+    let i = 0;
+    i < servicesData.filter((service) => !service.deleted).length;
+    i += 4
+  ) {
     items.push(
       <Row key={i}>
-        {servicesData.slice(i, i + 4).map((service, index) => {
-          return (
-            <Form.Group
-              className="service-checkbox-container"
-              key={index}
-              controlId={"formCreateBookingService-" + i + index}
-            >
-              <Col>
-                <Form.Check
-                  className="service-checkbox"
-                  inline
-                  label={service.name}
-                  value={service.name}
-                  checked={booking.services.includes(service.name)}
-                  onChange={handleCreateBookingServiceChange}
-                />
-              </Col>
-            </Form.Group>
-          );
-        })}
+        {servicesData
+          .filter((service) => !service.deleted)
+          .slice(i, i + 4)
+          .map((service, index) => {
+            return (
+              <Form.Group
+                className="service-checkbox-container"
+                key={index}
+                controlId={"formCreateBookingService-" + i + index}
+              >
+                <Col>
+                  <Form.Check
+                    className="service-checkbox"
+                    inline
+                    label={service.name}
+                    value={service.name}
+                    checked={booking.services.includes(service.name)}
+                    onChange={handleCreateBookingServiceChange}
+                  />
+                </Col>
+              </Form.Group>
+            );
+          })}
       </Row>
     );
   }
